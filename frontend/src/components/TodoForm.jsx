@@ -39,10 +39,19 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
       if (selectedTodo) {
         await axios.patch(
           `http://localhost:3000/api/todos/${selectedTodo._id}`,
-          data
+          data,
+          {
+            headers: {
+              "x-access-token": localStorage.getItem("token"),
+            },
+          }
         );
       } else {
-        await axios.post("http://localhost:3000/api/todos", data);
+        await axios.post("http://localhost:3000/api/todos", data, {
+          headers: {
+            "x-access-token": localStorage.getItem("token"),
+          },
+        });
       }
 
       // Refresh UI

@@ -4,7 +4,11 @@ import axios from "axios";
 function Todos({ todos, setSelectedTodo, fetchTodos }) {
   async function deleteTodo(_id) {
     try {
-      await axios.delete(`http://localhost:3000/api/todos/${_id}`);
+      await axios.delete(`http://localhost:3000/api/todos/${_id}`, {
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      });
       fetchTodos(); // refresh after delete
     } catch (error) {
       console.log(error);
@@ -14,7 +18,12 @@ function Todos({ todos, setSelectedTodo, fetchTodos }) {
   async function handleEdit(_id) {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/todos/${_id}`
+        `http://localhost:3000/api/todos/${_id}`,
+        {
+          headers: {
+            "x-access-token": localStorage.getItem("token"),
+          },
+        }
       );
       setSelectedTodo(response.data.data);
     } catch (error) {
