@@ -43,13 +43,27 @@ function Login() {
         "http://localhost:3000/api/users/signin",
         data
       );
-      console.log(response.data);
+      console.log(response);
+
       if (response.data.success) {
         localStorage.setItem("token", response.data.data);
         navigate("/todos");
       }
     } catch (error) {
       console.log(error);
+      if (error.response.data.message == "User not found") {
+        setError("email", {
+          type: "manual",
+          message: "Email not found",
+        });
+      }
+
+      if (error.response.data.message == "Invalid password") {
+        setError("password", {
+          type: "manual",
+          message: "Invalid password",
+        });
+      }
     }
   }
   const onSubmit = (data) => {

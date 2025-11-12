@@ -32,8 +32,8 @@ function Todos({ todos, setSelectedTodo, fetchTodos }) {
   }
 
   return (
-    <div className="w-2/3 flex flex-wrap overflow-auto h-screen">
-      <h1 className="text-3xl font-bold mb-3 sticky top-0 p-4 flex justify-center bg-blue-500 text-white w-full">
+    <div className="w-2/3 flex flex-wrap overflow-auto h-screen pe-2">
+      <h1 className="text-3xl font-bold mb-3 sticky top-0 p-4 flex justify-center bg-blue-500 text-white w-full h-20">
         Todos
       </h1>
 
