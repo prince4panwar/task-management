@@ -131,6 +131,7 @@ const isAuthenticated = async (req, res) => {
     }
 
     return res.status(200).json({
+      data: { name: user.name, email: user.email },
       message: "User authenticated successfully",
       success: true,
       err: {},

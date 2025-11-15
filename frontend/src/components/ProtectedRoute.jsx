@@ -4,6 +4,7 @@ import axios from "axios";
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null); // null = loading
+  const [user, setUser] = useState(null);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -21,6 +22,7 @@ const ProtectedRoute = ({ children }) => {
           }
         );
 
+        setUser(response.data.data);
         if (response.data.success) {
           setIsAuthenticated(true);
         } else {
@@ -36,7 +38,7 @@ const ProtectedRoute = ({ children }) => {
 
   // While checking token validity, show a loader
   if (isAuthenticated === null) {
-    return <div>Loading...</div>;
+    return <div className="bg-blue-400 text-center text-white">Loading...</div>;
   }
 
   // If not authenticated, redirect
@@ -45,7 +47,14 @@ const ProtectedRoute = ({ children }) => {
   }
 
   // Otherwise, render protected children
-  return children;
+  return (
+    <div className="pe-2 h-screen overflow-hidden">
+      <div className="text-3xl font-bold mb-3 sticky top-0 p-4 flex justify-around bg-blue-500 text-white w-full h-20">
+        <span className="font-bold"> {user?.name}'s Todos</span>
+      </div>
+      {children}
+    </div>
+  );
 };
 
 export default ProtectedRoute;
