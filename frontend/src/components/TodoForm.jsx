@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 const schema = z.object({
   content: z
     .string()
-    .nonempty("Content is required")
+    .nonempty("Todo is required")
     .min(8, "At least 8 characters"),
 });
 
@@ -68,14 +68,14 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
 
   return (
     <div className="flex flex-col align-center p-2 w-1/3 bg-blue-100">
-      <h1 className="text-3xl font-bold mb-3">
+      <h1 className="text-3xl font-bold mb-3 text-blue-600 text-center">
         {selectedTodo ? "Edit Todo" : "Add Todo"}
       </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
         <input
           type="text"
-          placeholder="Content..."
-          className="border p-2 mb-2 rounded font-bold"
+          placeholder="Todo..."
+          className="border border-black text-blue-600 p-2 mb-2 rounded font-bold"
           {...register("content")}
         />
         {errors.content && (

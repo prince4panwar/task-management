@@ -45,12 +45,14 @@ function Todos({ todos, setSelectedTodo, fetchTodos }) {
       {todos.map((todo, index) => (
         <div
           key={todo._id}
-          className="flex w-full p-2 border border-black mb-2 rounded"
+          className="flex items-center w-full p-2 border border-black mb-2 rounded"
         >
           <div className="w-2/3">
             {/* <h1 className="font-bold">{todo.userId.name}</h1> */}
-            <p className="font-semibold">{todo.userId.email}</p>
-            <p className="font-bold text-blue-500">{todo.content}</p>
+            {/* <p className="font-semibold">{todo.userId.email}</p> */}
+            <p className="font-bold text-blue-500">
+              {index + 1}. {todo.content}
+            </p>
           </div>
           <div className="w-1/3 flex flex-col gap-2 justify-center items-center">
             <button
