@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import { motion } from "motion/react";
 
 const schema = z.object({
   name: z
@@ -64,65 +65,84 @@ function Register() {
   };
 
   return (
-    <div className="flex justify-center items-center w-screen h-screen">
-      <div className="flex flex-col justify-center w-1/4 p-4 rounded shadow-[0px_5px_15px_2px_rgba(0,0,0,0.35)]">
-        <h1 className="text-3xl font-bold mb-3 text-center text-blue-500">
-          Signup
-        </h1>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
-          <input
-            type="text"
-            placeholder="Email"
-            className="border border-blue-600 text-blue-600 focus:ring focus:ring-blue-600 focus:outline-none p-2 mb-2 rounded font-bold "
-            {...register("email")}
-          />
-          {errors.email && (
-            <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
-              {errors.email.message}
-            </span>
-          )}
-          <input
-            type="text"
-            placeholder="Username"
-            className="border border-blue-600 text-blue-600 focus:ring focus:ring-blue-600 focus:outline-none p-2 mb-2 rounded font-bold"
-            {...register("name")}
-          />
-          {errors.name && (
-            <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
-              {errors.name.message}
-            </span>
-          )}
-          <input
-            type="password"
-            placeholder="Password"
-            className="border border-blue-600 text-blue-600 focus:ring focus:ring-blue-600 focus:outline-none p-2 mb-2 rounded font-bold"
-            {...register("password")}
-          />
-          {errors.password && (
-            <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
-              {errors.password.message}
-            </span>
-          )}
-          <button
-            type="submit"
-            className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mb-2 mt-3"
-          >
-            Create Account
-          </button>
-          <button
-            onClick={() => navigate("/login")}
-            className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded"
-          >
-            Log In
-          </button>
+    <div>
+      <div
+        className="text-3xl font-bold sticky top-0 p-4 flex justify-around bg-blue-500 text-white w-full"
+        style={{
+          height: "70px",
+        }}
+      >
+        <span className="font-bold">Taskify</span>
+      </div>
+      <div
+        className="flex justify-center items-center w-screen"
+        style={{
+          height: "calc(100vh - 70px)",
+        }}
+      >
+        <motion.div
+          initial={{ y: -100 }}
+          animate={{ y: 0 }}
+          className="flex flex-col justify-center w-1/4 p-4 rounded shadow-[0px_5px_15px_2px_rgba(0,0,0,0.35)]"
+        >
+          <h1 className="text-3xl font-bold mb-3 text-center text-blue-500">
+            Signup
+          </h1>
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+            <input
+              type="text"
+              placeholder="Email"
+              className="border border-blue-600 text-blue-600 focus:ring focus:ring-blue-600 focus:outline-none p-2 mb-2 rounded font-bold "
+              {...register("email")}
+            />
+            {errors.email && (
+              <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
+                {errors.email.message}
+              </span>
+            )}
+            <input
+              type="text"
+              placeholder="Username"
+              className="border border-blue-600 text-blue-600 focus:ring focus:ring-blue-600 focus:outline-none p-2 mb-2 rounded font-bold"
+              {...register("name")}
+            />
+            {errors.name && (
+              <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
+                {errors.name.message}
+              </span>
+            )}
+            <input
+              type="password"
+              placeholder="Password"
+              className="border border-blue-600 text-blue-600 focus:ring focus:ring-blue-600 focus:outline-none p-2 mb-2 rounded font-bold"
+              {...register("password")}
+            />
+            {errors.password && (
+              <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
+                {errors.password.message}
+              </span>
+            )}
+            <button
+              type="submit"
+              className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mb-2 mt-3"
+            >
+              Create Account
+            </button>
+            <button
+              onClick={() => navigate("/login")}
+              className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded"
+            >
+              Log In
+            </button>
 
-          <button
-            onClick={() => navigate("/todos")}
-            className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
-          >
-            My Todos
-          </button>
-        </form>
+            <button
+              onClick={() => navigate("/todos")}
+              className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
+            >
+              My Todos
+            </button>
+          </form>
+        </motion.div>
       </div>
     </div>
   );
