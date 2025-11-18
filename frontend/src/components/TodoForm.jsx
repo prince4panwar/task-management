@@ -81,7 +81,11 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
           <input
             type="text"
             placeholder="Task..."
-            className="border border-blue-600 text-blue-600 focus:ring focus:ring-blue-600 focus:outline-none bg-white p-2 mb-2 rounded font-bold"
+            className={`border border-blue-600 text-blue-600 focus:outline-none p-2 mb-2 rounded font-bold ${
+              errors.content
+                ? "border-red-900 focus:ring focus:ring-red-900 text-red-900"
+                : "border-blue-600 focus:ring focus:ring-blue-600"
+            }`}
             {...register("content")}
           />
           {errors.content && (

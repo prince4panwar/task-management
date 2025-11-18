@@ -99,7 +99,11 @@ function Login() {
             <input
               type="text"
               placeholder="Email"
-              className="border border-blue-600 text-blue-600 focus:ring focus:ring-blue-600 focus:outline-none p-2 mb-2 rounded font-bold"
+              className={`border border-blue-600 text-blue-600 focus:outline-none p-2 mb-2 rounded font-bold ${
+                errors.email
+                  ? "border-red-900 focus:ring focus:ring-red-900 text-red-900"
+                  : "border-blue-600 focus:ring focus:ring-blue-600"
+              }`}
               {...register("email")}
             />
             {errors.email && (
@@ -110,7 +114,11 @@ function Login() {
             <input
               type="password"
               placeholder="Password"
-              className="border border-blue-600 text-blue-600 focus:ring focus:ring-blue-600 focus:outline-none p-2 mb-2 rounded font-bold"
+              className={`border border-blue-600 text-blue-600 focus:outline-none p-2 mb-2 rounded font-bold ${
+                errors.password
+                  ? "border-red-900 focus:ring focus:ring-red-900 text-red-900"
+                  : "border-blue-600 focus:ring focus:ring-blue-600"
+              }`}
               {...register("password")}
             />
             {errors.password && (
