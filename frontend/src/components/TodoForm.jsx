@@ -1,17 +1,8 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { useFormContext } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
-
-const schema = z.object({
-  content: z
-    .string()
-    .nonempty("Task must be required")
-    .min(5, "Task must be at least 5 characters long"),
-});
 
 function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
   const {
@@ -20,9 +11,8 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
     reset,
     setValue,
     formState: { errors },
-  } = useForm({
-    resolver: zodResolver(schema),
-  });
+  } = useFormContext();
+
   const navigate = useNavigate();
 
   useEffect(() => {

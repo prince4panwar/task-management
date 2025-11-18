@@ -2,8 +2,11 @@ import React from "react";
 import axios from "axios";
 import { motion } from "motion/react";
 import "../App.css";
+import { useFormContext } from "react-hook-form";
 
 function Todos({ todos, setSelectedTodo, fetchTodos }) {
+  const { reset } = useFormContext();
+
   async function deleteTodo(_id) {
     try {
       await axios.delete(`http://localhost:3000/api/todos/${_id}`, {
@@ -28,6 +31,7 @@ function Todos({ todos, setSelectedTodo, fetchTodos }) {
         }
       );
       setSelectedTodo(response.data.data);
+      reset();
     } catch (error) {
       console.log(error);
     }
