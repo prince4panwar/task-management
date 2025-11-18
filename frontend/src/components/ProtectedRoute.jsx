@@ -55,7 +55,7 @@ const ProtectedRoute = ({ children }) => {
           height: "70px",
         }}
       >
-        <span className="font-bold"> {user?.name}'s Todos</span>
+        <span className="font-bold"> {user?.name}'s Tasks</span>
       </div>
       {children}
     </div>

@@ -141,7 +141,7 @@ function Register() {
               onClick={() => navigate("/todos")}
               className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
             >
-              My Todos
+              My Tasks
             </button>
           </form>
         </motion.div>

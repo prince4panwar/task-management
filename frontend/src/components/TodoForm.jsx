@@ -9,8 +9,8 @@ import { motion } from "motion/react";
 const schema = z.object({
   content: z
     .string()
-    .nonempty("Todo must be required")
-    .min(5, "Todo must be at least 5 characters long"),
+    .nonempty("Task must be required")
+    .min(5, "Task must be at least 5 characters long"),
 });
 
 function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
@@ -75,12 +75,12 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
         transition={{ delay: 0.5 }}
       >
         <h1 className="text-3xl font-bold mb-3 text-blue-600 text-center">
-          {selectedTodo ? "Edit Todo" : "Add Todo"}
+          {selectedTodo ? "Edit Task" : "Add Task"}
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
           <input
             type="text"
-            placeholder="Todo..."
+            placeholder="Task..."
             className="border border-blue-600 text-blue-600 focus:ring focus:ring-blue-600 focus:outline-none bg-white p-2 mb-2 rounded font-bold"
             {...register("content")}
           />
@@ -98,7 +98,7 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
                 : "bg-blue-500 hover:bg-blue-600"
             }`}
           >
-            {selectedTodo ? "Update Todo" : "Add Todo"}
+            {selectedTodo ? "Update Task" : "Add Task"}
           </button>
           <button
             type="button"
