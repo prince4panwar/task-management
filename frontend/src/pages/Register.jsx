@@ -129,6 +129,7 @@ function Register() {
               Create Account
             </button>
             <button
+              type="button"
               onClick={() => navigate("/login")}
               className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded"
             >
@@ -136,6 +137,7 @@ function Register() {
             </button>
 
             <button
+              type="button"
               onClick={() => navigate("/todos")}
               className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
             >

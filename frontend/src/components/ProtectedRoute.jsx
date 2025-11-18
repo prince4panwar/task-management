@@ -48,7 +48,7 @@ const ProtectedRoute = ({ children }) => {
 
   // Otherwise, render protected children
   return (
-    <div className="pe-2 h-screen overflow-hidden">
+    <div className="h-screen overflow-hidden">
       <div
         className="text-3xl font-bold sticky top-0 p-4 flex justify-around bg-blue-500 text-white w-full"
         style={{

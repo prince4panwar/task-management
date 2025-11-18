@@ -9,8 +9,8 @@ import { motion } from "motion/react";
 const schema = z.object({
   content: z
     .string()
-    .nonempty("Todo is required")
-    .min(5, "At least 5 characters"),
+    .nonempty("Todo must be required")
+    .min(5, "Todo must be at least 5 characters long"),
 });
 
 function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
@@ -100,9 +100,8 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
           >
             {selectedTodo ? "Update Todo" : "Add Todo"}
           </button>
-
           <button
-            type="submit"
+            type="button"
             className="cursor-pointer font-bold text-white p-2 rounded transition-all 
               bg-blue-500 hover:bg-blue-600 mt-2"
             onClick={onLogout}
@@ -110,6 +109,7 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
             Log out
           </button>
           <button
+            type="button"
             onClick={() => navigate("/")}
             className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
           >

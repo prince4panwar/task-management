@@ -9,8 +9,8 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import React from "react";
 
 const router = createBrowserRouter([
-  { path: "/login", Component: Login },
   { path: "/", Component: Register },
+  { path: "/login", Component: Login },
   {
     path: "/todos",
     element: (

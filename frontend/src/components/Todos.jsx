@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { motion } from "motion/react";
+import "../App.css";
 
 function Todos({ todos, setSelectedTodo, fetchTodos }) {
   async function deleteTodo(_id) {
@@ -34,7 +35,7 @@ function Todos({ todos, setSelectedTodo, fetchTodos }) {
 
   return (
     <div
-      className="w-2/3 overflow-auto mt-3 p-4 pt-1"
+      className="w-2/3 overflow-auto mt-3 p-4 pt-1 custom-scroll"
       style={{
         height: "calc(100vh - 70px)",
       }}
