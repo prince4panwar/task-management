@@ -5,11 +5,20 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
+import Username from "./pages/Username.jsx";
 import { Toaster } from "react-hot-toast";
 
 const router = createBrowserRouter([
   { path: "/", Component: Register },
   { path: "/login", Component: Login },
+  {
+    path: "/update/username",
+    element: (
+      <ProtectedRoute>
+        <Username />
+      </ProtectedRoute>
+    ),
+  },
   {
     path: "/todos",
     element: (
@@ -27,7 +36,7 @@ function App() {
       <Toaster
         position="top-right"
         toastOptions={{
-          duration: 1300,
+          duration: 1500,
         }}
       />
     </>

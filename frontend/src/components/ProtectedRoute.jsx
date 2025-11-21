@@ -24,7 +24,7 @@ const ProtectedRoute = ({ children }) => {
             headers: { "x-access-token": token },
           }
         );
-        toast.success("Logged in successfully");
+        // toast.success("Logged in successfully");
         setUser(response.data.data);
         if (response.data.success) {
           setIsAuthenticated(true);
@@ -62,7 +62,7 @@ const ProtectedRoute = ({ children }) => {
         <span className="font-bold"> {user?.name}'s Tasks</span>
         <motion.button
           whileTap={{ scale: 0.95 }}
-          className="bg-green-900 hover:bg-green-800 p-2 text-xs font-bold rounded cursor-pointer"
+          className="bg-green-900 hover:bg-green-800 py-2 px-3 text-xs font-bold rounded cursor-pointer"
           onClick={() => navigate("/update/username")}
         >
           Update Username
