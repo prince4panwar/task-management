@@ -62,7 +62,7 @@ const updateUser = async (req, res) => {
 
     const user = picUrl
       ? await User.findByIdAndUpdate(id, { name, pic: picUrl }, { new: true })
-      : User.findByIdAndUpdate(id, { name }, { new: true });
+      : await User.findByIdAndUpdate(id, { name }, { new: true });
 
     return res.status(200).json({
       success: true,
