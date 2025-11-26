@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Todo = require("../models/Todo.js");
 const { imageUpload } = require("../utils/imageUpload.js");
 
@@ -122,10 +123,54 @@ const updateTodo = async (req, res) => {
   }
 };
 
+const getTodoStatusSummary = async (req, res) => {
+  try {
+    const stats = await Todo.aggregate([
+      { $match: { userId: new mongoose.Types.ObjectId(req.userId) } },
+      {
+        $group: {
+          _id: "$status",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const formattedStats = {
+      pending: 0,
+      inProgress: 0,
+      completed: 0,
+      total: 0,
+    };
+
+    stats.forEach((item) => {
+      if (item._id === "pending") formattedStats.pending = item.count;
+      if (item._id === "in-progress") formattedStats.inProgress = item.count;
+      if (item._id === "completed") formattedStats.completed = item.count;
+    });
+
+    formattedStats.total =
+      formattedStats.pending +
+      formattedStats.inProgress +
+      formattedStats.completed;
+
+    res.status(200).json({
+      success: true,
+      data: formattedStats,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch statistics",
+      error,
+    });
+  }
+};
+
 module.exports = {
   createTodo,
   getTodos,
   getTodoById,
   deleteTodo,
   updateTodo,
+  getTodoStatusSummary,
 };

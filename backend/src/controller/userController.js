@@ -128,7 +128,7 @@ const logInUser = async (req, res) => {
       process.env.JWT_KEY,
       {
         // expiresIn: 60,
-        expiresIn: "1h",
+        expiresIn: "1d",
       }
     );
     return res.status(200).json({
