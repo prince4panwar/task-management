@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 
-function Todos({ todos, setSelectedTodo, fetchTodos }) {
+function TodosList({ todos, setSelectedTodo, fetchTodos }) {
   const { reset } = useFormContext();
   const navigate = useNavigate();
 
@@ -57,12 +57,12 @@ function Todos({ todos, setSelectedTodo, fetchTodos }) {
         }}
       >
         <span className="w-1/20 text-center">S.No.</span>
-        <span className="w-1/4 text-center">Description</span>
+        <span className="w-1/4 text-center">Title</span>
         <span className="w-1/4 text-center">Status</span>
         <span className="w-1/4 text-center">Date & Time</span>
         <span className="w-1/4 text-center">Actions</span>
       </div>
-      {todos.length === 0 && (
+      {todos?.length === 0 && (
         <p className="text-gray-500 text-center w-full mt-5 text-xl font-bold">
           No todos yet.
         </p>
@@ -85,9 +85,9 @@ function Todos({ todos, setSelectedTodo, fetchTodos }) {
             </span>
             <div className="w-1/4">
               <p className="text-center font-semibold">
-                {todo.content.length > 25
-                  ? todo.content.slice(0, 25) + "..."
-                  : todo.content}
+                {todo.title?.length > 25
+                  ? todo.title.slice(0, 25) + "..."
+                  : todo.title}
               </p>
             </div>
             <div className="w-1/4 text-center">
@@ -140,4 +140,4 @@ function Todos({ todos, setSelectedTodo, fetchTodos }) {
   );
 }
 
-export default Todos;
+export default TodosList;

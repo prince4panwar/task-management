@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "motion/react";
 import { MoveLeft } from "lucide-react";
 
-function Todo() {
+function TodoDetails() {
   const { userId } = useParams();
   const navigate = useNavigate();
   const [todo, setTodo] = useState(null);
@@ -30,12 +30,17 @@ function Todo() {
   }
   return (
     <div className="flex gap-4 px-4 py-6">
-      <p
-        className="font-bold rounded-xl bg-blue-200 p-4 overflow-auto custom-scroll w-2/3"
-        style={{ "max-height": "80vh" }}
-      >
-        {todo?.content}
-      </p>
+      <div className="w-2/3">
+        <p className="font-bold p-4 bg-blue-200 rounded-xl mb-4">
+          {todo?.title}
+        </p>
+        <div
+          style={{ "max-height": "75vh" }}
+          className="rounded-xl bg-blue-200 p-4 overflow-x-hidden overflow-y-auto custom-scroll"
+        >
+          <p className="font-bold">{todo?.description}</p>
+        </div>
+      </div>
       <div className="flex flex-col items-start gap-8 p-4 rounded-xl w-1/3 bg-slate-300">
         {todo?.image && <img src={todo?.image} alt="image" width={300} />}
         <div>
@@ -68,4 +73,4 @@ function Todo() {
   );
 }
 
-export default Todo;
+export default TodoDetails;

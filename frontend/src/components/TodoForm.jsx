@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { useUserStore } from "@/store/userStore";
+// import { Textarea } from "./ui/textarea";
 
 function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
   const {
@@ -24,12 +24,12 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
     watch,
     formState: { errors },
   } = useFormContext();
-  const deleteUser = useUserStore((state) => state.deleteUser);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (selectedTodo) {
-      setValue("content", selectedTodo.content);
+      setValue("title", selectedTodo.title);
+      setValue("description", selectedTodo.description);
       setValue("status", selectedTodo.status);
     } else {
       reset();
@@ -72,15 +72,6 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
     }
   }
 
-  function onLogout() {
-    deleteUser();
-    navigate("/login");
-    toast.success("Logged out successfully");
-    setTimeout(() => {
-      localStorage.removeItem("token");
-    }, 1);
-  }
-
   return (
     <div className="flex flex-col align-center p-3 w-1/3 bg-blue-100 mt-1">
       <motion.div
@@ -98,20 +89,34 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
           <input
             type="text"
-            placeholder="Task..."
+            placeholder="Task Title"
             className={`border border-blue-600 text-blue-600 focus:outline-none p-2 mb-2 rounded font-bold ${
-              errors.content
-                ? "border-red-900 focus:ring focus:ring-red-900 text-red-900"
+              errors.title
+                ? "border-red-900 focus:ring focus:ring-red-900 text-red-900 placeholder-red-900"
                 : "border-blue-600 focus:ring focus:ring-blue-600"
             }`}
-            {...register("content")}
+            {...register("title")}
           />
-          {errors.content && (
+          {errors.title && (
             <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
-              {errors.content.message}
+              {errors.title.message}
             </span>
           )}
 
+          <textarea
+            placeholder="Task Description"
+            {...register("description")}
+            className={`border border-blue-600 text-blue-600 focus:outline-none p-2 mb-2 rounded font-bold h-20 max-h-32 overflow-y-auto resize-none custom-scroll ${
+              errors.description
+                ? "border-red-900 focus:ring focus:ring-red-900 text-red-900 placeholder-red-900"
+                : "border-blue-600 focus:ring focus:ring-blue-600"
+            }`}
+          />
+          {errors.description && (
+            <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
+              {errors.description.message}
+            </span>
+          )}
           <Select
             value={watch("status")} // bind value
             onValueChange={(value) => {
@@ -160,6 +165,18 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
           >
             {selectedTodo ? "Update Task" : "Add Task"}
           </button>
+          {selectedTodo && (
+            <button
+              type="submit"
+              className={`cursor-pointer font-bold text-white p-2 rounded transition-all mt-2 bg-red-500 hover:bg-red-800`}
+              onClick={() => {
+                setSelectedTodo(null);
+                reset();
+              }}
+            >
+              Cancel Update
+            </button>
+          )}
           <button
             type="button"
             className="cursor-pointer font-bold text-white p-2 rounded transition-all 

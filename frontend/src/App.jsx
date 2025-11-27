@@ -7,7 +7,7 @@ import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
 import Profile from "./pages/Profile.jsx";
 import { Toaster } from "react-hot-toast";
-import Todo from "./pages/Todo";
+import TodoDetails from "./pages/TodoDetails";
 import TodoStatusPieChart from "./pages/TodoStatusPieChart";
 
 const router = createBrowserRouter([
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     path: "/todos/:userId",
     element: (
       <ProtectedRoute>
-        <Todo />
+        <TodoDetails />
       </ProtectedRoute>
     ),
   },

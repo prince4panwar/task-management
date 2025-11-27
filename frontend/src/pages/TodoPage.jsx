@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
 import TodoForm from "../components/TodoForm";
-import Todos from "../components/Todos";
+import TodoList from "../components/TodoList";
 import axios from "axios";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 const schema = z.object({
-  content: z
+  title: z
     .string()
-    .nonempty("Task must be required")
-    .min(5, "Task must be at least 5 characters long"),
+    .nonempty("Title must be required")
+    .min(5, "Title must be at least 5 characters long")
+    .max(125, "Title must be at most 125 characters long"),
+  description: z
+    .string()
+    .nonempty("Description must be required")
+    .min(5, "Description must be at least 5 characters long"),
   status: z.string(),
   image: z.any(),
 });
@@ -21,7 +26,8 @@ function TodoPage() {
   const methods = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      content: "",
+      title: "",
+      description: "",
       status: "pending",
       image: "",
     },
@@ -53,7 +59,7 @@ function TodoPage() {
           setSelectedTodo={setSelectedTodo}
           fetchTodos={fetchTodos} // pass fetch function
         />
-        <Todos
+        <TodoList
           todos={todos}
           setSelectedTodo={setSelectedTodo}
           fetchTodos={fetchTodos} // pass to refresh after delete
