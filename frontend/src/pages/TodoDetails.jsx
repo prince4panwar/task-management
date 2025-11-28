@@ -1,19 +1,22 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { motion } from "motion/react";
 import { MoveLeft } from "lucide-react";
 import { useThemeStore } from "@/store/themeStore";
+import EditTodoDialog from "@/components/EditTodoDialog";
+import { useTodoStore } from "@/store/todoStore";
 
 function TodoDetails() {
   const { userId } = useParams();
-  const navigate = useNavigate();
   const { theme } = useThemeStore();
-  const [todo, setTodo] = useState(null);
+  const todo = useTodoStore((state) => state.todo);
+  const addTodo = useTodoStore((state) => state.addTodo);
+  const navigate = useNavigate();
+  const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
     fetchTodos();
-  }, []);
+  }, [isEdit]);
 
   async function fetchTodos() {
     try {
@@ -25,11 +28,13 @@ function TodoDetails() {
           },
         }
       );
-      setTodo(response.data.data);
+      addTodo(response.data.data);
+      setIsEdit(false);
     } catch (error) {
       console.log(error);
     }
   }
+
   return (
     <div
       className={`flex gap-4 h-full px-4 py-6 ${
@@ -61,10 +66,18 @@ function TodoDetails() {
       >
         {todo?.image && <img src={todo?.image} alt="image" width={300} />}
         <div>
-          <p className="font-bold text-blue-600 pb-2">
-            {todo?.status.charAt(0).toUpperCase() + todo?.status.slice(1)}
+          <p
+            className={`font-bold pb-2  ${
+              theme === "light" ? "text-blue-600" : "text-white"
+            }`}
+          >
+            {todo?.status?.charAt(0).toUpperCase() + todo?.status?.slice(1)}
           </p>
-          <p className="font-bold text-blue-600 pb-2">
+          <p
+            className={`font-bold pb-2 ${
+              theme === "light" ? "text-blue-600" : "text-white"
+            }`}
+          >
             {new Date(todo?.createdAt).toLocaleString("en-GB", {
               day: "2-digit",
               month: "short",
@@ -74,16 +87,18 @@ function TodoDetails() {
               hour12: true,
             })}
           </p>
-          <motion.button
-            whileTap={{ scale: 0.8 }}
-            type="button"
-            className="group flex items-center gap-1 cursor-pointer font-bold text-white py-2 px-4 rounded transition-all
+          <div className="flex gap-3">
+            <button
+              type="button"
+              className="group flex items-center gap-1 cursor-pointer font-semibold text-white py-2 px-4 rounded transition-all
              bg-blue-500 hover:bg-blue-600 mt-2"
-            onClick={() => navigate("/todos")}
-          >
-            <MoveLeft className="transition-all duration-300 group-hover:-translate-x-2" />
-            My Tasks
-          </motion.button>
+              onClick={() => navigate("/todos")}
+            >
+              <MoveLeft className="transition-all duration-300 group-hover:-translate-x-2" />
+              My Tasks
+            </button>
+            <EditTodoDialog setIsEdit={setIsEdit} />
+          </div>
         </div>
       </div>
     </div>

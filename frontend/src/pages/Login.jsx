@@ -7,7 +7,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import toast from "react-hot-toast";
-import { useUserStore } from "@/store/userStore";
 import { useThemeStore } from "@/store/themeStore";
 
 const schema = z.object({
@@ -23,7 +22,6 @@ const schema = z.object({
 
 function Login() {
   const [data, setData] = useState(null);
-  const user = useUserStore((state) => state.user);
   const { theme } = useThemeStore();
   const navigate = useNavigate();
 

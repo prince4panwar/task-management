@@ -53,7 +53,7 @@ function TodosList({ todos, setSelectedTodo, fetchTodos }) {
       }}
     >
       <div
-        className={`z-10 text-md font-bold mb-2 sticky rounded top-0 p-4 flex gap-4 justify-around bg-blue-500 text-white`}
+        className={`z-10 text-md font-bold mb-2.5 sticky rounded top-0 p-4 flex gap-4 justify-around bg-blue-500 text-white`}
         style={{
           height: "55px",
         }}
@@ -81,12 +81,12 @@ function TodosList({ todos, setSelectedTodo, fetchTodos }) {
           <motion.div
             key={todo._id}
             whileHover={{ scale: 1.009 }}
-            whileTap={{ scale: 0.7 }}
+            whileTap={{ scale: 0.9 }}
             initial={{ opacity: 0, y: -800 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            // transition={{ delay: 0.2 }}
             // transition={{ delay: index * 0.2, type: "spring" }}
-            className={`flex items-center w-full gap-4 p-2 mb-2 rounded shadow-[0px_2px_2px_2px_rgba(0,0,0,0.35)] cursor-pointer px-1 ${
+            className={`flex items-center w-full gap-4 p-2 mb-2.5 rounded shadow-[0px_2px_2px_2px_rgba(0,0,0,0.35)] cursor-pointer px-1 ${
               theme === "light" ? "light" : "dark"
             }`}
             onClick={() => navigate(`/todos/${todo._id}`)}
