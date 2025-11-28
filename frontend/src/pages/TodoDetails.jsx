@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "motion/react";
 import { MoveLeft } from "lucide-react";
+import { useThemeStore } from "@/store/themeStore";
 
 function TodoDetails() {
   const { userId } = useParams();
   const navigate = useNavigate();
+  const { theme } = useThemeStore();
   const [todo, setTodo] = useState(null);
 
   useEffect(() => {
@@ -29,19 +31,34 @@ function TodoDetails() {
     }
   }
   return (
-    <div className="flex gap-4 px-4 py-6">
+    <div
+      className={`flex gap-4 h-full px-4 py-6 ${
+        theme === "light" ? "light" : "dark-bg"
+      }`}
+    >
       <div className="w-2/3">
-        <p className="font-bold p-4 bg-blue-200 rounded-xl mb-4">
+        <p
+          className={`font-bold p-4 bg-blue-200 rounded-xl mb-4 ${
+            theme === "light" ? "light" : "dark"
+          }`}
+        >
           {todo?.title}
         </p>
         <div
           style={{ "max-height": "75vh" }}
-          className="rounded-xl bg-blue-200 p-4 overflow-x-hidden overflow-y-auto custom-scroll"
+          className={`rounded-xl bg-blue-200 p-4 overflow-x-hidden overflow-y-auto custom-scroll ${
+            theme === "light" ? "light" : "dark"
+          }`}
         >
           <p className="font-bold">{todo?.description}</p>
         </div>
       </div>
-      <div className="flex flex-col items-start gap-8 p-4 rounded-xl w-1/3 bg-slate-300">
+      <div
+        className={`flex flex-col items-start gap-8 p-4 rounded-xl w-1/3 bg-slate-300 ${
+          theme === "light" ? "light" : "dark"
+        }`}
+        style={{ "max-height": "85vh" }}
+      >
         {todo?.image && <img src={todo?.image} alt="image" width={300} />}
         <div>
           <p className="font-bold text-blue-600 pb-2">

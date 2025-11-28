@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { useThemeStore } from "@/store/themeStore";
 // import { Textarea } from "./ui/textarea";
 
 function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
@@ -25,6 +26,7 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
     formState: { errors },
   } = useFormContext();
   const navigate = useNavigate();
+  const { theme } = useThemeStore();
 
   useEffect(() => {
     if (selectedTodo) {
@@ -73,7 +75,11 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
   }
 
   return (
-    <div className="flex flex-col align-center p-3 w-1/3 bg-blue-100 mt-1">
+    <div
+      className={`flex flex-col align-center p-3 w-1/3 mt-1 bg-blue-100 ${
+        theme === "light" ? "light" : "dark"
+      }`}
+    >
       <motion.div
         initial={{ y: 300 }}
         animate={{ y: 0 }}

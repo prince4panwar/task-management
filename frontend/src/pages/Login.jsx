@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import toast from "react-hot-toast";
 import { useUserStore } from "@/store/userStore";
+import { useThemeStore } from "@/store/themeStore";
 
 const schema = z.object({
   email: z
@@ -23,6 +24,7 @@ const schema = z.object({
 function Login() {
   const [data, setData] = useState(null);
   const user = useUserStore((state) => state.user);
+  const { theme } = useThemeStore();
   const navigate = useNavigate();
 
   const {
@@ -78,7 +80,9 @@ function Login() {
   return (
     <div>
       <div
-        className="text-3xl font-bold sticky top-0 p-4 flex justify-around bg-blue-500 text-white w-full"
+        className={`text-3xl font-bold sticky top-0 p-4 flex justify-around bg-blue-500 text-white w-full ${
+          theme === "light" ? "light" : "dark"
+        }`}
         style={{
           height: "70px",
         }}
@@ -86,7 +90,9 @@ function Login() {
         <span className="font-bold">Taskify</span>
       </div>
       <div
-        className="flex justify-center items-center w-screen"
+        className={`flex justify-center items-center w-screen ${
+          theme === "light" ? "light" : "dark-bg"
+        }`}
         style={{
           height: "calc(100vh - 70px)",
         }}
@@ -94,7 +100,9 @@ function Login() {
         <motion.div
           initial={{ y: -100 }}
           animate={{ y: 0 }}
-          className="flex flex-col justify-center w-1/4 p-4 rounded shadow-[0px_5px_15px_2px_rgba(0,0,0,0.35)]"
+          className={`flex flex-col justify-center w-1/4 p-4 rounded shadow-[0px_5px_15px_2px_rgba(0,0,0,0.35)] ${
+            theme === "light" ? "light" : "dark"
+          }`}
         >
           <h1 className="text-3xl font-bold mb-3 text-center text-blue-500">
             Login

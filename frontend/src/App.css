@@ -13,3 +13,19 @@
   border-bottom-right-radius: 20px;
   border-top-right-radius: 20px;
 }
+
+.light {
+ transition: background 0.4s;
+}
+
+.dark {
+  transition: background 0.4s;
+  background: #1b242e;
+  color: #fff;
+}
+
+.dark-bg {
+  transition: background 0.4s;
+  background: #b5d4f8;
+  color: #fff;
+}

@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useUserStore } from "../store/userStore";
+import { useThemeStore } from "@/store/themeStore";
 
 const schema = z.object({
   name: z
@@ -32,6 +33,7 @@ function Profile() {
   });
   const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
+  const { theme } = useThemeStore();
 
   useEffect(() => {
     if (!profile) {
@@ -68,11 +70,17 @@ function Profile() {
     }
   }
   return (
-    <div className="flex flex-col justify-start items-center h-screen p-3 bg-blue-100">
+    <div
+      className={`flex flex-col justify-start items-center h-screen p-3 bg-blue-100 ${
+        theme === "light" ? "light" : "dark-bg"
+      }`}
+    >
       <motion.div
         initial={{ y: 100 }}
         animate={{ y: 0 }}
-        className="w-1/3 mt-4"
+        className={`w-1/3 mt-4 p-4 rounded-2xl ${
+          theme === "light" ? "light" : "dark"
+        }`}
       >
         {/* <h1 className="text-3xl font-bold mb-3 text-blue-600 text-center">
           Update Profile

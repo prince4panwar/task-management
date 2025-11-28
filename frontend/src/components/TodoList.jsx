@@ -6,10 +6,12 @@ import { useFormContext } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
+import { useThemeStore } from "@/store/themeStore";
 
 function TodosList({ todos, setSelectedTodo, fetchTodos }) {
   const { reset } = useFormContext();
   const navigate = useNavigate();
+  const { theme } = useThemeStore();
 
   async function deleteTodo(_id) {
     try {
@@ -45,13 +47,13 @@ function TodosList({ todos, setSelectedTodo, fetchTodos }) {
 
   return (
     <div
-      className="w-2/3 overflow-auto p-2 pt-0 mt-1 custom-scroll"
+      className={`w-2/3 overflow-auto p-2 pt-0 mt-1 custom-scroll`}
       style={{
         height: "calc(100vh - 70px)",
       }}
     >
       <div
-        className="z-10 text-md font-bold mb-3 sticky rounded top-0 p-4 flex gap-4 justify-around bg-blue-500 text-white"
+        className={`z-10 text-md font-bold mb-2 sticky rounded top-0 p-4 flex gap-4 justify-around bg-blue-500 text-white`}
         style={{
           height: "55px",
         }}
@@ -63,21 +65,30 @@ function TodosList({ todos, setSelectedTodo, fetchTodos }) {
         <span className="w-1/4 text-center">Actions</span>
       </div>
       {todos?.length === 0 && (
-        <p className="text-gray-500 text-center w-full mt-5 text-xl font-bold">
-          No todos yet.
+        <p
+          className={`text-gray-500 text-center w-full flex justify-center items-center text-3xl font-bold ${
+            theme === "light" ? "light" : "dark"
+          }`}
+          style={{
+            height: "calc(100vh - 145px)",
+          }}
+        >
+          No Tasks yet.
         </p>
       )}
       <div className="px-1">
         {todos.map((todo, index) => (
           <motion.div
             key={todo._id}
-            whileHover={{ scale: 1.01 }}
-            whileTap={{ scale: 0.96 }}
+            whileHover={{ scale: 1.009 }}
+            whileTap={{ scale: 0.7 }}
             initial={{ opacity: 0, y: -800 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             // transition={{ delay: index * 0.2, type: "spring" }}
-            className="flex items-center w-full gap-4 p-2 mb-2 rounded shadow-[0px_2px_2px_2px_rgba(0,0,0,0.35)] cursor-pointer"
+            className={`flex items-center w-full gap-4 p-2 mb-2 rounded shadow-[0px_2px_2px_2px_rgba(0,0,0,0.35)] cursor-pointer px-1 ${
+              theme === "light" ? "light" : "dark"
+            }`}
             onClick={() => navigate(`/todos/${todo._id}`)}
           >
             <span className="w-1/20 text-center font-bold text-blue-600">
