@@ -1,20 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useFormContext } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import toast from "react-hot-toast";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import { useThemeStore } from "@/store/themeStore";
-// import { Textarea } from "./ui/textarea";
+import ErrorMessage from "./ErrorMessage";
+import ImageUpload from "./ImageUpload";
 
 function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
   const {
@@ -22,11 +14,11 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
     handleSubmit,
     reset,
     setValue,
-    watch,
     formState: { errors },
   } = useFormContext();
   const navigate = useNavigate();
   const { theme } = useThemeStore();
+  const [fileName, setFileName] = useState("");
 
   useEffect(() => {
     if (selectedTodo) {
@@ -68,6 +60,7 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
       // Refresh UI
       fetchTodos();
       setSelectedTodo(null);
+      setFileName("");
       reset();
     } catch (error) {
       console.log(error);
@@ -103,11 +96,7 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
             }`}
             {...register("title")}
           />
-          {errors.title && (
-            <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
-              {errors.title.message}
-            </span>
-          )}
+          <ErrorMessage message={errors.title?.message} />
 
           <textarea
             placeholder="Task Description"
@@ -118,49 +107,23 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
                 : "border-blue-600 focus:ring focus:ring-blue-600"
             }`}
           />
-          {errors.description && (
-            <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
-              {errors.description.message}
-            </span>
-          )}
-          <Select
-            value={watch("status")} // bind value
-            onValueChange={(value) => {
-              setValue("status", value, { shouldValidate: true });
-            }} // update RHF
-          >
-            <SelectTrigger className="w-full border rounded py-5 border-blue-600 font-bold text-blue-600 focus:outline-none">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent className="bg-blue-600 text-white">
-              <SelectGroup>
-                <SelectItem
-                  value="pending"
-                  className="hover:bg-blue-100 hover:text-blue-600 cursor-pointer font-bold"
-                >
-                  Pending
-                </SelectItem>
-                <SelectItem
-                  value="completed"
-                  className="hover:bg-blue-100 hover:text-blue-600 cursor-pointer font-bold"
-                >
-                  Completed
-                </SelectItem>
-                <SelectItem
-                  value="in-progress"
-                  className="hover:bg-blue-100 hover:text-blue-600 cursor-pointer font-bold"
-                >
-                  In-Progress
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <ErrorMessage message={errors.description?.message} />
 
-          <Input
-            type="file"
-            className="text-blue-600 border border-blue-600 mt-2 rounded cursor-pointer"
-            {...register("image")}
+          <select
+            {...register("status")}
+            className="w-full border rounded p-2 mb-2 border-blue-600 font-bold text-blue-600 focus:outline-none focus:ring focus:ring-blue-60 cursor-pointer appearance-none"
+          >
+            <option value="pending">Pending</option>
+            <option value="completed">Completed</option>
+            <option value="in-progress">In-Progress</option>
+          </select>
+
+          <ImageUpload
+            register={register}
+            fileName={fileName}
+            setFileName={setFileName}
           />
+
           <button
             type="submit"
             className={`cursor-pointer font-bold text-white p-2 rounded transition-all mt-4 ${
@@ -177,6 +140,7 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
               className={`cursor-pointer font-bold text-white p-2 rounded transition-all mt-2 bg-red-500 hover:bg-red-800`}
               onClick={() => {
                 setSelectedTodo(null);
+                setFileName("");
                 reset();
               }}
             >

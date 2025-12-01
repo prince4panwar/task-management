@@ -8,14 +8,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { SquarePen } from "lucide-react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -23,9 +15,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useTodoStore } from "@/store/todoStore";
 import { useParams } from "react-router-dom";
-import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import ErrorMessage from "./ErrorMessage";
+import ImageUpload from "./ImageUpload";
 
 const schema = z.object({
   title: z
@@ -45,11 +38,10 @@ function EditTodoDialog({ setIsEdit }) {
   const { userId } = useParams();
   const todo = useTodoStore((state) => state.todo);
   const [open, setOpen] = useState(false);
+  const [fileName, setFileName] = useState("");
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
     reset,
     formState: { errors },
   } = useForm({
@@ -93,6 +85,7 @@ function EditTodoDialog({ setIsEdit }) {
     if (data.image && data.image[0]) {
       data.image = data.image[0];
     }
+    setFileName("");
     editTodo(data);
   }
 
@@ -124,71 +117,41 @@ function EditTodoDialog({ setIsEdit }) {
           <input
             type="text"
             placeholder="Task Title"
-            className={`w-full border border-blue-600 text-blue-600 focus:outline-none p-2 rounded font-bold ${
+            className={`w-full border border-blue-600 text-blue-600 focus:outline-none p-2 mb-2 rounded font-bold ${
               errors.title
                 ? "border-red-900 focus:ring focus:ring-red-900 text-red-900 placeholder-red-900"
                 : "border-blue-600 focus:ring focus:ring-blue-600"
             }`}
             {...register("title")}
           />
-          {errors.title && (
-            <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
-              {errors.title.message}
-            </span>
-          )}
+          <ErrorMessage message={errors.title?.message} />
+
           <textarea
             placeholder="Task Description"
             {...register("description")}
-            className={`w-full border border-blue-600 text-blue-600 focus:outline-none p-2 mt-2 rounded font-bold h-20 max-h-32 overflow-y-auto resize-none custom-scroll ${
+            className={`w-full border border-blue-600 text-blue-600 focus:outline-none p-2 mb-2 rounded font-bold h-20 max-h-32 overflow-y-auto resize-none custom-scroll ${
               errors.description
                 ? "border-red-900 focus:ring focus:ring-red-900 text-red-900 placeholder-red-900"
                 : "border-blue-600 focus:ring focus:ring-blue-600"
             }`}
           />
-          {errors.description && (
-            <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
-              {errors.description.message}
-            </span>
-          )}
+          <ErrorMessage message={errors.description?.message} />
 
-          <Select
-            value={watch("status")} // bind value
-            onValueChange={(value) => {
-              setValue("status", value);
-            }} // update RHF
+          <select
+            {...register("status")}
+            className="w-full border rounded p-2 mb-2 border-blue-600 font-bold text-blue-600 focus:outline-none focus:ring focus:ring-blue-60 cursor-pointer appearance-none"
           >
-            <SelectTrigger className="w-full border rounded py-5 mt-3 border-blue-600 font-bold text-blue-600 focus:outline-none">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent className="bg-blue-600 text-white">
-              <SelectGroup>
-                <SelectItem
-                  value="pending"
-                  className="hover:bg-blue-100 hover:text-blue-600 cursor-pointer font-bold"
-                >
-                  Pending
-                </SelectItem>
-                <SelectItem
-                  value="completed"
-                  className="hover:bg-blue-100 hover:text-blue-600 cursor-pointer font-bold"
-                >
-                  Completed
-                </SelectItem>
-                <SelectItem
-                  value="in-progress"
-                  className="hover:bg-blue-100 hover:text-blue-600 cursor-pointer font-bold"
-                >
-                  In-Progress
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+            <option value="pending">Pending</option>
+            <option value="completed">Completed</option>
+            <option value="in-progress">In-Progress</option>
+          </select>
 
-          <Input
-            type="file"
-            className="text-blue-600 border border-blue-600 mt-2 rounded cursor-pointer"
-            {...register("image")}
+          <ImageUpload
+            register={register}
+            fileName={fileName}
+            setFileName={setFileName}
           />
+
           <DialogFooter>
             <DialogClose asChild>
               <button

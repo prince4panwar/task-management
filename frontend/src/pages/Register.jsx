@@ -7,8 +7,9 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import { motion } from "motion/react";
 import toast from "react-hot-toast";
-import { Input } from "@/components/ui/input";
 import { useThemeStore } from "@/store/themeStore";
+import ErrorMessage from "@/components/ErrorMessage";
+import ImageUpload from "@/components/ImageUpload";
 
 const schema = z.object({
   name: z
@@ -27,7 +28,7 @@ const schema = z.object({
 });
 
 function Register() {
-  const [data, setData] = useState(null);
+  const [fileName, setFileName] = useState("");
   const navigate = useNavigate();
   const { theme } = useThemeStore();
 
@@ -40,18 +41,16 @@ function Register() {
     resolver: zodResolver(schema),
   });
 
-  useEffect(() => {
-    if (!data) {
-      return;
-    }
-    createUser();
-  }, [data]);
-
-  async function createUser() {
+  async function createUser(data) {
     try {
       const response = await axios.post(
         "http://localhost:3000/api/users/signup",
-        data
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       toast.success("User created successfully");
       navigate("/login");
@@ -67,11 +66,13 @@ function Register() {
       console.log(error);
     }
   }
+
   const onSubmit = (data) => {
     if (data.pic && data.pic[0]) {
       data.pic = data.pic[0];
     }
-    setData(data);
+    console.log(data);
+    createUser(data);
   };
 
   return (
@@ -115,11 +116,8 @@ function Register() {
               }`}
               {...register("email")}
             />
-            {errors.email && (
-              <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
-                {errors.email.message}
-              </span>
-            )}
+            <ErrorMessage message={errors.email?.message} />
+
             <input
               type="text"
               placeholder="Username"
@@ -130,11 +128,8 @@ function Register() {
               }`}
               {...register("name")}
             />
-            {errors.name && (
-              <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
-                {errors.name.message}
-              </span>
-            )}
+            <ErrorMessage message={errors.name?.message} />
+
             <input
               type="password"
               placeholder="Password"
@@ -145,17 +140,15 @@ function Register() {
               }`}
               {...register("password")}
             />
-            {errors.password && (
-              <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
-                {errors.password.message}
-              </span>
-            )}
+            <ErrorMessage message={errors.password?.message} />
 
-            <Input
-              type="file"
-              className="text-blue-600 border border-blue-600 mb-3 rounded cursor-pointer"
-              {...register("pic")}
+            <ImageUpload
+              register={register}
+              fileName={fileName}
+              setFileName={setFileName}
+              name="pic"
             />
+
             <button
               type="submit"
               className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mb-2 mt-3"

@@ -70,7 +70,7 @@ function TodosList({ todos, setSelectedTodo, fetchTodos }) {
             theme === "light" ? "light" : "dark"
           }`}
           style={{
-            height: "calc(100vh - 145px)",
+            height: "calc(100vh - 150px)",
           }}
         >
           No Tasks yet.

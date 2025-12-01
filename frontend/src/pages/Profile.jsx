@@ -6,10 +6,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useUserStore } from "../store/userStore";
 import { useThemeStore } from "@/store/themeStore";
+import ImageUpload from "@/components/ImageUpload";
+import ErrorMessage from "@/components/ErrorMessage";
 
 const schema = z.object({
   name: z
@@ -32,6 +32,7 @@ function Profile() {
     },
   });
   const [profile, setProfile] = useState(null);
+  const [fileName, setFileName] = useState("");
   const navigate = useNavigate();
   const { theme } = useThemeStore();
 
@@ -98,36 +99,28 @@ function Profile() {
           />
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
-          <Label htmlFor="picture" className="text-blue-600">
-            Username :
-          </Label>
           <input
             type="text"
             placeholder="New Username"
-            className={`border border-blue-600 text-blue-600 focus:outline-none p-2 mb-1 mt-2 rounded font-bold ${
+            className={`border border-blue-600 text-blue-600 focus:outline-none p-2 mb-2 mt-2 rounded font-bold ${
               errors.name
                 ? "border-red-900 focus:ring focus:ring-red-900 text-red-900"
                 : "border-blue-600 focus:ring focus:ring-blue-600"
             }`}
             {...register("name")}
           />
-          {errors.name && (
-            <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
-              {errors.name.message}
-            </span>
-          )}
+          <ErrorMessage message={errors.name?.message} />
 
-          <Label htmlFor="picture" className="text-blue-600 mt-3">
-            Profile Pic :
-          </Label>
-          <Input
-            type="file"
-            className="text-blue-600 border border-blue-600 mt-2 mb-3 rounded cursor-pointer"
-            {...register("pic")}
+          <ImageUpload
+            register={register}
+            fileName={fileName}
+            setFileName={setFileName}
+            name="pic"
           />
+
           <button
             type="submit"
-            className="cursor-pointer font-bold text-white p-2 rounded transition-all bg-blue-500 hover:bg-blue-600"
+            className="cursor-pointer font-bold text-white p-2 mt-3 rounded transition-all bg-blue-500 hover:bg-blue-600"
           >
             Update Account
           </button>

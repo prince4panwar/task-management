@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import toast from "react-hot-toast";
 import { useThemeStore } from "@/store/themeStore";
+import ErrorMessage from "@/components/ErrorMessage";
 
 const schema = z.object({
   email: z
@@ -116,11 +117,8 @@ function Login() {
               }`}
               {...register("email")}
             />
-            {errors.email && (
-              <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
-                {errors.email.message}
-              </span>
-            )}
+            <ErrorMessage message={errors.email?.message} />
+
             <input
               type="password"
               placeholder="Password"
@@ -131,11 +129,8 @@ function Login() {
               }`}
               {...register("password")}
             />
-            {errors.password && (
-              <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
-                {errors.password.message}
-              </span>
-            )}
+            <ErrorMessage message={errors.password?.message} />
+
             <button
               type="submit"
               className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-3"
