@@ -12,15 +12,20 @@ import {
 import axios from "axios";
 import { Trash } from "lucide-react";
 import toast from "react-hot-toast";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-function DeleteTodoDialog() {
-  const { userId } = useParams();
+function DeleteTodoDialog({
+  showIcon = false,
+  btnName = "delete",
+  todoId,
+  btnClass,
+  onDeletion,
+}) {
   const navigate = useNavigate();
 
-  async function deleteTodo(_id) {
+  async function deleteTodo() {
     try {
-      await axios.delete(`http://localhost:3000/api/todos/${userId}`, {
+      await axios.delete(`http://localhost:3000/api/todos/${todoId}`, {
         headers: {
           "x-access-token": localStorage.getItem("token"),
         },
@@ -35,6 +40,7 @@ function DeleteTodoDialog() {
   function onDelete() {
     deleteTodo();
     navigate("/todos");
+    onDeletion();
   }
 
   return (
@@ -42,14 +48,16 @@ function DeleteTodoDialog() {
       <AlertDialogTrigger asChild>
         <button
           type="button"
-          className="group flex items-center gap-2 cursor-pointer font-semibold text-white py-2 px-4 rounded transition-all
-             bg-red-500 hover:bg-red-700 mt-2"
+          className={`${btnClass || ""}`}
+          onClick={(e) => e.stopPropagation()}
         >
-          <Trash
-            size={19}
-            className="transition-all duration-300 group-hover:-translate-x-1"
-          />
-          Delete Task
+          {showIcon && (
+            <Trash
+              size={19}
+              className="transition-all duration-300 group-hover:-translate-x-1"
+            />
+          )}
+          {btnName}
         </button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -65,7 +73,7 @@ function DeleteTodoDialog() {
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
-            className="cursor-pointer bg-red-500 hover:bg-red-800"
+            className="cursor-pointer bg-red-500 hover:bg-red-900"
             onClick={onDelete}
           >
             Delete

@@ -14,7 +14,7 @@ const router = createBrowserRouter([
   { path: "/", Component: Register },
   { path: "/login", Component: Login },
   {
-    path: "/todos/:userId",
+    path: "/todos/:todoId",
     element: (
       <ProtectedRoute>
         <TodoDetails />

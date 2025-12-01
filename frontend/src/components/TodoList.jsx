@@ -7,26 +7,12 @@ import toast from "react-hot-toast";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useThemeStore } from "@/store/themeStore";
+import DeleteTodoDialog from "./DeleteTodoDialog";
 
 function TodosList({ todos, setSelectedTodo, fetchTodos }) {
   const { reset } = useFormContext();
   const navigate = useNavigate();
   const { theme } = useThemeStore();
-
-  async function deleteTodo(_id) {
-    try {
-      await axios.delete(`http://localhost:3000/api/todos/${_id}`, {
-        headers: {
-          "x-access-token": localStorage.getItem("token"),
-        },
-      });
-      toast.success("Task deleted successfully");
-      fetchTodos(); // refresh after delete
-    } catch (error) {
-      toast.error("Task not deleted successfully");
-      console.log(error);
-    }
-  }
 
   async function handleEdit(_id) {
     try {
@@ -77,11 +63,11 @@ function TodosList({ todos, setSelectedTodo, fetchTodos }) {
         </p>
       )}
       <div className="px-1">
-        {todos.map((todo, index) => (
+        {todos?.map((todo, index) => (
           <motion.div
             key={todo._id}
             whileHover={{ scale: 1.009 }}
-            whileTap={{ scale: 0.9 }}
+            whileTap={{ scale: 0.99 }}
             initial={{ opacity: 0, y: -800 }}
             animate={{ opacity: 1, y: 0 }}
             // transition={{ delay: 0.2 }}
@@ -124,25 +110,26 @@ function TodosList({ todos, setSelectedTodo, fetchTodos }) {
                 hour12: false,
               })}
             </p>
-            <div className="w-1/4 flex flex-col gap-2 justify-center items-center">
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="w-1/4 flex flex-col gap-2 justify-center items-center"
+            >
               <motion.button
                 className="px-5 py-1 w-1/2 bg-green-500 hover:bg-green-600 text-white rounded cursor-pointer font-bold"
                 onClick={(e) => {
-                  e.stopPropagation();
+                  // e.stopPropagation();
                   handleEdit(todo._id);
                 }}
               >
                 Edit
               </motion.button>
-              <motion.button
-                className="px-5 py-1 w-1/2 bg-red-500 hover:bg-red-700 text-white rounded cursor-pointer font-bold"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  deleteTodo(todo._id);
-                }}
-              >
-                Delete
-              </motion.button>
+              <DeleteTodoDialog
+                showIcon={false}
+                btnName="Delete"
+                btnClass="px-5 py-1 w-1/2 bg-red-500 hover:bg-red-700 text-white rounded cursor-pointer font-bold"
+                todoId={todo._id}
+                onDeletion={fetchTodos}
+              />
             </div>
           </motion.div>
         ))}

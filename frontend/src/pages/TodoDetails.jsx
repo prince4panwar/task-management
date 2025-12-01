@@ -8,7 +8,7 @@ import { useTodoStore } from "@/store/todoStore";
 import DeleteTodoDialog from "@/components/DeleteTodoDialog";
 
 function TodoDetails() {
-  const { userId } = useParams();
+  const { todoId } = useParams();
   const { theme } = useThemeStore();
   const todo = useTodoStore((state) => state.todo);
   const addTodo = useTodoStore((state) => state.addTodo);
@@ -22,7 +22,7 @@ function TodoDetails() {
   async function fetchTodos() {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/todos/${userId}`,
+        `http://localhost:3000/api/todos/${todoId}`,
         {
           headers: {
             "x-access-token": localStorage.getItem("token"),
@@ -99,7 +99,13 @@ function TodoDetails() {
               My Tasks
             </button>
             <EditTodoDialog setIsEdit={setIsEdit} />
-            <DeleteTodoDialog />
+            <DeleteTodoDialog
+              showIcon={true}
+              btnName="Delete Task"
+              todoId={todoId}
+              btnClass="group flex items-center gap-2 cursor-pointer font-semibold text-white py-2 px-4 rounded transition-all
+             bg-red-500 hover:bg-red-700 mt-2 "
+            />
           </div>
         </div>
       </div>
