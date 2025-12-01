@@ -171,6 +171,41 @@ const getTodoStatusSummary = async (req, res) => {
   }
 };
 
+const getTodosByStatus = async (req, res) => {
+  try {
+    const { status, search, sort } = req.query;
+    let query = Todo.find().where("userId").equals(req.userId);
+
+    if (status) {
+      query = query.where("status").equals(status);
+    }
+
+    if (search) {
+      query = query.where("title").regex(new RegExp(search, "i")); // case-insensitive
+    }
+
+    // Sorting by createdAt
+    if (sort === "asc") {
+      query = query.sort({ createdAt: 1 });
+    } else if (sort === "desc") {
+      query = query.sort({ createdAt: -1 });
+    }
+
+    const todos = await query;
+
+    res.status(200).json({
+      success: true,
+      data: todos,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch by status",
+      error,
+    });
+  }
+};
+
 module.exports = {
   createTodo,
   getTodos,
@@ -178,4 +213,5 @@ module.exports = {
   deleteTodo,
   updateTodo,
   getTodoStatusSummary,
+  getTodosByStatus,
 };
