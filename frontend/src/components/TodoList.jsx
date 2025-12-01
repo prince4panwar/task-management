@@ -67,11 +67,9 @@ function TodosList({ todos, setSelectedTodo, fetchTodos }) {
           <motion.div
             key={todo._id}
             whileHover={{ scale: 1.009 }}
-            whileTap={{ scale: 0.99 }}
+            whileTap={{ scale: 0.9991 }}
             initial={{ opacity: 0, y: -800 }}
             animate={{ opacity: 1, y: 0 }}
-            // transition={{ delay: 0.2 }}
-            // transition={{ delay: index * 0.2, type: "spring" }}
             className={`flex items-center w-full gap-4 p-2 mb-2.5 rounded shadow-[0px_2px_2px_2px_rgba(0,0,0,0.35)] cursor-pointer px-1 ${
               theme === "light" ? "light" : "dark"
             }`}

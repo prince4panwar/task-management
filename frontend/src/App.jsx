@@ -9,6 +9,7 @@ import Profile from "./pages/Profile.jsx";
 import { Toaster } from "react-hot-toast";
 import TodoDetails from "./pages/TodoDetails";
 import TodoStatusPieChart from "./pages/TodoStatusPieChart";
+import NotFound from "./components/NotFound";
 
 const router = createBrowserRouter([
   { path: "/", Component: Register },
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
         <TodoStatusPieChart />
       </ProtectedRoute>
     ),
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);
 
