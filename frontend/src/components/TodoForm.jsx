@@ -122,7 +122,9 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
             register={register}
             fileName={fileName}
             setFileName={setFileName}
+            errors={errors.image}
           />
+          <ErrorMessage message={errors.image?.message} />
 
           <button
             type="submit"

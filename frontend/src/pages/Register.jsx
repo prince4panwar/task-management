@@ -2,7 +2,6 @@ import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { motion } from "motion/react";
@@ -10,22 +9,7 @@ import toast from "react-hot-toast";
 import { useThemeStore } from "@/store/themeStore";
 import ErrorMessage from "@/components/ErrorMessage";
 import ImageUpload from "@/components/ImageUpload";
-
-const schema = z.object({
-  name: z
-    .string()
-    .nonempty("Name must be required")
-    .min(3, "Name must be at least 3 characters or more"),
-  email: z
-    .string()
-    .nonempty("Email must be required")
-    .email("Email is not valid"),
-  password: z
-    .string()
-    .nonempty("Password must be required")
-    .min(8, "Password must be at least 8 characters long"),
-  pic: z.any(),
-});
+import { registerFormSchema } from "@/lib/schema";
 
 function Register() {
   const [fileName, setFileName] = useState("");
@@ -38,7 +22,7 @@ function Register() {
     setError,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(registerFormSchema),
   });
 
   async function createUser(data) {
@@ -71,7 +55,6 @@ function Register() {
     if (data.pic && data.pic[0]) {
       data.pic = data.pic[0];
     }
-    console.log(data);
     createUser(data);
   };
 
@@ -147,7 +130,9 @@ function Register() {
               fileName={fileName}
               setFileName={setFileName}
               name="pic"
+              errors={errors.pic}
             />
+            <ErrorMessage message={errors.pic?.message} />
 
             <button
               type="submit"

@@ -1,15 +1,29 @@
 import React from "react";
 
-function ImageUpload({ register, fileName, setFileName, name = "image" }) {
+function ImageUpload({
+  register,
+  fileName,
+  setFileName,
+  name = "image",
+  errors,
+}) {
   return (
-    <>
+    <div className="mb-2">
       <label
         htmlFor="imageUpload"
-        className="block w-full text-blue-600 border border-blue-600 p-2 rounded cursor-pointer font-bold"
+        className={`block w-full text-blue-600 border border-blue-600 p-2 rounded cursor-pointer font-bold ${
+          errors
+            ? "border-red-900 focus:ring focus:ring-red-900 text-red-900"
+            : "focus:ring focus:ring-blue-600"
+        }`}
       >
         Upload Profile Pic
         {fileName && (
-          <span className="text-sm text-blue-600 font-semibold">
+          <span
+            className={`text-sm font-semibold ${
+              errors ? "text-red-900" : "text-blue-600"
+            }`}
+          >
             {` : ${fileName}`}
           </span>
         )}
@@ -25,7 +39,7 @@ function ImageUpload({ register, fileName, setFileName, name = "image" }) {
           },
         })}
       />
-    </>
+    </div>
   );
 }
 

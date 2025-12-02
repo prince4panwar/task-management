@@ -4,27 +4,13 @@ import TodoList from "../components/TodoList";
 import axios from "axios";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-
-const schema = z.object({
-  title: z
-    .string()
-    .nonempty("Title must be required")
-    .min(5, "Title must be at least 5 characters long")
-    .max(125, "Title must be at most 125 characters long"),
-  description: z
-    .string()
-    .nonempty("Description must be required")
-    .min(5, "Description must be at least 5 characters long"),
-  status: z.string(),
-  image: z.any(),
-});
+import { createTaskFormSchema } from "@/lib/schema";
 
 function TodoPage() {
   const [todos, setTodos] = useState([]);
   const [selectedTodo, setSelectedTodo] = useState(null);
   const methods = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(createTaskFormSchema),
     defaultValues: {
       title: "",
       description: "",

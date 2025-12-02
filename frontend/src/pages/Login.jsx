@@ -2,24 +2,13 @@ import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import toast from "react-hot-toast";
 import { useThemeStore } from "@/store/themeStore";
 import ErrorMessage from "@/components/ErrorMessage";
-
-const schema = z.object({
-  email: z
-    .string()
-    .nonempty("Email must be required")
-    .email("Email is not valid"),
-  password: z
-    .string()
-    .nonempty("Password must be required")
-    .min(8, "Password must be at least 8 characters long"),
-});
+import { loginFormSchema } from "@/lib/schema";
 
 function Login() {
   const [data, setData] = useState(null);
@@ -32,7 +21,7 @@ function Login() {
     setError,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(loginFormSchema),
   });
 
   useEffect(() => {

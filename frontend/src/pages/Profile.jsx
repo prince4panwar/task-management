@@ -3,21 +3,13 @@ import { motion } from "motion/react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useUserStore } from "../store/userStore";
 import { useThemeStore } from "@/store/themeStore";
 import ImageUpload from "@/components/ImageUpload";
 import ErrorMessage from "@/components/ErrorMessage";
-
-const schema = z.object({
-  name: z
-    .string()
-    .nonempty("Name must be required")
-    .min(3, "Name must be at least 3 characters or more"),
-  pic: z.any(),
-});
+import { profileUpdateFormSchema } from "@/lib/schema";
 
 function Profile() {
   const user = useUserStore((state) => state.user);
@@ -26,7 +18,7 @@ function Profile() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(profileUpdateFormSchema),
     defaultValues: {
       name: user.name,
     },
@@ -116,7 +108,9 @@ function Profile() {
             fileName={fileName}
             setFileName={setFileName}
             name="pic"
+            errors={errors.pic}
           />
+          <ErrorMessage message={errors.pic?.message} />
 
           <button
             type="submit"

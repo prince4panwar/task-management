@@ -12,27 +12,13 @@ import { SquarePen } from "lucide-react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { useTodoStore } from "@/store/todoStore";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import ErrorMessage from "./ErrorMessage";
 import ImageUpload from "./ImageUpload";
-
-const schema = z.object({
-  title: z
-    .string()
-    .nonempty("Title must be required")
-    .min(5, "Title must be at least 5 characters long")
-    .max(125, "Title must be at most 125 characters long"),
-  description: z
-    .string()
-    .nonempty("Description must be required")
-    .min(5, "Description must be at least 5 characters long"),
-  status: z.string(),
-  image: z.any(),
-});
+import { createTaskFormSchema } from "@/lib/schema";
 
 function EditTodoDialog({ setIsEdit }) {
   const { userId } = useParams();
@@ -45,7 +31,7 @@ function EditTodoDialog({ setIsEdit }) {
     reset,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(createTaskFormSchema),
     defaultValues: {
       title: todo.title,
       description: todo.description,
@@ -150,7 +136,9 @@ function EditTodoDialog({ setIsEdit }) {
             register={register}
             fileName={fileName}
             setFileName={setFileName}
+            errors={errors.image}
           />
+          <ErrorMessage message={errors.image?.message} />
 
           <DialogFooter>
             <DialogClose asChild>
