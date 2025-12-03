@@ -51,8 +51,7 @@ function TodoDetails() {
           {todo?.title}
         </p>
         <div
-          style={{ "max-height": "75vh" }}
-          className={`rounded-xl bg-blue-200 p-4 overflow-x-hidden overflow-y-auto custom-scroll ${
+          className={`max-h-[75vh] rounded-xl bg-blue-200 p-4 overflow-x-hidden overflow-y-auto custom-scroll ${
             theme === "light" ? "light" : "dark"
           }`}
         >
@@ -60,10 +59,9 @@ function TodoDetails() {
         </div>
       </div>
       <div
-        className={`flex flex-col items-start gap-8 p-4 rounded-xl w-1/3 bg-blue-200 ${
+        className={`max-h-[85vh] flex flex-col items-start gap-8 p-4 rounded-xl w-1/3 bg-blue-200 ${
           theme === "light" ? "light" : "dark"
         }`}
-        style={{ "max-height": "85vh" }}
       >
         <Link to={todo?.image} target="_blank" rel="noopener noreferrer">
           {todo?.image && <img src={todo?.image} alt="image" width={300} />}
@@ -71,14 +69,14 @@ function TodoDetails() {
         <div>
           <p
             className={`font-bold pb-2  ${
-              theme === "light" ? "text-blue-600" : "text-white"
+              theme === "light" ? "text-black" : "text-white"
             }`}
           >
             {todo?.status?.charAt(0).toUpperCase() + todo?.status?.slice(1)}
           </p>
           <p
             className={`font-bold pb-2 ${
-              theme === "light" ? "text-blue-600" : "text-white"
+              theme === "light" ? "text-black" : "text-white"
             }`}
           >
             {new Date(todo?.createdAt).toLocaleString("en-GB", {

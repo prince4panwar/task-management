@@ -33,16 +33,10 @@ function TodosList({ todos, setSelectedTodo, fetchTodos }) {
 
   return (
     <div
-      className={`w-2/3 overflow-auto p-2 pt-0 mt-1 custom-scroll`}
-      style={{
-        height: "calc(100vh - 70px)",
-      }}
+      className={`w-2/3 h-[calc(100vh-70px)] overflow-auto p-2 pt-0 mt-1 custom-scroll`}
     >
       <div
-        className={`z-10 text-md font-bold mb-2.5 sticky rounded top-0 p-4 flex gap-4 justify-around bg-blue-500 text-white`}
-        style={{
-          height: "55px",
-        }}
+        className={`z-10 h-[55px] text-md font-bold mb-2.5 sticky rounded top-0 p-4 flex gap-4 justify-around bg-blue-500 text-white`}
       >
         <span className="w-1/20 text-center">S.No.</span>
         <span className="w-1/4 text-center">Title</span>
@@ -52,12 +46,9 @@ function TodosList({ todos, setSelectedTodo, fetchTodos }) {
       </div>
       {todos?.length === 0 && (
         <p
-          className={`text-gray-500 text-center w-full flex justify-center items-center text-3xl font-bold ${
+          className={`h-[calc(100vh-150px)] text-gray-500 text-center w-full flex justify-center items-center text-3xl font-bold ${
             theme === "light" ? "light" : "dark"
           }`}
-          style={{
-            height: "calc(100vh - 150px)",
-          }}
         >
           No Tasks yet.
         </p>

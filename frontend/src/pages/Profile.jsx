@@ -109,6 +109,7 @@ function Profile() {
             setFileName={setFileName}
             name="pic"
             errors={errors.pic}
+            labelName="Upload Profile Pic"
           />
           <ErrorMessage message={errors.pic?.message} />
 

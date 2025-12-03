@@ -71,12 +71,9 @@ const ProtectedRoute = ({ children }) => {
   return (
     <div className="h-screen overflow-hidden">
       <div
-        className={`text-3xl font-bold sticky top-0 px-8 py-2 flex items-center bg-blue-500 text-white w-full ${
+        className={`h-[70px] text-3xl font-bold sticky top-0 px-8 py-2 flex items-center bg-blue-500 text-white w-full ${
           theme === "light" ? "light" : "dark"
         }`}
-        style={{
-          height: "70px",
-        }}
       >
         <div className="w-1/3 flex justify-start">
           <Link

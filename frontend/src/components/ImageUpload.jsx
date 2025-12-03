@@ -6,6 +6,7 @@ function ImageUpload({
   setFileName,
   name = "image",
   errors,
+  labelName = "Upload Image",
 }) {
   return (
     <div className="mb-2">
@@ -17,7 +18,7 @@ function ImageUpload({
             : "focus:ring focus:ring-blue-600"
         }`}
       >
-        Upload Profile Pic
+        {labelName}
         {fileName && (
           <span
             className={`text-sm font-semibold ${

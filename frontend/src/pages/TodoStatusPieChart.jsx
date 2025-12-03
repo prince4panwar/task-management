@@ -48,7 +48,7 @@ const TodoStatusPieChart = () => {
   }, []);
 
   return (
-    <div style={{ width: "100%", height: 350 }}>
+    <div className="w-full h-[350px] ">
       <h2 className="text-3xl text-blue-500 font-bold mb-4 mt-10 text-center">
         Tasks Summary
       </h2>

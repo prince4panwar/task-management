@@ -71,22 +71,16 @@ function Login() {
   return (
     <div>
       <div
-        className={`text-3xl font-bold sticky top-0 p-4 flex justify-around bg-blue-500 text-white w-full ${
+        className={`h-[70px] text-3xl font-bold sticky top-0 p-4 flex justify-around bg-blue-500 text-white w-full ${
           theme === "light" ? "light" : "dark"
         }`}
-        style={{
-          height: "70px",
-        }}
       >
         <span className="font-bold">Taskify</span>
       </div>
       <div
-        className={`flex justify-center items-center w-screen ${
+        className={`h-[calc(100vh-70px)] flex justify-center items-center w-screen ${
           theme === "light" ? "light" : "dark-bg"
         }`}
-        style={{
-          height: "calc(100vh - 70px)",
-        }}
       >
         <motion.div
           initial={{ y: -100 }}
@@ -142,30 +136,12 @@ function Login() {
             </div>
             <ErrorMessage message={errors.password?.message} />
 
-            <p className="text-sm px-1">
-              Don't have an account?{" "}
-              <Link
-                to="/"
-                className="font-medium text-blue-600 hover:text-blue-800"
-              >
-                Sign up
-              </Link>
-            </p>
-
             <button
               type="submit"
-              className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-3"
+              className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
             >
               Login
             </button>
-            {/* 
-            <button
-              type="button"
-              className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
-              onClick={() => navigate("/")}
-            >
-              Create Account
-            </button> */}
 
             <button
               type="button"
@@ -174,6 +150,16 @@ function Login() {
             >
               My Tasks
             </button>
+
+            <p className="text-sm px-1 text-center mt-2">
+              Don't have an account?{" "}
+              <Link
+                to="/"
+                className="font-medium text-blue-600 hover:text-blue-800"
+              >
+                Sign up
+              </Link>
+            </p>
           </form>
         </motion.div>
       </div>

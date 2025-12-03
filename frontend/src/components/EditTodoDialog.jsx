@@ -138,6 +138,7 @@ function EditTodoDialog({ setIsEdit }) {
             fileName={fileName}
             setFileName={setFileName}
             errors={errors.image}
+            labelName="Upload Task Image"
           />
           <ErrorMessage message={errors.image?.message} />
 

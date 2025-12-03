@@ -10,9 +10,11 @@ import { useThemeStore } from "@/store/themeStore";
 import ErrorMessage from "@/components/ErrorMessage";
 import ImageUpload from "@/components/ImageUpload";
 import { registerFormSchema } from "@/lib/schema";
+import { Eye, EyeOff } from "lucide-react";
 
 function Register() {
   const [fileName, setFileName] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { theme } = useThemeStore();
 
@@ -62,22 +64,16 @@ function Register() {
   return (
     <div>
       <div
-        className={`text-3xl font-bold sticky top-0 p-4 flex justify-around bg-blue-500 text-white w-full ${
+        className={`h-[70px] text-3xl font-bold sticky top-0 p-4 flex justify-around bg-blue-500 text-white w-full ${
           theme === "light" ? "light" : "dark"
         }`}
-        style={{
-          height: "70px",
-        }}
       >
         <span className="font-bold">Taskify</span>
       </div>
       <div
-        className={`flex justify-center items-center w-screen ${
+        className={`h-[calc(100vh-70px)] flex justify-center items-center w-screen ${
           theme === "light" ? "light" : "dark-bg"
         }`}
-        style={{
-          height: "calc(100vh - 70px)",
-        }}
       >
         <motion.div
           initial={{ y: -100 }}
@@ -114,16 +110,36 @@ function Register() {
             />
             <ErrorMessage message={errors.name?.message} />
 
-            <input
-              type="password"
-              placeholder="Password"
-              className={`border border-blue-600 text-blue-600 focus:outline-none p-2 mb-2 rounded font-bold ${
-                errors.password
-                  ? "border-red-900 focus:ring focus:ring-red-900 text-red-900"
-                  : "border-blue-600 focus:ring focus:ring-blue-600"
-              }`}
-              {...register("password")}
-            />
+            <div className="relative w-full">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                className={`w-full border border-blue-600 text-blue-600 focus:outline-none p-2 mb-2 rounded font-bold ${
+                  errors.password
+                    ? "border-red-900 focus:ring focus:ring-red-900 text-red-900"
+                    : "border-blue-600 focus:ring focus:ring-blue-600"
+                }`}
+                {...register("password")}
+              />
+              {showPassword ? (
+                <EyeOff
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className={`absolute top-2.5 right-2 cursor-pointer ${
+                    errors.password ? "text-red-900" : "text-blue-600"
+                  }`}
+                  size={21}
+                />
+              ) : (
+                <Eye
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className={`absolute top-2.5 right-2 cursor-pointer ${
+                    errors.password ? "text-red-900" : "text-blue-600"
+                  }`}
+                  size={21}
+                />
+              )}
+            </div>
+
             <ErrorMessage message={errors.password?.message} />
 
             <ImageUpload
@@ -132,32 +148,16 @@ function Register() {
               setFileName={setFileName}
               name="pic"
               errors={errors.pic}
+              labelName="Upload Profile Pic"
             />
             <ErrorMessage message={errors.pic?.message} />
 
-            <p className="text-sm text-gray-600 px-1">
-              Already have an account?{" "}
-              <Link
-                to="/login"
-                className="font-medium text-blue-600 hover:text-blue-800"
-              >
-                Login
-              </Link>
-            </p>
-
             <button
               type="submit"
-              className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-3"
+              className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
             >
               Sign up
             </button>
-            {/* <button
-              type="button"
-              onClick={() => navigate("/login")}
-              className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded"
-            >
-              Log In
-            </button> */}
 
             <button
               type="button"
@@ -166,6 +166,16 @@ function Register() {
             >
               My Tasks
             </button>
+
+            <p className="text-sm text-gray-600 px-1 mt-2 text-center">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="font-medium text-blue-600 hover:text-blue-800"
+              >
+                Login
+              </Link>
+            </p>
           </form>
         </motion.div>
       </div>
