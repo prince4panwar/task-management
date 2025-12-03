@@ -32,6 +32,7 @@ function EditTodoDialog({ setIsEdit }) {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(createTaskFormSchema),
+    mode: "all",
     defaultValues: {
       title: todo.title,
       description: todo.description,

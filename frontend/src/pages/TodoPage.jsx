@@ -10,6 +10,7 @@ function TodoPage() {
   const [todos, setTodos] = useState([]);
   const [selectedTodo, setSelectedTodo] = useState(null);
   const methods = useForm({
+    mode: "all",
     resolver: zodResolver(createTaskFormSchema),
     defaultValues: {
       title: "",

@@ -3,15 +3,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import toast from "react-hot-toast";
 import { useThemeStore } from "@/store/themeStore";
 import ErrorMessage from "@/components/ErrorMessage";
 import { loginFormSchema } from "@/lib/schema";
+import { Eye, EyeOff } from "lucide-react";
 
 function Login() {
   const [data, setData] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const { theme } = useThemeStore();
   const navigate = useNavigate();
 
@@ -21,6 +23,7 @@ function Login() {
     setError,
     formState: { errors },
   } = useForm({
+    mode: "all",
     resolver: zodResolver(loginFormSchema),
   });
 
@@ -108,17 +111,46 @@ function Login() {
             />
             <ErrorMessage message={errors.email?.message} />
 
-            <input
-              type="password"
-              placeholder="Password"
-              className={`border border-blue-600 text-blue-600 focus:outline-none p-2 mb-2 rounded font-bold ${
-                errors.password
-                  ? "border-red-900 focus:ring focus:ring-red-900 text-red-900"
-                  : "border-blue-600 focus:ring focus:ring-blue-600"
-              }`}
-              {...register("password")}
-            />
+            <div className="relative w-full">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                className={`border border-blue-600 w-full text-blue-600 focus:outline-none p-2 mb-2 rounded font-bold ${
+                  errors.password
+                    ? "border-red-900 focus:ring focus:ring-red-900 text-red-900"
+                    : "border-blue-600 focus:ring focus:ring-blue-600"
+                }`}
+                {...register("password")}
+              />
+              {showPassword ? (
+                <EyeOff
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className={`absolute top-2.5 right-2 cursor-pointer ${
+                    errors.password ? "text-red-900" : "text-blue-600"
+                  }`}
+                  size={21}
+                />
+              ) : (
+                <Eye
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className={`absolute top-2.5 right-2 cursor-pointer ${
+                    errors.password ? "text-red-900" : "text-blue-600"
+                  }`}
+                  size={21}
+                />
+              )}
+            </div>
             <ErrorMessage message={errors.password?.message} />
+
+            <p className="text-sm px-1">
+              Don't have an account?{" "}
+              <Link
+                to="/"
+                className="font-medium text-blue-600 hover:text-blue-800"
+              >
+                Sign up
+              </Link>
+            </p>
 
             <button
               type="submit"
@@ -126,14 +158,14 @@ function Login() {
             >
               Login
             </button>
-
+            {/* 
             <button
               type="button"
               className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
               onClick={() => navigate("/")}
             >
               Create Account
-            </button>
+            </button> */}
 
             <button
               type="button"

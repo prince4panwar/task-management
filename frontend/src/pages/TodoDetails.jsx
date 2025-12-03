@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { MoveLeft } from "lucide-react";
 import { useThemeStore } from "@/store/themeStore";
 import EditTodoDialog from "@/components/EditTodoDialog";
@@ -65,7 +65,9 @@ function TodoDetails() {
         }`}
         style={{ "max-height": "85vh" }}
       >
-        {todo?.image && <img src={todo?.image} alt="image" width={300} />}
+        <Link to={todo?.image} target="_blank" rel="noopener noreferrer">
+          {todo?.image && <img src={todo?.image} alt="image" width={300} />}
+        </Link>
         <div>
           <p
             className={`font-bold pb-2  ${

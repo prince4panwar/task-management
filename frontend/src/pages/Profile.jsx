@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -19,6 +19,7 @@ function Profile() {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(profileUpdateFormSchema),
+    mode: "all",
     defaultValues: {
       name: user.name,
     },
@@ -75,20 +76,19 @@ function Profile() {
           theme === "light" ? "light" : "dark"
         }`}
       >
-        {/* <h1 className="text-3xl font-bold mb-3 text-blue-600 text-center">
-          Update Profile
-        </h1> */}
         <div className="w-full flex items-center justify-center">
-          <img
-            src={
-              user.pic ??
-              "https://res.cloudinary.com/dsaiclywa/image/upload/v1763988872/user_qe0ygk.png"
-            }
-            alt="Profile Pic"
-            height={50}
-            width={200}
-            className="rounded-3xl mb-4"
-          />
+          <Link to={user.pic} target="_blank" rel="noopener noreferrer">
+            <img
+              src={
+                user.pic ??
+                "https://res.cloudinary.com/dsaiclywa/image/upload/v1763988872/user_qe0ygk.png"
+              }
+              alt="Profile Pic"
+              height={50}
+              width={200}
+              className="rounded-3xl mb-4 cursor-pointer"
+            />
+          </Link>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
           <input

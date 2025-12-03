@@ -2,7 +2,7 @@ import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import { motion } from "motion/react";
 import toast from "react-hot-toast";
@@ -22,6 +22,7 @@ function Register() {
     setError,
     formState: { errors },
   } = useForm({
+    mode: "all",
     resolver: zodResolver(registerFormSchema),
   });
 
@@ -86,7 +87,7 @@ function Register() {
           }`}
         >
           <h1 className="text-3xl font-bold mb-3 text-center text-blue-500">
-            Signup
+            Create Account
           </h1>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
             <input
@@ -134,19 +135,29 @@ function Register() {
             />
             <ErrorMessage message={errors.pic?.message} />
 
+            <p className="text-sm text-gray-600 px-1">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="font-medium text-blue-600 hover:text-blue-800"
+              >
+                Login
+              </Link>
+            </p>
+
             <button
               type="submit"
-              className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mb-2 mt-3"
+              className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-3"
             >
-              Create Account
+              Sign up
             </button>
-            <button
+            {/* <button
               type="button"
               onClick={() => navigate("/login")}
               className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded"
             >
               Log In
-            </button>
+            </button> */}
 
             <button
               type="button"
