@@ -1,6 +1,6 @@
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,9 +10,10 @@ import { useThemeStore } from "@/store/themeStore";
 import ErrorMessage from "@/components/ErrorMessage";
 import { loginFormSchema } from "@/lib/schema";
 import { Eye, EyeOff } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { Spinner } from "@/components/ui/spinner";
 
 function Login() {
-  const [data, setData] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const { theme } = useThemeStore();
   const navigate = useNavigate();
@@ -27,27 +28,20 @@ function Login() {
     resolver: zodResolver(loginFormSchema),
   });
 
-  useEffect(() => {
-    if (!data) {
-      return;
-    }
-    loginUser();
-  }, [data]);
-
-  async function loginUser() {
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/api/users/signin",
-        data
-      );
-      console.log(response);
+  const loginMutation = useMutation({
+    mutationFn: async (data) => {
+      return await axios.post("http://localhost:3000/api/users/signin", data);
+    },
+    onSuccess: (response) => {
       if (response.data.success) {
         localStorage.setItem("token", response.data.data);
         navigate("/todos");
       }
-    } catch (error) {
+    },
+    onError: (error) => {
       console.log(error);
-      if (error.response.data.message == "User not found") {
+
+      if (error.response.data.message === "User not found") {
         toast.error("Please create account");
         setError("email", {
           type: "manual",
@@ -55,17 +49,18 @@ function Login() {
         });
       }
 
-      if (error.response.data.message == "Invalid password") {
+      if (error.response.data.message === "Invalid password") {
         toast.error("Invalid password");
         setError("password", {
           type: "manual",
           message: "Invalid password",
         });
       }
-    }
-  }
+    },
+  });
+
   const onSubmit = (data) => {
-    setData(data);
+    loginMutation.mutate(data);
   };
 
   return (
@@ -77,6 +72,7 @@ function Login() {
       >
         <span className="font-bold">Taskify</span>
       </div>
+
       <div
         className={`h-[calc(100vh-70px)] flex justify-center items-center w-screen ${
           theme === "light" ? "light" : "dark-bg"
@@ -92,6 +88,7 @@ function Login() {
           <h1 className="text-3xl font-bold mb-3 text-center text-blue-500">
             Login
           </h1>
+
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
             <input
               type="text"
@@ -138,9 +135,17 @@ function Login() {
 
             <button
               type="submit"
-              className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
+              disabled={loginMutation.isPending}
+              className="flex justify-center items-center gap-2 bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
             >
-              Login
+              {loginMutation.isPending ? (
+                <>
+                  <Spinner className="size-5" />
+                  <span>Logging in... </span>
+                </>
+              ) : (
+                "Login"
+              )}
             </button>
 
             <button

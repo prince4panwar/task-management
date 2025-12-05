@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import TodoForm from "../components/TodoForm";
 import TodoList from "../components/TodoList";
 import axios from "axios";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createTaskFormSchema } from "@/lib/schema";
+import { useQuery } from "@tanstack/react-query";
 
 function TodoPage() {
-  const [todos, setTodos] = useState([]);
   const [selectedTodo, setSelectedTodo] = useState(null);
+
   const methods = useForm({
     mode: "all",
     resolver: zodResolver(createTaskFormSchema),
@@ -20,23 +21,24 @@ function TodoPage() {
     },
   });
 
-  // Fetch all todos
-  async function fetchTodos() {
-    try {
-      const response = await axios.get("http://localhost:3000/api/todos", {
-        headers: {
-          "x-access-token": localStorage.getItem("token"),
-        },
-      });
-      setTodos(response.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const {
+    data: todos = [],
+    refetch,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["todos"],
+    queryFn: fetchTodos,
+  });
 
-  useEffect(() => {
-    fetchTodos();
-  }, []);
+  async function fetchTodos() {
+    const response = await axios.get("http://localhost:3000/api/todos", {
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    });
+    return response.data.data;
+  }
 
   return (
     <FormProvider {...methods}>
@@ -44,12 +46,13 @@ function TodoPage() {
         <TodoForm
           selectedTodo={selectedTodo}
           setSelectedTodo={setSelectedTodo}
-          fetchTodos={fetchTodos} // pass fetch function
         />
         <TodoList
           todos={todos}
           setSelectedTodo={setSelectedTodo}
-          fetchTodos={fetchTodos} // pass to refresh after delete
+          fetchTodos={refetch} // refresh after delete
+          loading={isLoading}
+          error={isError}
         />
       </div>
     </FormProvider>

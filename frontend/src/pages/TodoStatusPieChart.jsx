@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import axios from "axios";
 import {
   PieChart,
@@ -11,50 +11,55 @@ import {
 import { useNavigate } from "react-router-dom";
 import { MoveLeft } from "lucide-react";
 import { motion } from "motion/react";
+import { useQuery } from "@tanstack/react-query";
 
 const COLORS = ["#E7000B", "#F0B100", "#0D542B"]; // pending, inProgress, completed
 
 const TodoStatusPieChart = () => {
-  const [totalTodos, setTotalTodos] = useState(0);
-  const [statusData, setStatusData] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchStatus = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:3000/api/todos/status/summary",
-          {
-            headers: {
-              "x-access-token": localStorage.getItem("token"),
-            },
-          }
-        );
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["status-summary"],
+    queryFn: async () => {
+      const response = await axios.get(
+        "http://localhost:3000/api/todos/status/summary",
+        {
+          headers: {
+            "x-access-token": localStorage.getItem("token"),
+          },
+        }
+      );
+      return response.data.data;
+    },
+  });
 
-        const { pending, inProgress, completed, total } = response.data.data;
+  if (isLoading)
+    return (
+      <p className="text-center text-blue-500 font-semibold">Loading...</p>
+    );
 
-        setTotalTodos(total);
-        setStatusData([
-          { name: "Pending", value: pending },
-          { name: "In Progress", value: inProgress },
-          { name: "Completed", value: completed },
-        ]);
-      } catch (error) {
-        console.log("Error fetching chart data:", error);
-      }
-    };
+  if (isError)
+    return (
+      <p className="text-center text-red-600 font-semibold">
+        Failed to load chart data
+      </p>
+    );
 
-    fetchStatus();
-  }, []);
+  const statusData = [
+    { name: "Pending", value: data?.pending },
+    { name: "In Progress", value: data?.inProgress },
+    { name: "Completed", value: data?.completed },
+  ];
 
   return (
-    <div className="w-full h-[350px] ">
+    <div className="w-full h-[370px] ">
       <h2 className="text-3xl text-blue-500 font-bold mb-4 mt-10 text-center">
         Tasks Summary
       </h2>
       <h3 className="text-lg text-blue-500 font-semibold text-center mt-2 mb-4">
-        Total Tasks: {totalTodos}
+        Total Tasks: {data?.total}
       </h3>
+
       <ResponsiveContainer>
         <PieChart>
           <Pie
@@ -62,7 +67,8 @@ const TodoStatusPieChart = () => {
             data={statusData}
             cx="50%"
             cy="50%"
-            outerRadius={120}
+            innerRadius={100}
+            outerRadius={140}
             fill="#8884d8"
             label
           >
@@ -77,6 +83,7 @@ const TodoStatusPieChart = () => {
           <Legend />
         </PieChart>
       </ResponsiveContainer>
+
       <div className="flex justify-center w-screen mt-6">
         <motion.button
           whileTap={{ scale: 0.8 }}

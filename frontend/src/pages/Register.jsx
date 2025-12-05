@@ -1,6 +1,5 @@
-import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import React from "react";
@@ -11,6 +10,9 @@ import ErrorMessage from "@/components/ErrorMessage";
 import ImageUpload from "@/components/ImageUpload";
 import { registerFormSchema } from "@/lib/schema";
 import { Eye, EyeOff } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { Spinner } from "@/components/ui/spinner";
 
 function Register() {
   const [fileName, setFileName] = useState("");
@@ -28,22 +30,21 @@ function Register() {
     resolver: zodResolver(registerFormSchema),
   });
 
-  async function createUser(data) {
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/api/users/signup",
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+  const createUserMutation = useMutation({
+    mutationFn: async (data) => {
+      return await axios.post("http://localhost:3000/api/users/signup", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    },
+    onSuccess: (response) => {
       toast.success("User created successfully");
       navigate("/login");
       console.log(response.data);
-    } catch (error) {
-      if (error.response.data.message == "Email is already in use") {
+    },
+    onError: (error) => {
+      if (error.response?.data?.message === "Email is already in use") {
         toast.error("Email is already in use");
         setError("email", {
           type: "manual",
@@ -51,14 +52,14 @@ function Register() {
         });
       }
       console.log(error);
-    }
-  }
+    },
+  });
 
   const onSubmit = (data) => {
     if (data.pic && data.pic[0]) {
       data.pic = data.pic[0];
     }
-    createUser(data);
+    createUserMutation.mutate(data);
   };
 
   return (
@@ -70,6 +71,7 @@ function Register() {
       >
         <span className="font-bold">Taskify</span>
       </div>
+
       <div
         className={`h-[calc(100vh-70px)] flex justify-center items-center w-screen ${
           theme === "light" ? "light" : "dark-bg"
@@ -85,6 +87,7 @@ function Register() {
           <h1 className="text-3xl font-bold mb-3 text-center text-blue-500">
             Create Account
           </h1>
+
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
             <input
               type="text"
@@ -154,20 +157,28 @@ function Register() {
 
             <button
               type="submit"
-              className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
+              disabled={createUserMutation.isPending}
+              className="flex justify-center items-center gap-2 bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
             >
-              Sign up
+              {createUserMutation.isPending ? (
+                <>
+                  <Spinner className="size-5" />
+                  <span>Signing up...</span>
+                </>
+              ) : (
+                "Sign up"
+              )}
             </button>
 
             <button
               type="button"
-              onClick={() => navigate("/todos")}
               className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
+              onClick={() => navigate("/todos")}
             >
               My Tasks
             </button>
 
-            <p className="text-sm text-gray-600 px-1 mt-2 text-center">
+            <p className="text-sm px-1 mt-2 text-center">
               Already have an account?{" "}
               <Link
                 to="/login"

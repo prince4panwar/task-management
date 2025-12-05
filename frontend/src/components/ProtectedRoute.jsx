@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUserStore } from "../store/userStore";
 import { useThemeStore } from "../store/themeStore";
 import { Moon, Sun } from "lucide-react";
 
 const ProtectedRoute = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(null); // null = loading
   const user = useUserStore((state) => state.user);
   const addUser = useUserStore((state) => state.addUser);
   const deleteUser = useUserStore((state) => state.deleteUser);
@@ -16,17 +16,9 @@ const ProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    verifyUser();
-  }, [token, navigate]);
-
-  const verifyUser = async () => {
-    if (!token) {
-      setIsAuthenticated(false);
-      return;
-    }
-
-    try {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["authUser"],
+    queryFn: async () => {
       const response = await axios.get(
         "http://localhost:3000/api/users/authenticate",
         {
@@ -34,16 +26,11 @@ const ProtectedRoute = ({ children }) => {
         }
       );
       addUser(response.data.data);
-
-      if (response.data.success) {
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-      }
-    } catch (error) {
-      setIsAuthenticated(false);
-    }
-  };
+      return response.data;
+    },
+    enabled: !!token, // only runs if token exists
+    retry: false,
+  });
 
   function onLogout() {
     deleteUser();
@@ -54,20 +41,19 @@ const ProtectedRoute = ({ children }) => {
     }, 1);
   }
 
-  // While checking token validity, show a loader
-  if (isAuthenticated === null) {
+  // Loading UI
+  if (isLoading) {
     return (
       <div className="bg-blue-400 text-center text-white">Loading Tasks...</div>
     );
   }
 
-  // If not authenticated, redirect
-  if (!isAuthenticated) {
+  // Not authenticated
+  if (!token || isError || !data?.success) {
     toast.error("Please login first");
     return <Navigate to="/login" replace />;
   }
 
-  // Otherwise, render protected children
   return (
     <div className="h-screen overflow-hidden">
       <div
@@ -100,6 +86,7 @@ const ProtectedRoute = ({ children }) => {
               />
             </AvatarFallback>
           </Avatar>
+
           <button
             className={`group cursor-pointer hover:underline transition-all p-1 rounded-full ${
               theme === "light" ? "hover:bg-yellow-400" : "hover:bg-slate-600"
@@ -112,11 +99,13 @@ const ProtectedRoute = ({ children }) => {
               <Moon className="transition-all duration-300 group-hover:-translate-y-1" />
             )}
           </button>
+
           <Link className="text-sm hover:underline" onClick={onLogout}>
             Logout
           </Link>
         </div>
       </div>
+
       {children}
     </div>
   );

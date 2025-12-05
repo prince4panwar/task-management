@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useFormContext } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
@@ -7,8 +6,11 @@ import toast from "react-hot-toast";
 import { useThemeStore } from "@/store/themeStore";
 import ErrorMessage from "./ErrorMessage";
 import ImageUpload from "./ImageUpload";
+import axios from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Spinner } from "./ui/spinner";
 
-function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
+function TodoForm({ selectedTodo, setSelectedTodo }) {
   const {
     register,
     handleSubmit,
@@ -16,9 +18,68 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
     setValue,
     formState: { errors },
   } = useFormContext();
+
   const navigate = useNavigate();
   const { theme } = useThemeStore();
   const [fileName, setFileName] = useState("");
+
+  const queryClient = useQueryClient();
+
+  const createTodoMutation = useMutation({
+    mutationFn: async (data) => {
+      return axios.post("http://localhost:3000/api/todos", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      });
+    },
+    onSuccess: () => {
+      toast.success("Task created successfully");
+      queryClient.invalidateQueries(["todos"]);
+    },
+  });
+
+  const updateTodoMutation = useMutation({
+    mutationFn: async (data) => {
+      return axios.patch(
+        `http://localhost:3000/api/todos/${selectedTodo._id}`,
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "x-access-token": localStorage.getItem("token"),
+          },
+        }
+      );
+    },
+    onSuccess: () => {
+      toast.success("Task updated successfully");
+      queryClient.invalidateQueries(["todos"]); // Refresh list
+    },
+  });
+
+  const onSubmit = async (data) => {
+    if (data.image && data.image[0]) data.image = data.image[0];
+
+    if (selectedTodo) {
+      updateTodoMutation.mutate(data, {
+        onSuccess: () => {
+          setSelectedTodo(null);
+          setFileName("");
+          reset();
+        },
+      });
+    } else {
+      createTodoMutation.mutate(data, {
+        onSuccess: () => {
+          setSelectedTodo(null);
+          setFileName("");
+          reset();
+        },
+      });
+    }
+  };
 
   useEffect(() => {
     if (selectedTodo) {
@@ -28,44 +89,7 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
     } else {
       reset();
     }
-  }, [selectedTodo, setValue, reset]);
-
-  async function onSubmit(data) {
-    if (data.image && data.image[0]) {
-      data.image = data.image[0];
-    }
-    try {
-      if (selectedTodo) {
-        await axios.patch(
-          `http://localhost:3000/api/todos/${selectedTodo._id}`,
-          data,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              "x-access-token": localStorage.getItem("token"),
-            },
-          }
-        );
-        toast.success("Task updated successfully");
-      } else {
-        await axios.post("http://localhost:3000/api/todos", data, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            "x-access-token": localStorage.getItem("token"),
-          },
-        });
-        toast.success("Task created successfully");
-      }
-
-      // Refresh UI
-      fetchTodos();
-      setSelectedTodo(null);
-      setFileName("");
-      reset();
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  }, [selectedTodo]);
 
   return (
     <div
@@ -83,7 +107,7 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
             selectedTodo ? "text-yellow-500" : "text-blue-600"
           }`}
         >
-          {selectedTodo ? "Edit Task" : "Add Task"}
+          {selectedTodo ? "Edit Task" : "Create Task"}
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
           <input
@@ -129,13 +153,34 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
 
           <button
             type="submit"
-            className={`cursor-pointer font-bold text-white p-2 rounded transition-all mt-4 ${
+            disabled={
+              selectedTodo
+                ? updateTodoMutation.isPending
+                : createTodoMutation.isPending
+            }
+            className={`flex gap-2 justify-center items-center cursor-pointer font-bold text-white p-2 rounded transition-all mt-4 ${
               selectedTodo
                 ? "bg-yellow-500 hover:bg-yellow-600"
                 : "bg-blue-500 hover:bg-blue-600"
             }`}
           >
-            {selectedTodo ? "Update Task" : "Add Task"}
+            {selectedTodo ? (
+              updateTodoMutation.isPending ? (
+                <>
+                  <Spinner className="size-5" />
+                  <span>Updating... </span>
+                </>
+              ) : (
+                "Update Task"
+              )
+            ) : createTodoMutation.isPending ? (
+              <>
+                <Spinner className="size-5" />
+                <span>Creating... </span>
+              </>
+            ) : (
+              "Create Task"
+            )}
           </button>
           {selectedTodo && (
             <button

@@ -19,12 +19,17 @@ import toast from "react-hot-toast";
 import ErrorMessage from "./ErrorMessage";
 import ImageUpload from "./ImageUpload";
 import { createTaskFormSchema } from "@/lib/schema";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Spinner } from "./ui/spinner";
 
 function EditTodoDialog({ setIsEdit }) {
-  const { userId } = useParams();
+  const { todoId } = useParams();
   const todo = useTodoStore((state) => state.todo);
   const [open, setOpen] = useState(false);
   const [fileName, setFileName] = useState("");
+
+  const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
@@ -52,28 +57,32 @@ function EditTodoDialog({ setIsEdit }) {
     }
   }, [todo, reset]);
 
-  async function editTodo(data) {
-    try {
-      await axios.patch(`http://localhost:3000/api/todos/${userId}`, data, {
+  const editTodoMutation = useMutation({
+    mutationFn: async (data) => {
+      return axios.patch(`http://localhost:3000/api/todos/${todoId}`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
           "x-access-token": localStorage.getItem("token"),
         },
       });
+    },
+    onSuccess: () => {
       setIsEdit(true);
       setOpen(false);
       toast.success("Task updated successfully");
-    } catch (error) {
-      console.log(error);
-    }
-  }
+      queryClient.invalidateQueries(["todos"]);
+    },
+    onError: () => {
+      toast.error("Error updating task");
+    },
+  });
 
   function onSubmit(data) {
     if (data.image && data.image[0]) {
       data.image = data.image[0];
     }
     setFileName("");
-    editTodo(data);
+    editTodoMutation.mutate(data);
   }
 
   return (
@@ -153,10 +162,18 @@ function EditTodoDialog({ setIsEdit }) {
             </DialogClose>
             <button
               type="submit"
+              disabled={editTodoMutation.isPending}
               className="group flex items-center gap-1 cursor-pointer font-bold text-white py-2 px-4 rounded transition-all
             bg-blue-500 hover:bg-blue-600 mt-2"
             >
-              Save changes
+              {editTodoMutation.isPending ? (
+                <>
+                  <Spinner className="size-5" />
+                  <span>Saving... </span>
+                </>
+              ) : (
+                "Save changes"
+              )}
             </button>
           </DialogFooter>
         </form>

@@ -13,6 +13,7 @@ import axios from "axios";
 import { Trash } from "lucide-react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 function DeleteTodoDialog({
   showIcon = false,
@@ -22,26 +23,28 @@ function DeleteTodoDialog({
   onDeletion,
 }) {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  async function deleteTodo() {
-    try {
-      await axios.delete(`http://localhost:3000/api/todos/${todoId}`, {
+  const deleteTodoMutation = useMutation({
+    mutationFn: async () => {
+      return axios.delete(`http://localhost:3000/api/todos/${todoId}`, {
         headers: {
           "x-access-token": localStorage.getItem("token"),
         },
       });
+    },
+    onSuccess: () => {
       toast.success("Task deleted successfully");
-    } catch (error) {
+      queryClient.invalidateQueries(["todos"]); // refresh todo list
+      navigate("/todos");
+      onDeletion?.();
+    },
+    onError: () => {
       toast.error("Task not deleted successfully");
-      console.log(error);
-    }
-  }
+    },
+  });
 
-  function onDelete() {
-    deleteTodo();
-    navigate("/todos");
-    onDeletion();
-  }
+  const onDelete = () => deleteTodoMutation.mutate();
 
   return (
     <AlertDialog>
@@ -57,26 +60,29 @@ function DeleteTodoDialog({
               className="transition-all duration-300 group-hover:-translate-x-1"
             />
           )}
-          {btnName}
+          {deleteTodoMutation.isPending ? "Deleting..." : btnName}
         </button>
       </AlertDialogTrigger>
+
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure to delete this task?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your task
-            and remove your task from our servers.
+            This action cannot be undone. It will permanently delete your task.
           </AlertDialogDescription>
         </AlertDialogHeader>
+
         <AlertDialogFooter>
           <AlertDialogCancel className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white hover:text-white">
             Cancel
           </AlertDialogCancel>
+
           <AlertDialogAction
             className="cursor-pointer bg-red-500 hover:bg-red-900"
             onClick={onDelete}
+            disabled={deleteTodoMutation.isPending}
           >
-            Delete
+            {deleteTodoMutation.isPending ? "Deleting..." : "Delete"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { motion } from "motion/react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { useUserStore } from "../store/userStore";
 import { useThemeStore } from "@/store/themeStore";
 import ImageUpload from "@/components/ImageUpload";
 import ErrorMessage from "@/components/ErrorMessage";
 import { profileUpdateFormSchema } from "@/lib/schema";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { Spinner } from "@/components/ui/spinner";
 
 function Profile() {
   const user = useUserStore((state) => state.user);
@@ -24,30 +26,16 @@ function Profile() {
       name: user.name,
     },
   });
-  const [profile, setProfile] = useState(null);
+
   const [fileName, setFileName] = useState("");
   const navigate = useNavigate();
   const { theme } = useThemeStore();
 
-  useEffect(() => {
-    if (!profile) {
-      return;
-    }
-    updateProfile(profile);
-  }, [profile]);
-
-  const onSubmit = (data) => {
-    if (data.pic && data.pic[0]) {
-      data.pic = data.pic[0];
-    }
-    setProfile(data);
-  };
-
-  async function updateProfile(profile) {
-    try {
-      const response = await axios.patch(
+  const updateProfileMutation = useMutation({
+    mutationFn: async (payload) => {
+      return axios.patch(
         `http://localhost:3000/api/users/${user.id}`,
-        profile,
+        payload,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -55,14 +43,27 @@ function Profile() {
           },
         }
       );
+    },
+    onSuccess: () => {
       toast.success("Profile updated successfully");
       navigate("/todos");
-      console.log(response);
-    } catch (error) {
-      toast.success("Profile not updated successfully");
-      console.log(error);
+    },
+    onError: () => {
+      toast.error("Profile not updated successfully");
+    },
+  });
+
+  const onSubmit = (data) => {
+    const formData = new FormData();
+    formData.append("name", data.name);
+
+    if (data.pic && data.pic[0]) {
+      formData.append("pic", data.pic[0]);
     }
-  }
+
+    updateProfileMutation.mutate(formData);
+  };
+
   return (
     <div
       className={`flex flex-col justify-start items-center h-screen p-3 bg-blue-100 ${
@@ -90,6 +91,7 @@ function Profile() {
             />
           </Link>
         </div>
+
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
           <input
             type="text"
@@ -115,10 +117,19 @@ function Profile() {
 
           <button
             type="submit"
-            className="cursor-pointer font-bold text-white p-2 mt-3 rounded transition-all bg-blue-500 hover:bg-blue-600"
+            disabled={updateProfileMutation.isPending}
+            className="flex justify-center items-center gap-2 cursor-pointer font-bold text-white p-2 mt-3 rounded transition-all bg-blue-500 hover:bg-blue-600"
           >
-            Update Account
+            {updateProfileMutation.isPending ? (
+              <>
+                <Spinner className="size-5" />
+                <span>Updating... </span>
+              </>
+            ) : (
+              "Update Profile"
+            )}
           </button>
+
           <button
             type="button"
             onClick={() => navigate("/")}
@@ -126,10 +137,10 @@ function Profile() {
           >
             Create Account
           </button>
+
           <button
             type="button"
-            className="cursor-pointer font-bold text-white p-2 rounded transition-all 
-              bg-blue-500 hover:bg-blue-600 mt-2"
+            className="cursor-pointer font-bold text-white p-2 rounded transition-all bg-blue-500 hover:bg-blue-600 mt-2"
             onClick={() => navigate("/todos")}
           >
             My Tasks

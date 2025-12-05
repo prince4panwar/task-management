@@ -6,6 +6,7 @@ import { useThemeStore } from "@/store/themeStore";
 import EditTodoDialog from "@/components/EditTodoDialog";
 import { useTodoStore } from "@/store/todoStore";
 import DeleteTodoDialog from "@/components/DeleteTodoDialog";
+import { useQuery } from "@tanstack/react-query";
 
 function TodoDetails() {
   const { todoId } = useParams();
@@ -15,12 +16,9 @@ function TodoDetails() {
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(false);
 
-  useEffect(() => {
-    fetchTodos();
-  }, [isEdit]);
-
-  async function fetchTodos() {
-    try {
+  const { isLoading, isError, refetch } = useQuery({
+    queryKey: ["todoDetails", todoId],
+    queryFn: async () => {
       const response = await axios.get(
         `http://localhost:3000/api/todos/${todoId}`,
         {
@@ -30,11 +28,19 @@ function TodoDetails() {
         }
       );
       addTodo(response.data.data);
-      setIsEdit(false);
-    } catch (error) {
-      console.log(error);
+      return response.data.data;
+    },
+  });
+
+  // When editing is done, refetch todo data
+  useEffect(() => {
+    if (isEdit === false) {
+      refetch();
     }
-  }
+  }, [isEdit, refetch]);
+
+  if (isLoading) return <p className="text-center">Loading...</p>;
+  if (isError) return <p className="text-center">Error fetching todo</p>;
 
   return (
     <div
@@ -68,7 +74,7 @@ function TodoDetails() {
         </Link>
         <div>
           <p
-            className={`font-bold pb-2  ${
+            className={`font-bold pb-2 ${
               theme === "light" ? "text-black" : "text-white"
             }`}
           >
@@ -92,19 +98,21 @@ function TodoDetails() {
             <button
               type="button"
               className="group flex items-center gap-1 cursor-pointer font-semibold text-white py-2 px-4 rounded transition-all
-             bg-blue-500 hover:bg-blue-600 mt-2"
+              bg-blue-500 hover:bg-blue-600 mt-2"
               onClick={() => navigate("/todos")}
             >
               <MoveLeft className="transition-all duration-300 group-hover:-translate-x-2" />
               My Tasks
             </button>
+
             <EditTodoDialog setIsEdit={setIsEdit} />
+
             <DeleteTodoDialog
               showIcon={true}
               btnName="Delete Task"
               todoId={todoId}
               btnClass="group flex items-center gap-2 cursor-pointer font-semibold text-white py-2 px-4 rounded transition-all
-             bg-red-500 hover:bg-red-700 mt-2 "
+              bg-red-500 hover:bg-red-700 mt-2 "
             />
           </div>
         </div>

@@ -8,14 +8,15 @@ import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useThemeStore } from "@/store/themeStore";
 import DeleteTodoDialog from "./DeleteTodoDialog";
+import { useMutation } from "@tanstack/react-query";
 
-function TodosList({ todos, setSelectedTodo, fetchTodos }) {
+function TodosList({ todos, setSelectedTodo, fetchTodos, isLoading, isError }) {
   const { reset } = useFormContext();
   const navigate = useNavigate();
   const { theme } = useThemeStore();
 
-  async function handleEdit(_id) {
-    try {
+  const handleEditMutation = useMutation({
+    mutationFn: async (_id) => {
       const response = await axios.get(
         `http://localhost:3000/api/todos/${_id}`,
         {
@@ -24,12 +25,21 @@ function TodosList({ todos, setSelectedTodo, fetchTodos }) {
           },
         }
       );
-      setSelectedTodo(response.data.data);
+      return response.data.data;
+    },
+    onSuccess: (data) => {
+      setSelectedTodo(data);
       reset();
-    } catch (error) {
-      console.log(error);
-    }
-  }
+    },
+    onError: () => toast.error("Error fetching todo"),
+  });
+
+  const handleEdit = (_id) => {
+    handleEditMutation.mutate(_id);
+  };
+
+  if (isLoading) return <p className="text-center">Loading...</p>;
+  if (isError) return <p className="text-center">Error fetching todo</p>;
 
   return (
     <div
