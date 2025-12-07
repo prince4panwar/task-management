@@ -21,8 +21,14 @@ import ImageUpload from "./ImageUpload";
 import { createTaskFormSchema } from "@/lib/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "./ui/spinner";
+import { twMerge } from "tailwind-merge";
 
-function EditTodoDialog({ setIsEdit }) {
+function EditTodoDialog({
+  setIsEdit,
+  btnClass,
+  isIcon,
+  btnName = "Edit Task",
+}) {
   const { todoId } = useParams();
   const todo = useTodoStore((state) => state.todo);
   const [open, setOpen] = useState(false);
@@ -88,16 +94,14 @@ function EditTodoDialog({ setIsEdit }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button
-          type="button"
-          className="group flex items-center gap-2 cursor-pointer font-semibold text-white py-2 px-4 rounded transition-all
-             bg-green-700 hover:bg-green-700 mt-2"
-        >
-          <SquarePen
-            size={19}
-            className="transition-all duration-300 group-hover:-translate-x-1"
-          />
-          Edit Task
+        <button type="button" className={btnClass}>
+          {isIcon ? (
+            <SquarePen
+              size={19}
+              className="transition-all duration-300 group-hover:-translate-x-1"
+            />
+          ) : null}
+          {btnName}
         </button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px]">
@@ -154,7 +158,7 @@ function EditTodoDialog({ setIsEdit }) {
           <DialogFooter>
             <DialogClose asChild>
               <button
-                className="group flex items-center gap-1 cursor-pointer font-bold text-white py-2 px-4 rounded transition-all
+                className="group flex items-center justify-center gap-1 cursor-pointer font-bold text-white py-2 px-4 rounded transition-all
              bg-red-500 hover:bg-red-800 mt-2"
               >
                 Cancel
@@ -163,7 +167,7 @@ function EditTodoDialog({ setIsEdit }) {
             <button
               type="submit"
               disabled={editTodoMutation.isPending}
-              className="group flex items-center gap-1 cursor-pointer font-bold text-white py-2 px-4 rounded transition-all
+              className="group flex items-center justify-center gap-1 cursor-pointer font-bold text-white py-2 px-4 rounded transition-all
             bg-blue-500 hover:bg-blue-600 mt-2"
             >
               {editTodoMutation.isPending ? (

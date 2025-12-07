@@ -72,7 +72,7 @@ function App() {
           duration: 1500,
         }}
       />
-      <ReactQueryDevtools initialIsOpen={true} />
+      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
     </QueryClientProvider>
   );
 }

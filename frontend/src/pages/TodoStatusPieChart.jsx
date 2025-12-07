@@ -52,11 +52,11 @@ const TodoStatusPieChart = () => {
   ];
 
   return (
-    <div className="w-full h-[370px] ">
-      <h2 className="text-3xl text-blue-500 font-bold mb-4 mt-10 text-center">
+    <div className="w-full h-[370px]">
+      <h2 className="sm:text-3xl text-2xl text-blue-500 font-bold mb-4 sm:mt-10 mt-2 text-center">
         Tasks Summary
       </h2>
-      <h3 className="text-lg text-blue-500 font-semibold text-center mt-2 mb-4">
+      <h3 className="sm:text-lg text-sm text-blue-500 font-semibold text-center sm:mt-2 sm:mb-4 mb-2">
         Total Tasks: {data?.total}
       </h3>
 
@@ -84,12 +84,12 @@ const TodoStatusPieChart = () => {
         </PieChart>
       </ResponsiveContainer>
 
-      <div className="flex justify-center w-screen mt-6">
+      <div className="flex justify-center w-screen sm:mt-6 mt-3">
         <motion.button
           whileTap={{ scale: 0.8 }}
           type="button"
           className="group flex items-center gap-2 cursor-pointer font-bold text-white py-2 px-4 rounded transition-all
-             bg-blue-500 hover:bg-blue-600 mt-2"
+             bg-blue-500 hover:bg-blue-600 sm:mt-2"
           onClick={() => navigate("/todos")}
         >
           <MoveLeft className="transition-all duration-300 group-hover:-translate-x-2" />

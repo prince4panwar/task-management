@@ -66,14 +66,14 @@ function Profile() {
 
   return (
     <div
-      className={`flex flex-col justify-start items-center h-screen p-3 bg-blue-100 ${
+      className={`flex flex-col justify-start items-center h-screen sm:p-3 pt-1 bg-blue-100 ${
         theme === "light" ? "light" : "dark-bg"
       }`}
     >
       <motion.div
         initial={{ y: 100 }}
         animate={{ y: 0 }}
-        className={`w-1/3 mt-4 p-4 rounded-2xl ${
+        className={`lg:w-1/3 w-full sm:mt-4 p-4 sm:rounded-2xl ${
           theme === "light" ? "light" : "dark"
         }`}
       >
@@ -87,7 +87,7 @@ function Profile() {
               alt="Profile Pic"
               height={50}
               width={200}
-              className="rounded-3xl mb-4 cursor-pointer"
+              className="rounded-full mb-4 cursor-pointer"
             />
           </Link>
         </div>

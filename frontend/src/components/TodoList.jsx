@@ -9,11 +9,14 @@ import { useNavigate } from "react-router-dom";
 import { useThemeStore } from "@/store/themeStore";
 import DeleteTodoDialog from "./DeleteTodoDialog";
 import { useMutation } from "@tanstack/react-query";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import EditTodoDialog from "./EditTodoDialog";
 
 function TodosList({ todos, setSelectedTodo, fetchTodos, isLoading, isError }) {
   const { reset } = useFormContext();
   const navigate = useNavigate();
   const { theme } = useThemeStore();
+  const isMobile = useIsMobile();
 
   const handleEditMutation = useMutation({
     mutationFn: async (_id) => {
@@ -43,16 +46,20 @@ function TodosList({ todos, setSelectedTodo, fetchTodos, isLoading, isError }) {
 
   return (
     <div
-      className={`w-2/3 h-[calc(100vh-70px)] overflow-auto p-2 pt-0 mt-1 custom-scroll`}
+      className={`sm:w-2/3 w-full h-[calc(100vh-70px)] overflow-auto sm:p-2 sm:pt-0 mt-1 custom-scroll`}
     >
       <div
-        className={`z-10 h-[55px] text-md font-bold mb-2.5 sticky rounded top-0 p-4 flex gap-4 justify-around bg-blue-500 text-white`}
+        className={`z-10 sm:h-[55px] text-md font-bold sm:mb-2.5 mb-1 sticky sm:rounded top-0 sm:p-4 px-1 py-3 flex sm:gap-4 justify-around bg-blue-500 text-white max-sm:shadow-[0px_2px_2px_4px_rgba(0,0,0,0.35)]`}
       >
-        <span className="w-1/20 text-center">S.No.</span>
-        <span className="w-1/4 text-center">Title</span>
-        <span className="w-1/4 text-center">Status</span>
-        <span className="w-1/4 text-center">Date & Time</span>
-        <span className="w-1/4 text-center">Actions</span>
+        <span className="w-1/20 text-center text-xs sm:text-base hidden sm:block">
+          S.No.
+        </span>
+        <span className="w-1/4 text-center text-xs sm:text-base">Title</span>
+        <span className="w-1/4 text-center text-xs sm:text-base">Status</span>
+        <span className="w-1/4 text-center text-xs sm:text-base">
+          Date & Time
+        </span>
+        <span className="w-1/4 text-center text-xs sm:text-base">Actions</span>
       </div>
       {todos?.length === 0 && (
         <p
@@ -71,16 +78,16 @@ function TodosList({ todos, setSelectedTodo, fetchTodos, isLoading, isError }) {
             whileTap={{ scale: 0.9991 }}
             initial={{ opacity: 0, y: -800 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`flex items-center w-full gap-4 p-2 mb-2.5 rounded shadow-[0px_2px_2px_2px_rgba(0,0,0,0.35)] cursor-pointer px-1 ${
+            className={`flex items-center w-full sm:gap-4 p-2 mb-2.5 rounded shadow-[0px_2px_2px_2px_rgba(0,0,0,0.35)] cursor-pointer px-1 ${
               theme === "light" ? "light" : "dark"
             }`}
             onClick={() => navigate(`/todos/${todo._id}`)}
           >
-            <span className="w-1/20 text-center font-bold text-blue-600">
+            <span className="hidden sm:block w-1/20 text-center font-bold text-blue-600 sm:text-base text-[10px]">
               {index + 1}.
             </span>
             <div className="w-1/4">
-              <p className="text-center font-semibold">
+              <p className="text-center font-semibold sm:text-base text-[10px]">
                 {todo.title?.length > 25
                   ? todo.title.slice(0, 25) + "..."
                   : todo.title}
@@ -92,12 +99,12 @@ function TodosList({ todos, setSelectedTodo, fetchTodos, isLoading, isError }) {
                   (todo.status === "pending" && "bg-red-600") ||
                   (todo.status === "completed" && "bg-green-900") ||
                   (todo.status === "in-progress" && "bg-yellow-500")
-                } text-white`}
+                } text-white sm:text-[11px] text-[9px]`}
               >
                 {todo.status.charAt(0).toUpperCase() + todo.status.slice(1)}
               </Badge>
             </div>
-            <p className="w-1/4 text-center font-semibold">
+            <p className="w-1/4 sm:text-base text-[10px] text-center font-semibold">
               {/* {new Date(todo.createdAt).toLocaleString()} */}
               {new Date(todo.createdAt).toLocaleString("en-GB", {
                 day: "2-digit",
@@ -113,19 +120,27 @@ function TodosList({ todos, setSelectedTodo, fetchTodos, isLoading, isError }) {
               onClick={(e) => e.stopPropagation()}
               className="w-1/4 flex flex-col gap-2 justify-center items-center"
             >
-              <motion.button
-                className="px-5 py-1 w-1/2 bg-green-500 hover:bg-green-600 text-white rounded cursor-pointer font-bold"
-                onClick={(e) => {
-                  // e.stopPropagation();
-                  handleEdit(todo._id);
-                }}
-              >
-                Edit
-              </motion.button>
+              {isMobile ? (
+                <EditTodoDialog
+                  btnName="Edit"
+                  btnClass="sm:text-base text-[10px] sm:px-7.5 px-5 py-1 bg-green-500 hover:bg-green-600 text-white rounded cursor-pointer font-bold"
+                  todoEditId={todo._id}
+                />
+              ) : (
+                <motion.button
+                  className="sm:text-base text-[10px] sm:px-7.5 px-5 py-1 bg-green-500 hover:bg-green-600 text-white rounded cursor-pointer font-bold"
+                  onClick={(e) => {
+                    // e.stopPropagation();
+                    handleEdit(todo._id);
+                  }}
+                >
+                  Edit
+                </motion.button>
+              )}
               <DeleteTodoDialog
                 showIcon={false}
                 btnName="Delete"
-                btnClass="px-5 py-1 w-1/2 bg-red-500 hover:bg-red-700 text-white rounded cursor-pointer font-bold"
+                btnClass="sm:text-base text-[10px] sm:px-5 px-3 py-1 bg-red-500 hover:bg-red-700 text-white rounded cursor-pointer font-bold"
                 todoId={todo._id}
                 onDeletion={fetchTodos}
               />

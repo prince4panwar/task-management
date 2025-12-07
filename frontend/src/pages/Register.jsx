@@ -65,11 +65,11 @@ function Register() {
   return (
     <div>
       <div
-        className={`h-[70px] text-3xl font-bold sticky top-0 p-4 flex justify-around bg-blue-500 text-white w-full ${
+        className={`sm:h-[70px] text-3xl font-bold sticky top-0 p-4 flex justify-around bg-blue-500 text-white w-full ${
           theme === "light" ? "light" : "dark"
         }`}
       >
-        <span className="font-bold">Taskify</span>
+        <span className="font-bold sm:text-2xl text-lg">Taskify</span>
       </div>
 
       <div
@@ -80,11 +80,11 @@ function Register() {
         <motion.div
           initial={{ y: -100 }}
           animate={{ y: 0 }}
-          className={`flex flex-col justify-center w-1/4 p-4 rounded shadow-[0px_5px_15px_2px_rgba(0,0,0,0.35)] ${
+          className={`flex flex-col justify-center lg:w-1/4 w-full p-4 rounded shadow-[0px_5px_15px_2px_rgba(0,0,0,0.35)] ${
             theme === "light" ? "light" : "dark"
           }`}
         >
-          <h1 className="text-3xl font-bold mb-3 text-center text-blue-500">
+          <h1 className="sm:text-3xl text-xl font-bold mb-3 text-center text-blue-500">
             Create Account
           </h1>
 

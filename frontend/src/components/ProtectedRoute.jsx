@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -6,9 +6,10 @@ import { useQuery } from "@tanstack/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUserStore } from "../store/userStore";
 import { useThemeStore } from "../store/themeStore";
-import { Moon, Sun } from "lucide-react";
+import { Menu, Moon, Sun, X } from "lucide-react";
 
 const ProtectedRoute = ({ children }) => {
+  const [hamburger, setHamburger] = useState(true);
   const user = useUserStore((state) => state.user);
   const addUser = useUserStore((state) => state.addUser);
   const deleteUser = useUserStore((state) => state.deleteUser);
@@ -57,25 +58,35 @@ const ProtectedRoute = ({ children }) => {
   return (
     <div className="h-screen overflow-hidden">
       <div
-        className={`h-[70px] text-3xl font-bold sticky top-0 px-8 py-2 flex items-center bg-blue-500 text-white w-full ${
+        className={`h-[70px] text-3xl font-bold sticky top-0 sm:px-8 px-2 py-2 flex items-center bg-blue-500 text-white w-full ${
           theme === "light" ? "light" : "dark"
         }`}
       >
         <div className="w-1/3 flex justify-start">
           <Link
-            className="text-lg hover:underline"
+            className="sm:text-lg sm:block hidden text-sm hover:underline"
             onClick={() => navigate("/todos")}
           >
             Taskify
           </Link>
+          {hamburger ? (
+            <Menu
+              className="sm:hidden"
+              onClick={() => setHamburger(!hamburger)}
+            />
+          ) : (
+            <X className="sm:hidden" onClick={() => setHamburger(!hamburger)} />
+          )}
         </div>
         <div className="w-1/3 flex justify-center">
-          <span className="font-bold text-2xl">Welcome {user?.name}</span>
+          <span className="font-bold sm:text-2xl text-sm">
+            Welcome {user?.name}
+          </span>
         </div>
-        <div className="w-1/3 flex justify-end items-center gap-4">
+        <div className="w-1/3 flex justify-end items-center sm:gap-4">
           <Avatar
             onClick={() => navigate("/update/username")}
-            className="w-10 h-10"
+            className="sm:w-10 sm:h-10 w-8 h-8"
           >
             <AvatarImage src={user?.pic} className="cursor-pointer" />
             <AvatarFallback>
@@ -100,7 +111,10 @@ const ProtectedRoute = ({ children }) => {
             )}
           </button>
 
-          <Link className="text-sm hover:underline" onClick={onLogout}>
+          <Link
+            className="sm:text-sm text-[11px] hover:underline"
+            onClick={onLogout}
+          >
             Logout
           </Link>
         </div>

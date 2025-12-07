@@ -44,35 +44,35 @@ function TodoDetails() {
 
   return (
     <div
-      className={`flex gap-4 h-full px-4 py-6 ${
+      className={`flex sm:flex-row flex-col sm:overflow-hidden overflow-auto sm:gap-4 gap-1 sm:h-full h-[calc(100vh-70px)] sm:px-4 p-1 sm:py-6 ${
         theme === "light" ? "light" : "dark-bg"
       }`}
     >
-      <div className="w-2/3">
+      <div className="sm:w-2/3">
         <p
-          className={`font-bold p-4 bg-blue-200 rounded-xl mb-4 ${
+          className={`font-bold sm:p-4 p-2 bg-blue-200 sm:rounded-xl rounded-sm text-sm sm:text-base sm:mb-4 mb-1 ${
             theme === "light" ? "light" : "dark"
           }`}
         >
           {todo?.title}
         </p>
         <div
-          className={`max-h-[75vh] rounded-xl bg-blue-200 p-4 overflow-x-hidden overflow-y-auto custom-scroll ${
+          className={`sm:max-h-[75vh] max-h-[50vh] sm:rounded-xl rounded-sm bg-blue-200 sm:p-4 p-2 overflow-x-hidden overflow-y-auto custom-scroll ${
             theme === "light" ? "light" : "dark"
           }`}
         >
-          <p className="font-bold">{todo?.description}</p>
+          <p className="font-bold text-sm sm:text-base">{todo?.description}</p>
         </div>
       </div>
       <div
-        className={`max-h-[85vh] flex flex-col items-start gap-8 p-4 rounded-xl w-1/3 bg-blue-200 ${
+        className={`max-h-[85vh] flex flex-col items-start sm:gap-8 gap-3 sm:p-4 p-2 sm:rounded-xl rounded-sm sm:w-1/3 bg-blue-200 ${
           theme === "light" ? "light" : "dark"
         }`}
       >
         <Link to={todo?.image} target="_blank" rel="noopener noreferrer">
           {todo?.image && <img src={todo?.image} alt="image" width={300} />}
         </Link>
-        <div>
+        <div className="w-full sm:w-auto">
           <p
             className={`font-bold pb-2 ${
               theme === "light" ? "text-black" : "text-white"
@@ -94,24 +94,29 @@ function TodoDetails() {
               hour12: true,
             })}
           </p>
-          <div className="flex gap-3 mt-4">
+          <div className="flex lg:flex-row flex-col sm:gap-3 sm:mt-4">
             <button
               type="button"
-              className="group flex items-center gap-1 cursor-pointer font-semibold text-white py-2 px-4 rounded transition-all
-              bg-blue-500 hover:bg-blue-600 mt-2"
+              className="group flex items-center justify-center sm:gap-2 gap-4 cursor-pointer font-semibold text-white py-2 px-4 rounded transition-all
+              bg-blue-500 hover:bg-blue-600 mt-2 text-base"
               onClick={() => navigate("/todos")}
             >
               <MoveLeft className="transition-all duration-300 group-hover:-translate-x-2" />
               My Tasks
             </button>
 
-            <EditTodoDialog setIsEdit={setIsEdit} />
+            <EditTodoDialog
+              isIcon
+              setIsEdit={setIsEdit}
+              btnClass="group flex items-center justify-center sm:gap-2 gap-4 cursor-pointer font-semibold text-white py-2 px-4 rounded transition-all
+             bg-green-700 hover:bg-green-700 mt-2 "
+            />
 
             <DeleteTodoDialog
               showIcon={true}
               btnName="Delete Task"
               todoId={todoId}
-              btnClass="group flex items-center gap-2 cursor-pointer font-semibold text-white py-2 px-4 rounded transition-all
+              btnClass="group flex items-center justify-center sm:gap-2 gap-4 cursor-pointer font-semibold text-white py-2 px-4 rounded transition-all
               bg-red-500 hover:bg-red-700 mt-2 "
             />
           </div>
