@@ -14,6 +14,7 @@ import { Trash } from "lucide-react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useThemeStore } from "@/store/themeStore";
 
 function DeleteTodoDialog({
   showIcon = false,
@@ -24,6 +25,7 @@ function DeleteTodoDialog({
 }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { theme } = useThemeStore();
 
   const deleteTodoMutation = useMutation({
     mutationFn: async () => {
@@ -64,7 +66,7 @@ function DeleteTodoDialog({
         </button>
       </AlertDialogTrigger>
 
-      <AlertDialogContent>
+      <AlertDialogContent className={`${theme === "light" ? "light" : "dark"}`}>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure to delete this task?</AlertDialogTitle>
           <AlertDialogDescription>

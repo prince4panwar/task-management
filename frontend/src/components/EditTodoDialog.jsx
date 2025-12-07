@@ -22,6 +22,7 @@ import { createTaskFormSchema } from "@/lib/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "./ui/spinner";
 import { twMerge } from "tailwind-merge";
+import { useThemeStore } from "@/store/themeStore";
 
 function EditTodoDialog({
   setIsEdit,
@@ -33,6 +34,7 @@ function EditTodoDialog({
   const todo = useTodoStore((state) => state.todo);
   const [open, setOpen] = useState(false);
   const [fileName, setFileName] = useState("");
+  const { theme } = useThemeStore();
 
   const queryClient = useQueryClient();
 
@@ -104,7 +106,9 @@ function EditTodoDialog({
           {btnName}
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[525px]">
+      <DialogContent
+        className={`sm:max-w-[525px] ${theme === "light" ? "light" : "dark"}`}
+      >
         <DialogHeader>
           <DialogTitle className="font-semibold text-2xl">
             Edit Task

@@ -7,15 +7,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUserStore } from "../store/userStore";
 import { useThemeStore } from "../store/themeStore";
 import { Menu, Moon, Sun, X } from "lucide-react";
+import { Sidebar } from "./Sidebar";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const ProtectedRoute = ({ children }) => {
-  const [hamburger, setHamburger] = useState(true);
   const user = useUserStore((state) => state.user);
   const addUser = useUserStore((state) => state.addUser);
   const deleteUser = useUserStore((state) => state.deleteUser);
   const { theme, toggleTheme } = useThemeStore();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const isMobile = useIsMobile();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["authUser"],
@@ -69,14 +71,7 @@ const ProtectedRoute = ({ children }) => {
           >
             Taskify
           </Link>
-          {hamburger ? (
-            <Menu
-              className="sm:hidden"
-              onClick={() => setHamburger(!hamburger)}
-            />
-          ) : (
-            <X className="sm:hidden" onClick={() => setHamburger(!hamburger)} />
-          )}
+          {isMobile && <Sidebar />}
         </div>
         <div className="w-1/3 flex justify-center">
           <span className="font-bold sm:text-2xl text-sm">
