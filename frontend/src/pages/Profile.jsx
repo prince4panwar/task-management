@@ -9,12 +9,13 @@ import { useThemeStore } from "@/store/themeStore";
 import ImageUpload from "@/components/ImageUpload";
 import ErrorMessage from "@/components/ErrorMessage";
 import { profileUpdateFormSchema } from "@/lib/schema";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Spinner } from "@/components/ui/spinner";
 
 function Profile() {
   const user = useUserStore((state) => state.user);
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -46,6 +47,7 @@ function Profile() {
     },
     onSuccess: () => {
       toast.success("Profile updated successfully");
+      queryClient.invalidateQueries(["authUser"]);
       navigate("/todos");
     },
     onError: () => {

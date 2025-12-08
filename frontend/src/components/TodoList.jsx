@@ -10,7 +10,7 @@ import { useThemeStore } from "@/store/themeStore";
 import DeleteTodoDialog from "./DeleteTodoDialog";
 import { useMutation } from "@tanstack/react-query";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import EditTodoDialog from "./EditTodoDialog";
+import CreateTodoDialog from "./CreateTodoDialog";
 
 function TodosList({ todos, setSelectedTodo, fetchTodos, isLoading, isError }) {
   const { reset } = useFormContext();
@@ -105,7 +105,6 @@ function TodosList({ todos, setSelectedTodo, fetchTodos, isLoading, isError }) {
               </Badge>
             </div>
             <p className="w-1/4 sm:text-base text-[10px] text-center font-semibold">
-              {/* {new Date(todo.createdAt).toLocaleString()} */}
               {new Date(todo.createdAt).toLocaleString("en-GB", {
                 day: "2-digit",
                 month: "short",
@@ -121,16 +120,15 @@ function TodosList({ todos, setSelectedTodo, fetchTodos, isLoading, isError }) {
               className="w-1/4 flex flex-col gap-2 justify-center items-center"
             >
               {isMobile ? (
-                <EditTodoDialog
+                <CreateTodoDialog
                   btnName="Edit"
                   btnClass="sm:text-base text-[10px] sm:px-7.5 px-5 py-1 bg-green-500 hover:bg-green-600 text-white rounded cursor-pointer font-bold"
-                  todoEditId={todo._id}
+                  todoId={todo._id}
                 />
               ) : (
                 <motion.button
                   className="sm:text-base text-[10px] sm:px-7.5 px-5 py-1 bg-green-500 hover:bg-green-600 text-white rounded cursor-pointer font-bold"
                   onClick={(e) => {
-                    // e.stopPropagation();
                     handleEdit(todo._id);
                   }}
                 >

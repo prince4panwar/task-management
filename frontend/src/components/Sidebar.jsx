@@ -11,10 +11,24 @@ import {
 import { useThemeStore } from "@/store/themeStore";
 import { Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import CreateTodoDialog from "./CreateTodoDialog";
+import { useUserStore } from "@/store/userStore";
+import toast from "react-hot-toast";
 
 export function Sidebar() {
+  const user = useUserStore((state) => state.user);
+  const deleteUser = useUserStore((state) => state.deleteUser);
   const { theme } = useThemeStore();
   const navigate = useNavigate();
+
+  function onLogout() {
+    deleteUser();
+    navigate("/login");
+    toast.success("Logged out successfully");
+    setTimeout(() => {
+      localStorage.removeItem("token");
+    }, 1);
+  }
 
   return (
     <Sheet>
@@ -30,6 +44,7 @@ export function Sidebar() {
       >
         <SheetHeader>
           <SheetTitle>Taskify</SheetTitle>
+          <SheetDescription> Welcome {user?.name}</SheetDescription>
         </SheetHeader>
 
         <div className="flex flex-col gap-2 px-3">
@@ -44,13 +59,10 @@ export function Sidebar() {
           </SheetClose>
 
           <SheetClose asChild>
-            <button
-              type="button"
-              className="cursor-pointer font-bold text-white p-2 rounded transition-all bg-blue-500 hover:bg-blue-600"
-              onClick={() => navigate("/todos")}
-            >
-              Create Task
-            </button>
+            <CreateTodoDialog
+              btnClass="cursor-pointer font-bold text-white p-2 rounded transition-all bg-blue-500 hover:bg-blue-600"
+              btnName="Create Task"
+            />
           </SheetClose>
 
           <SheetClose asChild>
@@ -65,10 +77,20 @@ export function Sidebar() {
         </div>
 
         <SheetFooter>
+          {/* <SheetClose asChild> */}
+          <button
+            type="button"
+            className="cursor-pointer font-bold text-white p-2 rounded transition-all bg-red-500 hover:bg-red-600"
+            onClick={onLogout}
+          >
+            Logout
+          </button>
+          {/* </SheetClose> */}
+
           <SheetClose asChild>
             <button
               type="button"
-              className="cursor-pointer font-bold text-white p-2 rounded transition-all bg-red-500 hover:bg-red-600 mt-2"
+              className="cursor-pointer font-bold text-white p-2 rounded transition-all bg-red-500 hover:bg-red-600"
             >
               Close
             </button>

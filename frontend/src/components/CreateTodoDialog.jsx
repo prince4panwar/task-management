@@ -8,12 +8,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { SquarePen } from "lucide-react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTodoStore } from "@/store/todoStore";
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import ErrorMessage from "./ErrorMessage";
@@ -21,21 +18,15 @@ import ImageUpload from "./ImageUpload";
 import { createTaskFormSchema } from "@/lib/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "./ui/spinner";
-import { twMerge } from "tailwind-merge";
 import { useThemeStore } from "@/store/themeStore";
+import { useAllTodoStore } from "@/store/allTodoStore";
 
-function EditTodoDialog({
-  setIsEdit,
-  btnClass,
-  isIcon,
-  btnName = "Edit Task",
-}) {
-  const { todoId } = useParams();
-  const todo = useTodoStore((state) => state.todo);
+function CreateTodoDialog({ btnClass, btnName = "Edit Task", todoId }) {
   const [open, setOpen] = useState(false);
   const [fileName, setFileName] = useState("");
-  const { theme } = useThemeStore();
+  const allTodo = useAllTodoStore((state) => state.allTodo);
 
+  const { theme } = useThemeStore();
   const queryClient = useQueryClient();
 
   const {
@@ -47,25 +38,44 @@ function EditTodoDialog({
     resolver: zodResolver(createTaskFormSchema),
     mode: "all",
     defaultValues: {
-      title: todo?.title,
-      description: todo?.description,
-      status: todo?.status,
+      title: "",
+      description: "",
+      status: "pending",
       image: "",
     },
   });
 
+  // Auto-fill form when editing
   useEffect(() => {
-    if (todo) {
-      reset({
-        title: todo.title || "",
-        description: todo.description || "",
-        status: todo.status || "",
-        image: "",
-      });
+    if (btnName === "Edit" && open && todoId) {
+      const selected = allTodo.find((t) => t._id === todoId);
+      if (selected) {
+        reset({
+          title: selected.title,
+          description: selected.description,
+          status: selected.status,
+          image: "",
+        });
+      }
     }
-  }, [todo, reset]);
+  }, [todoId, open, btnName, allTodo, reset]);
 
-  const editTodoMutation = useMutation({
+  const createTodoMutation = useMutation({
+    mutationFn: async (data) => {
+      return axios.post("http://localhost:3000/api/todos", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      });
+    },
+    onSuccess: () => {
+      toast.success("Task created successfully");
+      queryClient.invalidateQueries(["todos"]);
+    },
+  });
+
+  const updateTodoMutation = useMutation({
     mutationFn: async (data) => {
       return axios.patch(`http://localhost:3000/api/todos/${todoId}`, data, {
         headers: {
@@ -75,34 +85,49 @@ function EditTodoDialog({
       });
     },
     onSuccess: () => {
-      setIsEdit(true);
-      setOpen(false);
       toast.success("Task updated successfully");
       queryClient.invalidateQueries(["todos"]);
     },
-    onError: () => {
-      toast.error("Error updating task");
-    },
   });
 
-  function onSubmit(data) {
-    if (data.image && data.image[0]) {
-      data.image = data.image[0];
+  const onSubmit = async (data) => {
+    if (data.image && data.image[0]) data.image = data.image[0];
+
+    if (btnName === "Edit") {
+      updateTodoMutation.mutate(data, {
+        onSuccess: () => {
+          setFileName("");
+          reset();
+          setOpen(false);
+        },
+      });
+    } else {
+      createTodoMutation.mutate(data, {
+        onSuccess: () => {
+          setFileName("");
+          reset();
+          setOpen(false);
+        },
+      });
     }
-    setFileName("");
-    editTodoMutation.mutate(data);
-  }
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button type="button" className={btnClass}>
-          {isIcon ? (
-            <SquarePen
-              size={19}
-              className="transition-all duration-300 group-hover:-translate-x-1"
-            />
-          ) : null}
+        <button
+          type="button"
+          className={btnClass}
+          onClick={() =>
+            !todoId &&
+            reset({
+              title: "",
+              description: "",
+              status: "pending",
+              image: "",
+            })
+          }
+        >
           {btnName}
         </button>
       </DialogTrigger>
@@ -111,12 +136,15 @@ function EditTodoDialog({
       >
         <DialogHeader>
           <DialogTitle className="font-semibold text-2xl">
-            Edit Task
+            {btnName === "Edit" ? "Edit Task" : "Create Task"}
           </DialogTitle>
           <DialogDescription className="font-semibold text-md">
-            Make changes to your task here.
+            {btnName === "Edit"
+              ? "Edit your task here."
+              : "Create your task here."}
           </DialogDescription>
         </DialogHeader>
+
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             type="text"
@@ -163,21 +191,23 @@ function EditTodoDialog({
             <DialogClose asChild>
               <button
                 className="group flex items-center justify-center gap-1 cursor-pointer font-bold text-white py-2 px-4 rounded transition-all
-             bg-red-500 hover:bg-red-800 mt-2"
+             bg-red-500 hover:bg-red-800 sm:mt-2"
               >
                 Cancel
               </button>
             </DialogClose>
             <button
               type="submit"
-              disabled={editTodoMutation.isPending}
+              disabled={
+                createTodoMutation.isPending || updateTodoMutation.isPending
+              }
               className="group flex items-center justify-center gap-1 cursor-pointer font-bold text-white py-2 px-4 rounded transition-all
             bg-blue-500 hover:bg-blue-600 mt-2"
             >
-              {editTodoMutation.isPending ? (
+              {createTodoMutation.isPending || updateTodoMutation.isPending ? (
                 <>
                   <Spinner className="size-5" />
-                  <span>Saving... </span>
+                  <span>Saving...</span>
                 </>
               ) : (
                 "Save changes"
@@ -190,4 +220,4 @@ function EditTodoDialog({
   );
 }
 
-export default EditTodoDialog;
+export default CreateTodoDialog;

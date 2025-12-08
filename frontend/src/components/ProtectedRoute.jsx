@@ -60,11 +60,11 @@ const ProtectedRoute = ({ children }) => {
   return (
     <div className="h-screen overflow-hidden">
       <div
-        className={`h-[70px] text-3xl font-bold sticky top-0 sm:px-8 px-2 py-2 flex items-center bg-blue-500 text-white w-full ${
+        className={`h-[70px] text-3xl font-bold sticky top-0 sm:px-8 p-1 flex items-center bg-blue-500 text-white w-full ${
           theme === "light" ? "light" : "dark"
         }`}
       >
-        <div className="w-1/3 flex justify-start">
+        <div className="sm:w-1/3 w-2/8 flex justify-start">
           <Link
             className="sm:text-lg sm:block hidden text-sm hover:underline"
             onClick={() => navigate("/todos")}
@@ -73,12 +73,12 @@ const ProtectedRoute = ({ children }) => {
           </Link>
           {isMobile && <Sidebar />}
         </div>
-        <div className="w-1/3 flex justify-center">
+        <div className="sm:w-1/3 w-4/8 flex justify-center">
           <span className="font-bold sm:text-2xl text-sm">
             Welcome {user?.name}
           </span>
         </div>
-        <div className="w-1/3 flex justify-end items-center sm:gap-4">
+        <div className="sm:w-1/3 w-2/8 flex justify-end items-center sm:gap-4 gap-2">
           <Avatar
             onClick={() => navigate("/update/username")}
             className="sm:w-10 sm:h-10 w-8 h-8"
@@ -107,7 +107,7 @@ const ProtectedRoute = ({ children }) => {
           </button>
 
           <Link
-            className="sm:text-sm text-[11px] hover:underline"
+            className="sm:text-sm text-[11px] hover:underline hidden sm:block"
             onClick={onLogout}
           >
             Logout
