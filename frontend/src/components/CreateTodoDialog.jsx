@@ -207,10 +207,14 @@ function CreateTodoDialog({ btnClass, btnName = "Edit Task", todoId }) {
               {createTodoMutation.isPending || updateTodoMutation.isPending ? (
                 <>
                   <Spinner className="size-5" />
-                  <span>Saving...</span>
+                  <span>
+                    {btnName === "Edit" ? "Updating..." : "Creating..."}
+                  </span>
                 </>
+              ) : btnName === "Edit" ? (
+                "Update Task"
               ) : (
-                "Save changes"
+                "Create Task"
               )}
             </button>
           </DialogFooter>

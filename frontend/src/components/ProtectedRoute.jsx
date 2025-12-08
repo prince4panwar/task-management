@@ -60,7 +60,7 @@ const ProtectedRoute = ({ children }) => {
   return (
     <div className="h-screen overflow-hidden">
       <div
-        className={`h-[70px] text-3xl font-bold sticky top-0 sm:px-8 p-1 flex items-center bg-blue-500 text-white w-full ${
+        className={`h-[70px] text-3xl font-bold sticky top-0 sm:px-8 p-2 flex items-center bg-blue-500 text-white w-full ${
           theme === "light" ? "light" : "dark"
         }`}
       >
@@ -78,10 +78,10 @@ const ProtectedRoute = ({ children }) => {
             Welcome {user?.name}
           </span>
         </div>
-        <div className="sm:w-1/3 w-2/8 flex justify-end items-center sm:gap-4 gap-2">
+        <div className="sm:w-1/3 w-2/8 flex justify-end items-center sm:gap-4 gap-2  max-sm:flex-row-reverse max-sm:justify-start">
           <Avatar
             onClick={() => navigate("/update/username")}
-            className="sm:w-10 sm:h-10 w-8 h-8"
+            className="sm:w-10 sm:h-10 w-9 h-9"
           >
             <AvatarImage src={user?.pic} className="cursor-pointer" />
             <AvatarFallback>
@@ -95,14 +95,14 @@ const ProtectedRoute = ({ children }) => {
 
           <button
             className={`group cursor-pointer hover:underline transition-all p-1 rounded-full ${
-              theme === "light" ? "hover:bg-yellow-400" : "hover:bg-slate-600"
+              theme === "dark" ? "hover:bg-yellow-400" : "hover:bg-slate-600"
             }`}
             onClick={toggleTheme}
           >
             {theme === "light" ? (
-              <Sun className="transition-all duration-300 group-hover:-translate-y-1" />
+              <Moon className="transition-all duration-300 group-hover:-translate-y-1 max-sm:w-5 max-sm:h-5" />
             ) : (
-              <Moon className="transition-all duration-300 group-hover:-translate-y-1" />
+              <Sun className="transition-all duration-300 group-hover:-translate-y-1 max-sm:w-5 max-sm:h-5" />
             )}
           </button>
 
