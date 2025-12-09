@@ -20,6 +20,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "./ui/spinner";
 import { useThemeStore } from "@/store/themeStore";
 import { useAllTodoStore } from "@/store/allTodoStore";
+import { formatLocalDateTime } from "@/lib/helper";
 
 function CreateTodoDialog({ btnClass, btnName = "Edit Task", todoId }) {
   const [open, setOpen] = useState(false);
@@ -42,6 +43,7 @@ function CreateTodoDialog({ btnClass, btnName = "Edit Task", todoId }) {
       description: "",
       status: "pending",
       image: "",
+      dueDate: "",
     },
   });
 
@@ -54,6 +56,7 @@ function CreateTodoDialog({ btnClass, btnName = "Edit Task", todoId }) {
           title: selected.title,
           description: selected.description,
           status: selected.status,
+          dueDate: formatLocalDateTime(selected.dueDate),
           image: "",
         });
       }
@@ -125,6 +128,7 @@ function CreateTodoDialog({ btnClass, btnName = "Edit Task", todoId }) {
               description: "",
               status: "pending",
               image: "",
+              dueDate: "",
             })
           }
         >
@@ -168,6 +172,18 @@ function CreateTodoDialog({ btnClass, btnName = "Edit Task", todoId }) {
             }`}
           />
           <ErrorMessage message={errors.description?.message} />
+
+          <input
+            type="datetime-local"
+            className={`w-full border border-blue-600 text-blue-600 focus:outline-none p-2 mb-2 rounded font-bold cursor-pointer ${
+              errors.dueDate
+                ? "border-red-900 focus:ring focus:ring-red-900 text-red-900 placeholder-red-900"
+                : "border-blue-600 focus:ring focus:ring-blue-600"
+            }`}
+            onClick={(e) => e.target.showPicker()}
+            {...register("dueDate")}
+          />
+          <ErrorMessage message={errors.dueDate?.message} />
 
           <select
             {...register("status")}

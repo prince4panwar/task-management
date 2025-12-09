@@ -21,8 +21,8 @@ import ImageUpload from "./ImageUpload";
 import { createTaskFormSchema } from "@/lib/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "./ui/spinner";
-import { twMerge } from "tailwind-merge";
 import { useThemeStore } from "@/store/themeStore";
+import { formatLocalDateTime } from "@/lib/helper";
 
 function EditTodoDialog({
   setIsEdit,
@@ -50,6 +50,7 @@ function EditTodoDialog({
       title: todo?.title,
       description: todo?.description,
       status: todo?.status,
+      dueDate: formatLocalDateTime(todo?.dueDate),
       image: "",
     },
   });
@@ -60,6 +61,7 @@ function EditTodoDialog({
         title: todo.title || "",
         description: todo.description || "",
         status: todo.status || "",
+        dueDate: formatLocalDateTime(todo.dueDate) || "",
         image: "",
       });
     }
@@ -140,6 +142,18 @@ function EditTodoDialog({
             }`}
           />
           <ErrorMessage message={errors.description?.message} />
+
+          <input
+            type="datetime-local"
+            className={`w-full border border-blue-600 text-blue-600 focus:outline-none p-2 mb-2 rounded font-bold cursor-pointer ${
+              errors.dueDate
+                ? "border-red-900 focus:ring focus:ring-red-900 text-red-900 placeholder-red-900"
+                : "border-blue-600 focus:ring focus:ring-blue-600"
+            }`}
+            onClick={(e) => e.target.showPicker()}
+            {...register("dueDate")}
+          />
+          <ErrorMessage message={errors.dueDate?.message} />
 
           <select
             {...register("status")}

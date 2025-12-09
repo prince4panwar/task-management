@@ -9,6 +9,7 @@ import ImageUpload from "./ImageUpload";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "./ui/spinner";
+import { formatLocalDateTime } from "@/lib/helper";
 
 function TodoForm({ selectedTodo, setSelectedTodo }) {
   const {
@@ -86,6 +87,7 @@ function TodoForm({ selectedTodo, setSelectedTodo }) {
       setValue("title", selectedTodo.title);
       setValue("description", selectedTodo.description);
       setValue("status", selectedTodo.status);
+      setValue("dueDate", formatLocalDateTime(selectedTodo.dueDate));
     } else {
       reset();
     }
@@ -132,6 +134,18 @@ function TodoForm({ selectedTodo, setSelectedTodo }) {
             }`}
           />
           <ErrorMessage message={errors.description?.message} />
+
+          <input
+            type="datetime-local"
+            className={`border border-blue-600 text-blue-600 focus:outline-none p-2 mb-2 rounded font-bold cursor-pointer ${
+              errors.dueDate
+                ? "border-red-900 focus:ring focus:ring-red-900 text-red-900 placeholder-red-900"
+                : "border-blue-600 focus:ring focus:ring-blue-600"
+            }`}
+            onClick={(e) => e.target.showPicker()}
+            {...register("dueDate")}
+          />
+          <ErrorMessage message={errors.dueDate?.message} />
 
           <select
             {...register("status")}

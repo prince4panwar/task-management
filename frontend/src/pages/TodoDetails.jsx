@@ -74,17 +74,19 @@ function TodoDetails() {
         </Link>
         <div className="w-full sm:w-auto">
           <p
-            className={`font-bold pb-2 ${
+            className={`font-semibold pb-2 ${
               theme === "light" ? "text-black" : "text-white"
             }`}
           >
+            <b>Status {" : "}</b>
             {todo?.status?.charAt(0).toUpperCase() + todo?.status?.slice(1)}
           </p>
           <p
-            className={`font-bold pb-2 ${
+            className={`font-semibold  pb-2 ${
               theme === "light" ? "text-black" : "text-white"
             }`}
           >
+            <b>Creation Date {" : "}</b>
             {new Date(todo?.createdAt).toLocaleString("en-GB", {
               day: "2-digit",
               month: "short",
@@ -94,7 +96,23 @@ function TodoDetails() {
               hour12: true,
             })}
           </p>
-          <div className="flex lg:flex-row flex-col sm:gap-3 sm:mt-4">
+
+          <p
+            className={`font-semibold pb-2 ${
+              theme === "light" ? "text-black" : "text-white"
+            }`}
+          >
+            <b>Due Date {" : "}</b>
+            {new Date(todo?.dueDate).toLocaleString("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            })}
+          </p>
+          <div className="flex lg:flex-row sm:flex-wrap flex-col sm:gap-3 sm:mt-4">
             <button
               type="button"
               className="group flex items-center justify-center sm:gap-2 gap-4 cursor-pointer font-semibold text-white py-2 px-4 rounded transition-all

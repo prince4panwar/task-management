@@ -22,6 +22,7 @@ function TodoPage() {
       description: "",
       status: "pending",
       image: "",
+      dueDate: "",
     },
   });
 

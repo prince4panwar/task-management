@@ -69,11 +69,28 @@ export const createTaskFormSchema = z.object({
     .nonempty("Title must be required")
     .min(5, "Title must be at least 5 characters long")
     .max(125, "Title must be at most 125 characters long"),
+
   description: z
     .string()
     .nonempty("Description must be required")
     .min(5, "Description must be at least 5 characters long"),
+
   status: z.string(),
+
+  dueDate: z
+    .string()
+    .nonempty("Due date & time is required")
+    .refine(
+      (value) => {
+        const due = new Date(value);
+        const now = new Date();
+        return due > now;
+      },
+      {
+        message: "Due date & time must be greater than the current date & time",
+      }
+    ),
+
   image: z
     .any()
     .optional()
