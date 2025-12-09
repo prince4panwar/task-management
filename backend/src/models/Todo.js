@@ -18,6 +18,14 @@ const todoSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+    dueDate: {
+      type: Date,
+      required: true,
+    },
+    notificationSent: {
+      type: Boolean,
+      default: false,
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
