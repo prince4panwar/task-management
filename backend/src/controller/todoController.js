@@ -103,15 +103,38 @@ const updateTodo = async (req, res) => {
       imageUrl = await imageUpload(req.file); // hosted image link
     }
 
+    const existingTodo = await Todo.findById(id);
+    if (!existingTodo) {
+      return res.status(404).json({
+        success: false,
+        message: "Todo not found",
+      });
+    }
+
+    // Check if dueDate changed
+    let notificationSent = existingTodo.notificationSent;
+    if (
+      new Date(existingTodo.dueDate).getTime() !== new Date(dueDate).getTime()
+    ) {
+      notificationSent = false;
+    }
+
     const todo = imageUrl
       ? await Todo.findByIdAndUpdate(
           id,
-          { title, description, status, image: imageUrl, dueDate },
+          {
+            title,
+            description,
+            status,
+            image: imageUrl,
+            dueDate,
+            notificationSent,
+          },
           { new: true }
         )
       : await Todo.findByIdAndUpdate(
           id,
-          { title, description, status, dueDate },
+          { title, description, status, dueDate, notificationSent },
           { new: true }
         );
 

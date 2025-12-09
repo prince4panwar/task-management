@@ -20,5 +20,5 @@ app.listen(PORT, async () => {
   console.log(`Server started at ${PORT}...`);
   await connect();
   console.log("Mongo db connected...");
-  // setupJobs();
+  setupJobs();
 });
