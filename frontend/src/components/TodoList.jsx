@@ -11,12 +11,22 @@ import DeleteTodoDialog from "./DeleteTodoDialog";
 import { useMutation } from "@tanstack/react-query";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import CreateTodoDialog from "./CreateTodoDialog";
+import { AlertTriangle } from "lucide-react";
+import { useSearchContext } from "@/context/SearchContext";
 
 function TodosList({ todos, setSelectedTodo, fetchTodos, isLoading, isError }) {
+  const { search } = useSearchContext();
   const { reset } = useFormContext();
-  const navigate = useNavigate();
   const { theme } = useThemeStore();
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
+
+  const filtered = todos.filter(
+    (t) =>
+      t.title.toLowerCase().includes(search.toLowerCase()) ||
+      t.description.toLowerCase().includes(search.toLowerCase()) ||
+      t.status.toLowerCase().includes(search.toLowerCase())
+  );
 
   const handleEditMutation = useMutation({
     mutationFn: async (_id) => {
@@ -61,17 +71,16 @@ function TodosList({ todos, setSelectedTodo, fetchTodos, isLoading, isError }) {
         </span>
         <span className="w-1/4 text-center text-xs sm:text-base">Actions</span>
       </div>
-      {todos?.length === 0 && (
-        <p
-          className={`h-[calc(100vh-150px)] text-gray-500 text-center w-full flex justify-center items-center text-3xl font-bold ${
-            theme === "light" ? "light" : "dark"
-          }`}
-        >
-          No Tasks yet.
-        </p>
+      {filtered?.length === 0 && (
+        <div className="h-[calc(100vh-250px)] text-blue-500 text-center w-full flex justify-center flex-col items-center text-3xl font-bold">
+          <AlertTriangle className="text-blue-500" size={200} />
+          <p className={` ${theme === "light" ? "light" : "dark"}`}>
+            No Tasks Found.
+          </p>
+        </div>
       )}
       <div className="px-1">
-        {todos?.map((todo, index) => (
+        {filtered?.map((todo, index) => (
           <motion.div
             key={todo._id}
             whileHover={{ scale: 1.009 }}

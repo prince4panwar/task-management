@@ -12,6 +12,7 @@ import TodoStatusPieChart from "./pages/TodoStatusPieChart";
 import NotFound from "./components/NotFound";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { SearchProvider } from "./context/SearchContext";
 
 const router = createBrowserRouter([
   { path: "/", Component: Register },
@@ -65,13 +66,15 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          duration: 1500,
-        }}
-      />
+      <SearchProvider>
+        <RouterProvider router={router} />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 1500,
+          }}
+        />
+      </SearchProvider>
       {/* <ReactQueryDevtools initialIsOpen={true} /> */}
     </QueryClientProvider>
   );

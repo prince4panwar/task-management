@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -6,11 +6,13 @@ import { useQuery } from "@tanstack/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUserStore } from "../store/userStore";
 import { useThemeStore } from "../store/themeStore";
-import { Menu, Moon, Sun, X } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { Sidebar } from "./Sidebar";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { useSearchContext } from "@/context/SearchContext";
 
 const ProtectedRoute = ({ children }) => {
+  const { search, setSearch } = useSearchContext();
   const user = useUserStore((state) => state.user);
   const addUser = useUserStore((state) => state.addUser);
   const deleteUser = useUserStore((state) => state.deleteUser);
@@ -60,11 +62,11 @@ const ProtectedRoute = ({ children }) => {
   return (
     <div className="h-screen overflow-hidden">
       <div
-        className={`h-[70px] text-3xl font-bold sticky top-0 sm:px-8 p-2 flex items-center bg-blue-500 text-white w-full ${
+        className={`h-[70px] text-3xl font-bold sticky top-0 sm:px-8 p-2 gap-0.5 flex items-center bg-blue-500 text-white w-full ${
           theme === "light" ? "light" : "dark"
         }`}
       >
-        <div className="sm:w-1/3 w-2/8 flex justify-start">
+        <div className="sm:w-1/4 w-2/8 flex justify-start">
           <Link
             className="sm:text-lg sm:block hidden text-sm hover:underline"
             onClick={() => navigate("/todos")}
@@ -73,12 +75,21 @@ const ProtectedRoute = ({ children }) => {
           </Link>
           {isMobile && <Sidebar />}
         </div>
-        <div className="sm:w-1/3 w-4/8 flex justify-center">
-          <span className="font-bold sm:text-2xl text-sm">
+        <div className="sm:w-2/4 w-4/8 flex justify-center max-md:hidden">
+          <span className="font-bold sm:text-xl text-sm">
             Welcome {user?.name}
           </span>
         </div>
-        <div className="sm:w-1/3 w-2/8 flex justify-end items-center sm:gap-4 gap-2  max-sm:flex-row-reverse max-sm:justify-start">
+        <div className="sm:w-2/4 w-6/8 flex justify-end">
+          <input
+            type="search"
+            placeholder="Search tasks..."
+            className="border border-blue-600 focus:outline-none w-full text-blue-600 px-2 sm:py-1 py-2 ml-auto rounded bg-white font-semibold sm:text-lg text-sm"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <div className="sm:w-1/4 w-2/8 flex justify-end items-center sm:gap-3 gap-1  max-sm:flex-row-reverse max-sm:justify-start">
           <Avatar
             onClick={() => navigate("/update/username")}
             className="sm:w-10 sm:h-10 w-9 h-9"
@@ -114,7 +125,6 @@ const ProtectedRoute = ({ children }) => {
           </Link>
         </div>
       </div>
-
       {children}
     </div>
   );
