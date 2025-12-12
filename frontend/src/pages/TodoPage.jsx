@@ -9,7 +9,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useAllTodoStore } from "@/store/allTodoStore";
 
+import { useSearchParams } from "react-router-dom";
+
 function TodoPage() {
+  const [searchParams] = useSearchParams();
+  const page = Number(searchParams.get("page")) || 1;
+
   const addAllTodo = useAllTodoStore((state) => state.addAllTodo);
   const [selectedTodo, setSelectedTodo] = useState(null);
   const isMobile = useIsMobile();
@@ -26,44 +31,48 @@ function TodoPage() {
     },
   });
 
+  const fetchTodos = async () => {
+    const response = await axios.get(
+      `http://localhost:3000/api/todos?page=${page}&limit=7`,
+      {
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
+    return response.data;
+  };
+
   const {
-    data: todos = [],
+    data: response,
     refetch,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["todos"],
+    queryKey: ["todos", page], // page change will refetch
     queryFn: fetchTodos,
   });
 
   useEffect(() => {
-    addAllTodo(todos);
-  }, [todos]);
-
-  async function fetchTodos() {
-    const response = await axios.get("http://localhost:3000/api/todos", {
-      headers: {
-        "x-access-token": localStorage.getItem("token"),
-      },
-    });
-    return response.data.data;
-  }
+    if (response?.data) addAllTodo(response.data);
+  }, [response]);
 
   return (
     <FormProvider {...methods}>
       <div className="flex">
-        {isMobile ? null : (
+        {!isMobile && (
           <TodoForm
             selectedTodo={selectedTodo}
             setSelectedTodo={setSelectedTodo}
           />
         )}
         <TodoList
-          todos={todos}
+          todos={response?.data || []}
+          pagination={response?.pagination}
           setSelectedTodo={setSelectedTodo}
-          fetchTodos={refetch} // refresh after delete
-          loading={isLoading}
-          error={isError}
+          fetchTodos={refetch}
+          isLoading={isLoading}
+          isError={isError}
         />
       </div>
     </FormProvider>

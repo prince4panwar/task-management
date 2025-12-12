@@ -84,7 +84,9 @@ const ProtectedRoute = ({ children }) => {
           <input
             type="search"
             placeholder="Search tasks..."
-            className="border border-blue-600 focus:outline-none w-full text-blue-600 px-2 sm:py-1 py-2 ml-auto rounded bg-white font-semibold sm:text-lg text-sm"
+            className={`border focus:outline-none w-full px-2 sm:py-1 py-2 ml-auto rounded bg-white font-semibold sm:text-lg text-sm ${
+              theme === "light" ? "text-blue-600" : "dark border-blue-600"
+            }`}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />

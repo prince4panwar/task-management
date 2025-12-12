@@ -95,7 +95,7 @@ function TodoForm({ selectedTodo, setSelectedTodo }) {
 
   return (
     <div
-      className={`hidden sm:flex flex-col align-center p-3 w-1/3 mt-1 bg-blue-100 ${
+      className={`hidden sm:flex flex-col align-center p-3 h-[calc(100vh-70px)] w-1/3 mt-1 bg-blue-100 ${
         theme === "light" ? "light" : "dark"
       }`}
     >
