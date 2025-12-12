@@ -38,16 +38,35 @@ const createTodo = async (req, res) => {
 const getTodos = async (req, res) => {
   try {
     const { userId } = req;
+    const page = parseInt(req.query.page) || 1; // Current page, default to 1
+    const limit = parseInt(req.query.limit) || 10; // Items per page, default to 10
+    const skip = (page - 1) * limit; // Calculate documents to skip
+    const total = await Todo.countDocuments({ userId }); // Count total todos for the user
+    const totalPages = Math.ceil(total / limit);
+
     const todo = await Todo.find({ userId })
       .populate({
         path: "userId",
         select: "name email", // only bring these fields
       })
-      .lean();
+      .lean()
+      .skip(skip)
+      .limit(limit);
+
     return res.status(200).json({
       success: true,
       message: "Todo fetched successfully",
       data: todo,
+      pagination: {
+        totalItems: total,
+        currentPage: page,
+        totalPages,
+        limit,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1,
+        nextPage: page < totalPages ? page + 1 : null,
+        prevPage: page > 1 ? page - 1 : null,
+      },
     });
   } catch (error) {
     return res.status(500).json({
