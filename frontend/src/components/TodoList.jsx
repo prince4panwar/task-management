@@ -74,7 +74,7 @@ function TodosList({
 
   return (
     <div
-      className={`sm:w-[80%] w-full h-[calc(100vh-110px)] overflow-y-auto overflow-x-hidden mt-1 custom-scroll`}
+      className={`w-full h-[calc(100vh-110px)] overflow-y-auto overflow-x-hidden mt-0.5 custom-scroll`}
     >
       <div className="sm:p-1 sm:pl-2 sm:pt-0">
         <div

@@ -52,7 +52,7 @@ const TodoStatusPieChart = () => {
   ];
 
   return (
-    <div className="sm:w-[80%] w-full h-[370px]">
+    <div className="w-full h-[370px]">
       <h2 className="sm:text-3xl text-2xl text-blue-500 font-bold mb-4 sm:mt-10 mt-2 text-center">
         Tasks Summary
       </h2>

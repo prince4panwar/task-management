@@ -65,14 +65,14 @@ function TodoForm() {
 
   return (
     <div
-      className={`h-[calc(100vh-70px)] w-full sm:w-[80%] mt-1 sm:pt-7 bg-blue-100 overflow-auto ${
+      className={`h-[calc(100vh-70px)] w-full mt-0.5 sm:pt-7 bg-blue-100 overflow-auto ${
         theme === "light" ? "light" : "dark-bg"
       }`}
     >
       <motion.div
         initial={{ y: 100 }}
         animate={{ y: 0 }}
-        className={`sm:w-2/4 w-full px-4 py-8 sm:rounded-2xl m-auto sm:shadow-[0px_0px_50px_10px_rgba(0,0,0,0.35)] ${
+        className={`sm:w-2/4 w-full max-sm:h-full px-4 py-8 sm:rounded-2xl m-auto sm:shadow-[0px_0px_50px_10px_rgba(0,0,0,0.35)] ${
           theme === "light" ? "light" : "dark"
         }`}
       >

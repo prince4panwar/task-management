@@ -52,7 +52,7 @@ function TodoDetails() {
 
   return (
     <div
-      className={`flex sm:flex-row flex-col sm:overflow-hidden overflow-auto sm:gap-4 gap-1 h-[calc(100vh-70px)] sm:px-4 p-1 sm:py-2 sm:w-[80%] w-full mt-1 ${
+      className={`flex sm:flex-row flex-col sm:overflow-hidden overflow-auto sm:gap-4 gap-1 h-[calc(100vh-70px)] sm:px-4 p-1 sm:py-2 w-full mt-1 ${
         theme === "light" ? "light" : "dark-bg"
       }`}
     >

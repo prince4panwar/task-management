@@ -58,7 +58,7 @@ function Pagination({ pagination }) {
 
   return (
     <div
-      className={`fixed bottom-0 sm:w-[80%] w-full h-[43px] bg-white shadow-[-0px_-10px_8px_-3px_rgba(0,0,0,0.2)] ${
+      className={`fixed bottom-0 w-full h-[43px] bg-white shadow-[-0px_-10px_8px_-3px_rgba(0,0,0,0.2)] ${
         theme === "light" ? "light" : "dark"
       }`}
     >
