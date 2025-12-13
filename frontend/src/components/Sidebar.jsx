@@ -59,10 +59,13 @@ export function Sidebar() {
           </SheetClose>
 
           <SheetClose asChild>
-            <CreateTodoDialog
-              btnClass="cursor-pointer font-bold text-white p-2 rounded transition-all bg-blue-500 hover:bg-blue-600"
-              btnName="Create Task"
-            />
+            <button
+              type="button"
+              className="cursor-pointer font-bold text-white p-2 rounded transition-all bg-blue-500 hover:bg-blue-600"
+              onClick={() => navigate("/todos/create")}
+            >
+              Create Tasks
+            </button>
           </SheetClose>
 
           <SheetClose asChild>

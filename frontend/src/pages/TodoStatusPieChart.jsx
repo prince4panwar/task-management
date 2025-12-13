@@ -52,7 +52,7 @@ const TodoStatusPieChart = () => {
   ];
 
   return (
-    <div className="w-full h-[370px]">
+    <div className="sm:w-[80%] w-full h-[370px]">
       <h2 className="sm:text-3xl text-2xl text-blue-500 font-bold mb-4 sm:mt-10 mt-2 text-center">
         Tasks Summary
       </h2>
@@ -84,7 +84,7 @@ const TodoStatusPieChart = () => {
         </PieChart>
       </ResponsiveContainer>
 
-      <div className="flex justify-center w-screen sm:mt-6 mt-3">
+      <div className="flex justify-center sm:w-full sm:mt-6 mt-3">
         <motion.button
           whileTap={{ scale: 0.8 }}
           type="button"

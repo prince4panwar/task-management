@@ -39,12 +39,20 @@ function TodoDetails() {
     }
   }, [isEdit, refetch]);
 
-  if (isLoading) return <p className="text-center">Loading...</p>;
-  if (isError) return <p className="text-center">Error fetching todo</p>;
+  if (isLoading)
+    return (
+      <p className="text-center m-auto text-4xl font-semibold">Loading...</p>
+    );
+  if (isError)
+    return (
+      <p className="text-center m-auto text-4xl font-semibold">
+        Error fetching todo
+      </p>
+    );
 
   return (
     <div
-      className={`flex sm:flex-row flex-col sm:overflow-hidden overflow-auto sm:gap-4 gap-1 sm:h-full h-[calc(100vh-70px)] sm:px-4 p-1 sm:py-6 ${
+      className={`flex sm:flex-row flex-col sm:overflow-hidden overflow-auto sm:gap-4 gap-1 h-[calc(100vh-70px)] sm:px-4 p-1 sm:py-2 sm:w-[80%] w-full mt-1 ${
         theme === "light" ? "light" : "dark-bg"
       }`}
     >
@@ -112,21 +120,21 @@ function TodoDetails() {
               hour12: true,
             })}
           </p>
-          <div className="flex lg:flex-row sm:flex-wrap flex-col sm:gap-3 sm:mt-4">
+          <div className="flex lg:flex-row sm:flex-wrap flex-col sm:gap-1 sm:mt-4">
             <button
               type="button"
-              className="group flex items-center justify-center sm:gap-2 gap-4 cursor-pointer font-semibold text-white py-2 px-4 rounded transition-all
+              className="group flex items-center justify-center sm:gap-2 gap-4 cursor-pointer font-semibold text-white py-2 px-3 rounded transition-all
               bg-blue-500 hover:bg-blue-600 mt-2 text-base"
               onClick={() => navigate("/todos")}
             >
-              <MoveLeft className="transition-all duration-300 group-hover:-translate-x-2" />
+              <MoveLeft className="transition-all duration-300 group-hover:-translate-x-1" />
               My Tasks
             </button>
 
             <EditTodoDialog
               isIcon
               setIsEdit={setIsEdit}
-              btnClass="group flex items-center justify-center sm:gap-2 gap-4 cursor-pointer font-semibold text-white py-2 px-4 rounded transition-all
+              btnClass="group flex items-center justify-center sm:gap-2 gap-4 cursor-pointer font-semibold text-white py-2 px-3 rounded transition-all
              bg-green-700 hover:bg-green-700 mt-2 "
             />
 
@@ -134,7 +142,7 @@ function TodoDetails() {
               showIcon={true}
               btnName="Delete Task"
               todoId={todoId}
-              btnClass="group flex items-center justify-center sm:gap-2 gap-4 cursor-pointer font-semibold text-white py-2 px-4 rounded transition-all
+              btnClass="group flex items-center justify-center sm:gap-2 gap-4 cursor-pointer font-semibold text-white py-2 px-3 rounded transition-all
               bg-red-500 hover:bg-red-700 mt-2 "
             />
           </div>

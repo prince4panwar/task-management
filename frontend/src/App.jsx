@@ -13,46 +13,27 @@ import NotFound from "./components/NotFound";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { SearchProvider } from "./context/SearchContext";
+import TodoForm from "./components/TodoForm";
+import Layout from "./pages/Layout";
 
 const router = createBrowserRouter([
   { path: "/", Component: Register },
   { path: "/login", Component: Login },
   {
-    path: "/todos/:todoId",
     element: (
       <ProtectedRoute>
-        <TodoDetails />
+        <Layout />
       </ProtectedRoute>
     ),
+    children: [
+      { path: "/todos", element: <TodoPage /> },
+      { path: "/todos/:todoId", element: <TodoDetails /> },
+      { path: "/update/username", element: <Profile /> },
+      { path: "/todos/status/summary", element: <TodoStatusPieChart /> },
+      { path: "/todos/create", element: <TodoForm /> },
+    ],
   },
-  {
-    path: "/update/username",
-    element: (
-      <ProtectedRoute>
-        <Profile />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/todos",
-    element: (
-      <ProtectedRoute>
-        <TodoPage />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/todos/status/summary",
-    element: (
-      <ProtectedRoute>
-        <TodoStatusPieChart />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "*",
-    element: <NotFound />,
-  },
+  { path: "*", element: <NotFound /> },
 ]);
 
 function App() {

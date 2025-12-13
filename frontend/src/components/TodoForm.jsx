@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import toast from "react-hot-toast";
@@ -9,16 +9,26 @@ import ImageUpload from "./ImageUpload";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "./ui/spinner";
-import { formatLocalDateTime } from "@/lib/helper";
+import { createTaskFormSchema } from "@/lib/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-function TodoForm({ selectedTodo, setSelectedTodo }) {
+function TodoForm() {
   const {
     register,
     handleSubmit,
     reset,
-    setValue,
-    formState: { errors },
-  } = useFormContext();
+    formState: { errors, isDirty },
+  } = useForm({
+    mode: "all",
+    resolver: zodResolver(createTaskFormSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      dueDate: "",
+      status: "pending",
+      image: "",
+    },
+  });
 
   const navigate = useNavigate();
   const { theme } = useThemeStore();
@@ -38,78 +48,36 @@ function TodoForm({ selectedTodo, setSelectedTodo }) {
     onSuccess: () => {
       toast.success("Task created successfully");
       queryClient.invalidateQueries(["todos"]);
-    },
-  });
-
-  const updateTodoMutation = useMutation({
-    mutationFn: async (data) => {
-      return axios.patch(
-        `http://localhost:3000/api/todos/${selectedTodo._id}`,
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            "x-access-token": localStorage.getItem("token"),
-          },
-        }
-      );
-    },
-    onSuccess: () => {
-      toast.success("Task updated successfully");
-      queryClient.invalidateQueries(["todos"]); // Refresh list
+      navigate("/todos");
     },
   });
 
   const onSubmit = async (data) => {
     if (data.image && data.image[0]) data.image = data.image[0];
 
-    if (selectedTodo) {
-      updateTodoMutation.mutate(data, {
-        onSuccess: () => {
-          setSelectedTodo(null);
-          setFileName("");
-          reset();
-        },
-      });
-    } else {
-      createTodoMutation.mutate(data, {
-        onSuccess: () => {
-          setSelectedTodo(null);
-          setFileName("");
-          reset();
-        },
-      });
-    }
+    createTodoMutation.mutate(data, {
+      onSuccess: () => {
+        setFileName("");
+        reset();
+      },
+    });
   };
-
-  useEffect(() => {
-    if (selectedTodo) {
-      setValue("title", selectedTodo.title);
-      setValue("description", selectedTodo.description);
-      setValue("status", selectedTodo.status);
-      setValue("dueDate", formatLocalDateTime(selectedTodo.dueDate));
-    } else {
-      reset();
-    }
-  }, [selectedTodo]);
 
   return (
     <div
-      className={`hidden sm:flex flex-col align-center p-3 h-[calc(100vh-70px)] w-1/3 mt-1 bg-blue-100 ${
-        theme === "light" ? "light" : "dark"
+      className={`h-[calc(100vh-70px)] w-full sm:w-[80%] mt-1 sm:pt-7 bg-blue-100 overflow-auto ${
+        theme === "light" ? "light" : "dark-bg"
       }`}
     >
       <motion.div
-        initial={{ y: 300 }}
+        initial={{ y: 100 }}
         animate={{ y: 0 }}
-        transition={{ delay: 0.5 }}
+        className={`sm:w-2/4 w-full px-4 py-8 sm:rounded-2xl m-auto sm:shadow-[0px_0px_50px_10px_rgba(0,0,0,0.35)] ${
+          theme === "light" ? "light" : "dark"
+        }`}
       >
-        <h1
-          className={`text-3xl font-bold mb-3 text-center ${
-            selectedTodo ? "text-yellow-500" : "text-blue-600"
-          }`}
-        >
-          {selectedTodo ? "Edit Task" : "Create Task"}
+        <h1 className={`text-3xl font-bold mb-3 text-center text-blue-600`}>
+          Create Task
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
           <input
@@ -167,27 +135,10 @@ function TodoForm({ selectedTodo, setSelectedTodo }) {
 
           <button
             type="submit"
-            disabled={
-              selectedTodo
-                ? updateTodoMutation.isPending
-                : createTodoMutation.isPending
-            }
-            className={`flex gap-2 justify-center items-center cursor-pointer font-bold text-white p-2 rounded transition-all mt-4 ${
-              selectedTodo
-                ? "bg-yellow-500 hover:bg-yellow-600"
-                : "bg-blue-500 hover:bg-blue-600"
-            }`}
+            disabled={createTodoMutation.isPending}
+            className={`flex gap-2 justify-center items-center cursor-pointer font-bold text-white p-2 rounded transition-all mt-4 bg-blue-500 hover:bg-blue-600`}
           >
-            {selectedTodo ? (
-              updateTodoMutation.isPending ? (
-                <>
-                  <Spinner className="size-5" />
-                  <span>Updating... </span>
-                </>
-              ) : (
-                "Update Task"
-              )
-            ) : createTodoMutation.isPending ? (
+            {createTodoMutation.isPending ? (
               <>
                 <Spinner className="size-5" />
                 <span>Creating... </span>
@@ -196,26 +147,27 @@ function TodoForm({ selectedTodo, setSelectedTodo }) {
               "Create Task"
             )}
           </button>
-          {selectedTodo && (
+
+          {isDirty && (
             <button
-              type="submit"
+              type="button"
               className={`cursor-pointer font-bold text-white p-2 rounded transition-all mt-2 bg-red-500 hover:bg-red-800`}
               onClick={() => {
-                setSelectedTodo(null);
                 setFileName("");
                 reset();
               }}
             >
-              Cancel Update
+              Cancel
             </button>
           )}
+
           <button
             type="button"
             className="cursor-pointer font-bold text-white p-2 rounded transition-all 
               bg-blue-500 hover:bg-blue-600 mt-2"
-            onClick={() => navigate("/todos/status/summary")}
+            onClick={() => navigate("/todos")}
           >
-            Tasks Summary
+            My Tasks
           </button>
         </form>
       </motion.div>

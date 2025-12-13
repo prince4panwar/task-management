@@ -66,7 +66,7 @@ const ProtectedRoute = ({ children }) => {
           theme === "light" ? "light" : "dark"
         }`}
       >
-        <div className="sm:w-1/4 w-2/8 flex justify-start">
+        <div className="sm:w-1/3 w-2/8 flex justify-start">
           <Link
             className="sm:text-lg sm:block hidden text-sm hover:underline"
             onClick={() => navigate("/todos")}
@@ -75,23 +75,23 @@ const ProtectedRoute = ({ children }) => {
           </Link>
           {isMobile && <Sidebar />}
         </div>
-        <div className="sm:w-2/4 w-4/8 flex justify-center max-md:hidden">
+        {/* <div className="sm:w-2/4 w-4/8 flex justify-center max-md:hidden">
           <span className="font-bold sm:text-xl text-sm">
             Welcome {user?.name}
           </span>
-        </div>
-        <div className="sm:w-2/4 w-6/8 flex justify-end">
+        </div> */}
+        <div className="sm:w-1/3 w-6/8 flex justify-end">
           <input
             type="search"
             placeholder="Search tasks..."
-            className={`border focus:outline-none w-full px-2 sm:py-1 py-2 ml-auto rounded bg-white font-semibold sm:text-lg text-sm ${
+            className={`border focus:outline-none w-full px-2 sm:py-1 py-2 ml-auto rounded bg-white font-semibold sm:text-lg text-sm focus:ring focus:ring-blue-600 ${
               theme === "light" ? "text-blue-600" : "dark border-blue-600"
             }`}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <div className="sm:w-1/4 w-2/8 flex justify-end items-center sm:gap-3 gap-1  max-sm:flex-row-reverse max-sm:justify-start">
+        <div className="sm:w-1/3 w-2/8 flex justify-end items-center sm:gap-3 gap-1  max-sm:flex-row-reverse max-sm:justify-start">
           <Avatar
             onClick={() => navigate("/update/username")}
             className="sm:w-10 sm:h-10 w-9 h-9"

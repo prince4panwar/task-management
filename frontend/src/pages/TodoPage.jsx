@@ -10,6 +10,7 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { useAllTodoStore } from "@/store/allTodoStore";
 
 import { useSearchParams } from "react-router-dom";
+import DesktopSidebar from "@/components/DesktopSidebar";
 
 function TodoPage() {
   const [searchParams] = useSearchParams();
@@ -59,22 +60,16 @@ function TodoPage() {
 
   return (
     <FormProvider {...methods}>
-      <div className="flex">
-        {!isMobile && (
-          <TodoForm
-            selectedTodo={selectedTodo}
-            setSelectedTodo={setSelectedTodo}
-          />
-        )}
-        <TodoList
-          todos={response?.data || []}
-          pagination={response?.pagination}
-          setSelectedTodo={setSelectedTodo}
-          fetchTodos={refetch}
-          isLoading={isLoading}
-          isError={isError}
-        />
-      </div>
+      {/* <div className="flex"> */}
+      <TodoList
+        todos={response?.data || []}
+        pagination={response?.pagination}
+        setSelectedTodo={setSelectedTodo}
+        fetchTodos={refetch}
+        isLoading={isLoading}
+        isError={isError}
+      />
+      {/* </div> */}
     </FormProvider>
   );
 }
