@@ -12,6 +12,8 @@ import { profileUpdateFormSchema } from "@/lib/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Spinner } from "@/components/ui/spinner";
+import { useSidebarStore } from "@/store/sidebarStore";
+import { CircleUserRound } from "lucide-react";
 
 function Profile() {
   const user = useUserStore((state) => state.user);
@@ -31,6 +33,7 @@ function Profile() {
   const [fileName, setFileName] = useState("");
   const navigate = useNavigate();
   const { theme } = useThemeStore();
+  const { sidebar } = useSidebarStore();
 
   const updateProfileMutation = useMutation({
     mutationFn: async (payload) => {
@@ -68,30 +71,32 @@ function Profile() {
 
   return (
     <div
-      className={`flex flex-col justify-start items-center h-screen w-full sm:pt-2 mt-0.5 bg-blue-100 ${
+      className={`flex flex-col justify-start items-center h-[calc(100vh-70px)] w-full sm:pt-2 mt-0.5 bg-blue-100 ${
         theme === "light" ? "light" : "dark-bg"
-      }`}
+      }
+      ${sidebar ? "sm:w-[80%]" : "sm:w-[95%]"}`}
     >
       <motion.div
         initial={{ y: 100 }}
         animate={{ y: 0 }}
-        className={`sm:w-2/4 w-full max-sm:h-full sm:mt-4 p-4 sm:rounded-2xl shadow-[0px_0px_100px_10px_rgba(0,0,0,0.25)] ${
+        className={`sm:w-2/4 w-full max-sm:h-full sm:mt-4 p-4 sm:rounded-2xl shadow-[0px_0px_100px_10px_rgba(0,0,0,0.25)] overflow-auto ${
           theme === "light" ? "light" : "dark"
         }`}
       >
         <div className="w-full flex items-center justify-center">
-          <Link to={user.pic} target="_blank" rel="noopener noreferrer">
-            <img
-              src={
-                user.pic ??
-                "https://res.cloudinary.com/dsaiclywa/image/upload/v1763988872/user_qe0ygk.png"
-              }
-              alt="Profile Pic"
-              height={50}
-              width={200}
-              className="rounded-full mb-4 cursor-pointer"
-            />
-          </Link>
+          {user.pic ? (
+            <Link to={user.pic} target="_blank" rel="noopener noreferrer">
+              <img
+                src={user.pic}
+                alt="Profile Pic"
+                height={50}
+                width={200}
+                className="rounded-full mb-4 cursor-pointer"
+              />
+            </Link>
+          ) : (
+            <CircleUserRound className="bg-slate-500 text-white rounded-full w-50 h-50" />
+          )}
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">

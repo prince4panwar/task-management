@@ -1,35 +1,28 @@
 import React from "react";
-import axios from "axios";
 import { motion } from "motion/react";
 import "../App.css";
-import { useFormContext } from "react-hook-form";
-import toast from "react-hot-toast";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useThemeStore } from "@/store/themeStore";
 import DeleteTodoDialog from "./DeleteTodoDialog";
-import { useMutation } from "@tanstack/react-query";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import CreateTodoDialog from "./CreateTodoDialog";
 import { AlertTriangle } from "lucide-react";
 import { useSearchContext } from "@/context/SearchContext";
 import Pagination from "./Pagination";
+import { useSidebarStore } from "@/store/sidebarStore";
 
 function TodosList({
   todos,
-  setSelectedTodo,
   fetchTodos,
   isLoading,
   isError,
   pagination,
   page,
-  setPage,
 }) {
   const { search } = useSearchContext();
-  const { reset } = useFormContext();
   const { theme } = useThemeStore();
-  const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const { sidebar } = useSidebarStore();
 
   const filtered = todos.filter(
     (t) =>
@@ -37,29 +30,6 @@ function TodosList({
       t.description.toLowerCase().includes(search.toLowerCase()) ||
       t.status.toLowerCase().includes(search.toLowerCase())
   );
-
-  const handleEditMutation = useMutation({
-    mutationFn: async (_id) => {
-      const response = await axios.get(
-        `http://localhost:3000/api/todos/${_id}`,
-        {
-          headers: {
-            "x-access-token": localStorage.getItem("token"),
-          },
-        }
-      );
-      return response.data.data;
-    },
-    onSuccess: (data) => {
-      setSelectedTodo(data);
-      reset();
-    },
-    onError: () => toast.error("Error fetching todo"),
-  });
-
-  const handleEdit = (_id) => {
-    handleEditMutation.mutate(_id);
-  };
 
   if (isLoading)
     return (
@@ -71,10 +41,11 @@ function TodosList({
         Error fetching todo
       </p>
     );
-
   return (
     <div
-      className={`w-full h-[calc(100vh-110px)] overflow-y-auto overflow-x-hidden mt-0.5 custom-scroll`}
+      className={`h-[calc(100vh-110px)] w-full overflow-y-auto overflow-x-hidden mt-0.5 custom-scroll ${
+        sidebar ? "sm:w-[80%]" : "sm:w-[95%]"
+      }`}
     >
       <div className="sm:p-1 sm:pl-2 sm:pt-0">
         <div
@@ -111,7 +82,7 @@ function TodosList({
               key={todo._id}
               whileHover={{ scale: 1.009 }}
               whileTap={{ scale: 0.9991 }}
-              initial={{ opacity: 0, y: -800 }}
+              initial={{ opacity: 0, y: -300 }}
               animate={{ opacity: 1, y: 0 }}
               className={`flex items-center w-full sm:gap-4 p-2 mb-2.5 rounded shadow-[0px_2px_2px_2px_rgba(0,0,0,0.35)] cursor-pointer px-1 ${
                 theme === "light" ? "light" : "dark"

@@ -1,35 +1,15 @@
-import React, { useEffect, useState } from "react";
-import TodoForm from "../components/TodoForm";
+import React, { useEffect } from "react";
 import TodoList from "../components/TodoList";
 import axios from "axios";
-import { FormProvider, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { createTaskFormSchema } from "@/lib/schema";
 import { useQuery } from "@tanstack/react-query";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { useAllTodoStore } from "@/store/allTodoStore";
 import { useSearchParams } from "react-router-dom";
-import DesktopSidebar from "@/components/DesktopSidebar";
 
 function TodoPage() {
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
 
   const addAllTodo = useAllTodoStore((state) => state.addAllTodo);
-  const [selectedTodo, setSelectedTodo] = useState(null);
-  const isMobile = useIsMobile();
-
-  const methods = useForm({
-    mode: "all",
-    resolver: zodResolver(createTaskFormSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      status: "pending",
-      image: "",
-      dueDate: "",
-    },
-  });
 
   const fetchTodos = async () => {
     const response = await axios.get(
@@ -49,7 +29,7 @@ function TodoPage() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["todos", page], // page change will refetch
+    queryKey: ["todos", page],
     queryFn: fetchTodos,
   });
 
@@ -58,18 +38,13 @@ function TodoPage() {
   }, [response]);
 
   return (
-    <FormProvider {...methods}>
-      {/* <div className="flex"> */}
-      <TodoList
-        todos={response?.data || []}
-        pagination={response?.pagination}
-        setSelectedTodo={setSelectedTodo}
-        fetchTodos={refetch}
-        isLoading={isLoading}
-        isError={isError}
-      />
-      {/* </div> */}
-    </FormProvider>
+    <TodoList
+      todos={response?.data || []}
+      pagination={response?.pagination}
+      fetchTodos={refetch}
+      isLoading={isLoading}
+      isError={isError}
+    />
   );
 }
 

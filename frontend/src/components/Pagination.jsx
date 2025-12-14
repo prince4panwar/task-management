@@ -2,6 +2,7 @@ import React from "react";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { useThemeStore } from "@/store/themeStore";
+import { useSidebarStore } from "@/store/sidebarStore";
 
 function Pagination({ pagination }) {
   const [_, setSearchParams] = useSearchParams();
@@ -18,6 +19,7 @@ function Pagination({ pagination }) {
   } = pagination;
 
   const { theme } = useThemeStore();
+  const { sidebar } = useSidebarStore();
 
   const handlePageClick = (page) => {
     if (page !== currentPage) {
@@ -58,11 +60,12 @@ function Pagination({ pagination }) {
 
   return (
     <div
-      className={`fixed bottom-0 w-full h-[43px] bg-white shadow-[-0px_-10px_8px_-3px_rgba(0,0,0,0.2)] ${
+      className={`fixed bottom-0 h-[43px] w-full bg-white shadow-[-0px_-10px_8px_-3px_rgba(0,0,0,0.2)] ${
         theme === "light" ? "light" : "dark"
-      }`}
+      }
+      ${sidebar ? "sm:w-[80%]" : "sm:w-[95%]"}`}
     >
-      <ul className="flex justify-center items-center h-full gap-1">
+      <ul className="flex justify-center m-auto items-center h-full gap-1">
         {/* Previous */}
         <li
           className={`px-3 py-1 rounded ${

@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUserStore } from "../store/userStore";
 import { useThemeStore } from "../store/themeStore";
-import { Moon, Sun } from "lucide-react";
+import { CircleUserRound, Moon, Sun } from "lucide-react";
 import { Sidebar } from "./Sidebar";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useSearchContext } from "@/context/SearchContext";
@@ -98,11 +98,7 @@ const ProtectedRoute = ({ children }) => {
           >
             <AvatarImage src={user?.pic} className="cursor-pointer" />
             <AvatarFallback>
-              <img
-                src="https://res.cloudinary.com/dsaiclywa/image/upload/v1763988872/user_qe0ygk.png"
-                alt="profile image"
-                className="cursor-pointer"
-              />
+              <CircleUserRound className="bg-slate-500 cursor-pointer text-white rounded-full w-20 h-20" />
             </AvatarFallback>
           </Avatar>
 

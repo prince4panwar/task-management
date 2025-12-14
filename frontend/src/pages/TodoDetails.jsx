@@ -7,6 +7,7 @@ import EditTodoDialog from "@/components/EditTodoDialog";
 import { useTodoStore } from "@/store/todoStore";
 import DeleteTodoDialog from "@/components/DeleteTodoDialog";
 import { useQuery } from "@tanstack/react-query";
+import { useSidebarStore } from "@/store/sidebarStore";
 
 function TodoDetails() {
   const { todoId } = useParams();
@@ -15,6 +16,7 @@ function TodoDetails() {
   const addTodo = useTodoStore((state) => state.addTodo);
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(false);
+  const { sidebar } = useSidebarStore();
 
   const { isLoading, isError, refetch } = useQuery({
     queryKey: ["todoDetails", todoId],
@@ -54,7 +56,8 @@ function TodoDetails() {
     <div
       className={`flex sm:flex-row flex-col sm:overflow-hidden overflow-auto sm:gap-4 gap-1 h-[calc(100vh-70px)] sm:px-4 p-1 sm:py-2 w-full mt-1 ${
         theme === "light" ? "light" : "dark-bg"
-      }`}
+      }
+      ${sidebar ? "sm:w-[80%]" : "sm:w-[95%]"}`}
     >
       <div className="sm:w-2/3">
         <p

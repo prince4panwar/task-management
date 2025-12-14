@@ -11,6 +11,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "./ui/spinner";
 import { createTaskFormSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSidebarStore } from "@/store/sidebarStore";
 
 function TodoForm() {
   const {
@@ -32,6 +33,7 @@ function TodoForm() {
 
   const navigate = useNavigate();
   const { theme } = useThemeStore();
+  const { sidebar } = useSidebarStore();
   const [fileName, setFileName] = useState("");
 
   const queryClient = useQueryClient();
@@ -65,14 +67,15 @@ function TodoForm() {
 
   return (
     <div
-      className={`h-[calc(100vh-70px)] w-full mt-0.5 sm:pt-7 bg-blue-100 overflow-auto ${
+      className={`h-[calc(100vh-70px)] w-full mt-0.5 sm:pt-7 bg-blue-100 ${
         theme === "light" ? "light" : "dark-bg"
-      }`}
+      }
+      ${sidebar ? "sm:w-[80%]" : "sm:w-[95%]"}`}
     >
       <motion.div
         initial={{ y: 100 }}
         animate={{ y: 0 }}
-        className={`sm:w-2/4 w-full max-sm:h-full px-4 py-8 sm:rounded-2xl m-auto sm:shadow-[0px_0px_50px_10px_rgba(0,0,0,0.35)] ${
+        className={`sm:w-2/4 w-full max-sm:h-full px-4 py-4 sm:rounded-2xl m-auto sm:shadow-[0px_0px_50px_10px_rgba(0,0,0,0.35)] overflow-auto ${
           theme === "light" ? "light" : "dark"
         }`}
       >
