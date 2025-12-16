@@ -60,7 +60,6 @@ function TodoDetails() {
         ${sidebar ? "sm:w-[80%]" : "sm:w-[95%]"}
       `}
     >
-      {/* LEFT: CONTENT */}
       <div
         className={`sm:w-2/3 rounded-2xl shadow-2xl overflow-x-hidden overflow-y-auto custom-scroll
           ${theme === "light" ? "light" : "dark"}
@@ -95,13 +94,11 @@ function TodoDetails() {
         </div>
       </div>
 
-      {/* RIGHT: META */}
       <div
         className={`sm:w-1/3 rounded-2xl p-4 shadow-xl flex flex-col gap-6 overflow-x-hidden custom-scroll overflow-y-auto
           ${theme === "light" ? "light border-2" : "dark"}
         `}
       >
-        {/* Image */}
         {todo?.image ? (
           <Link to={todo.image} target="_blank">
             <img
@@ -116,8 +113,6 @@ function TodoDetails() {
             No image attached
           </div>
         )}
-
-        {/* Dates */}
         <div className="space-y-3 text-sm">
           <div className="flex items-center gap-2">
             <Clock className="w-4 h-4 text-blue-500" />
@@ -148,7 +143,6 @@ function TodoDetails() {
           </div>
         </div>
 
-        {/* ACTIONS */}
         <div className="flex flex-col gap-3 pt-4">
           <button
             type="button"

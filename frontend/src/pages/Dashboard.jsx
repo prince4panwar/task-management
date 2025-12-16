@@ -6,9 +6,11 @@ import { useSidebarStore } from "@/store/sidebarStore";
 import { useThemeStore } from "@/store/themeStore";
 import RecentTasks from "./RecentTasks";
 import TodoStatusPieChart from "./TodoStatusPieChart";
+import { useUserStore } from "@/store/userStore";
 
 function Dashboard() {
   const { sidebar } = useSidebarStore();
+  const user = useUserStore((state) => state.user);
   const { theme } = useThemeStore();
 
   const fetchSummary = async () => {
@@ -58,12 +60,31 @@ function Dashboard() {
       ${sidebar ? "sm:w-[80%]" : "sm:w-[95%]"}
       ${theme === "light" ? "light" : "dark"}`}
     >
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+      {/* <div className="mb-8">
+        <h1 className="text-3xl font-bold tracking-tight text-blue-500">
+          Dashboard
+        </h1>
         <p className="text-sm opacity-70 mt-1">
           Track your progress and manage tasks efficiently
         </p>
-      </div>
+      </div> */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-8"
+      >
+        <div className="flex justify-between">
+          <h1 className="text-3xl font-bold tracking-tight text-blue-500">
+            Dashboard
+          </h1>
+          <h2 className="sm:block hidden text-xl font-bold tracking-tight text-blue-500 opacity-80">
+            Welcome {user?.name} 👋
+          </h2>
+        </div>
+        <p className="text-sm opacity-70 mt-1">
+          Track your progress and manage tasks efficiently
+        </p>
+      </motion.div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
         {stats.map((stat, index) => (
@@ -83,20 +104,22 @@ function Dashboard() {
       </div>
 
       <div className="mb-8">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-xl font-semibold">Recent Tasks</h2>
-        </div>
-
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className={`rounded-2xl border-2 shadow-md
+          className={`rounded-2xl border-2 p-3 shadow-md
             ${
               theme === "light"
                 ? "bg-white/80 backdrop-blur"
                 : "bg-slate-800/80 backdrop-blur"
             }`}
         >
+          <div className="flex items-center justify-between mb-3 px-2">
+            <h2 className="text-xl font-semibold">Recent Tasks</h2>
+            <p className="text-sm opacity-70">
+              Quick access to your latest tasks
+            </p>
+          </div>
           <RecentTasks
             limit={3}
             collapseHeight={false}

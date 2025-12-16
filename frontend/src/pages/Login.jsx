@@ -35,7 +35,7 @@ function Login() {
     onSuccess: (response) => {
       if (response.data.success) {
         localStorage.setItem("token", response.data.data);
-        navigate("/todos");
+        navigate("/dashboard");
       }
     },
     onError: (error) => {
@@ -151,7 +151,7 @@ function Login() {
             <button
               type="button"
               className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
-              onClick={() => navigate("/todos")}
+              onClick={() => navigate("/dashboard")}
             >
               My Tasks
             </button>

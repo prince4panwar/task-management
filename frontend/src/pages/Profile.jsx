@@ -51,7 +51,7 @@ function Profile() {
     onSuccess: () => {
       toast.success("Profile updated successfully");
       queryClient.invalidateQueries(["authUser"]);
-      navigate("/todos");
+      navigate("/dashboard");
     },
     onError: () => {
       toast.error("Profile not updated successfully");
