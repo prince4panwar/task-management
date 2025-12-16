@@ -249,6 +249,26 @@ const getTodosByStatus = async (req, res) => {
   }
 };
 
+const getRecentTodos = async (req, res) => {
+  try {
+    const { userId } = req;
+    const recentTodos = await Todo.find({ userId })
+      .sort({ createdAt: -1 }) // newest first
+      .limit(9);
+
+    return res.status(200).json({
+      success: true,
+      count: recentTodos.length,
+      data: recentTodos,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch recent tasks",
+    });
+  }
+};
+
 module.exports = {
   createTodo,
   getTodos,
@@ -257,4 +277,5 @@ module.exports = {
   updateTodo,
   getTodoStatusSummary,
   getTodosByStatus,
+  getRecentTodos,
 };

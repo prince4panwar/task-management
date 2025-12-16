@@ -9,6 +9,7 @@ const {
   getTodoById,
   getTodoStatusSummary,
   getTodosByStatus,
+  getRecentTodos,
 } = require("../controller/todoController.js");
 const {
   isAuthenticatedUser,
@@ -22,6 +23,7 @@ router.get("/todos/:id", isAuthenticatedUser, getTodoById);
 router.delete("/todos/:id", isAuthenticatedUser, deleteTodo);
 router.get("/todos/status/summary", isAuthenticatedUser, getTodoStatusSummary);
 router.get("/filter/todos", isAuthenticatedUser, getTodosByStatus);
+router.get("/recent/todos", isAuthenticatedUser, getRecentTodos);
 router.patch(
   "/todos/:id",
   upload.single("image"),
