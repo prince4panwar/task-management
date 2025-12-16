@@ -4,10 +4,12 @@ import {
   ChartNoAxesCombined,
   CircleChevronLeft,
   ClipboardPlus,
+  Clock3,
+  LayoutDashboard,
   LayoutList,
   User,
 } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { useSidebarStore } from "@/store/sidebarStore";
@@ -30,8 +32,8 @@ function DesktopSidebar() {
   return (
     <aside
       className={`relative hidden sm:flex flex-col gap-2 align-center
-        lg:p-3 p-1 h-[calc(100vh-70px)] mt-0.5 bg-slate-300
-        transition-[width] duration-300 ease-in-out
+        lg:p-3 p-1 h-[calc(100vh-70px)] mt-0.5 me-0.5 bg-slate-300
+        transition-[width] duration-300 ease-in-out 
         ${theme === "light" ? "light" : "dark"}
         ${sidebar ? "w-[20%]" : "w-[5%]"}
       `}
@@ -46,28 +48,28 @@ function DesktopSidebar() {
         onClick={toggleSidebar}
       />
 
-      {sidebar && (
+      {/* {sidebar && (
         <span className="px-4 sm:text-lg font-semibold text-sm">
           Welcome {user?.name}
         </span>
-      )}
+      )} */}
 
       <Tooltip>
         <TooltipTrigger asChild>
           <button
             type="button"
             className={`${baseClasses} ${
-              isActive("/todos") ? activeClasses : inactiveClasses
+              isActive("/dashboard") ? activeClasses : inactiveClasses
             }`}
-            onClick={() => navigate("/todos")}
+            onClick={() => navigate("/dashboard")}
           >
-            <LayoutList className="max-lg:w-4 max-lg:h-4 lg:w-5 lg:h-5" />
+            <LayoutDashboard className="max-lg:w-4 max-lg:h-4 lg:w-5 lg:h-5" />
             {sidebar && <span>Dashboard</span>}
           </button>
         </TooltipTrigger>
         {!sidebar && (
           <TooltipContent side="right" align="center">
-            <p>All Tasks</p>
+            <p>Dashboard</p>
           </TooltipContent>
         )}
       </Tooltip>
@@ -130,6 +132,46 @@ function DesktopSidebar() {
         {!sidebar && (
           <TooltipContent side="right" align="center">
             <p>User Profile</p>
+          </TooltipContent>
+        )}
+      </Tooltip>
+
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            className={`${baseClasses} ${
+              isActive("/todos") ? activeClasses : inactiveClasses
+            }`}
+            onClick={() => navigate("/todos")}
+          >
+            <LayoutList className="max-lg:w-4 max-lg:h-4 lg:w-5 lg:h-5" />
+            {sidebar && <span>All Tasks</span>}
+          </button>
+        </TooltipTrigger>
+        {!sidebar && (
+          <TooltipContent side="right" align="center">
+            <p>All Tasks</p>
+          </TooltipContent>
+        )}
+      </Tooltip>
+
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            className={`${baseClasses} ${
+              isActive("/todos/recent") ? activeClasses : inactiveClasses
+            }`}
+            onClick={() => navigate("/todos/recent")}
+          >
+            <Clock3 className="max-lg:w-4 max-sm:h-4 lg:w-5 lg:h-5" />
+            {sidebar && <span>Recent Tasks</span>}
+          </button>
+        </TooltipTrigger>
+        {!sidebar && (
+          <TooltipContent side="right" align="center">
+            <p>Recent Tasks</p>
           </TooltipContent>
         )}
       </Tooltip>

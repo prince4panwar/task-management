@@ -10,8 +10,8 @@
 
 .custom-scroll::-webkit-scrollbar-track {
   background: #d1d7df;
-  border-bottom-right-radius: 20px;
-  border-top-right-radius: 20px;
+  /* border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px; */
 }
 
 .light {
@@ -20,7 +20,7 @@
 
 .dark {
   transition: background 0.4s;
-  background: #1b242e;
+  background: #0f172b;
   color: #fff;
 }
 

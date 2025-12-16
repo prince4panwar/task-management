@@ -51,9 +51,19 @@ export function Sidebar() {
             <button
               type="button"
               className="cursor-pointer font-bold text-white p-2 rounded transition-all bg-blue-500 hover:bg-blue-600"
+              onClick={() => navigate("/dashboard")}
+            >
+              Dashboard
+            </button>
+          </SheetClose>
+
+          <SheetClose asChild>
+            <button
+              type="button"
+              className="cursor-pointer font-bold text-white p-2 rounded transition-all bg-blue-500 hover:bg-blue-600"
               onClick={() => navigate("/todos")}
             >
-              My Tasks
+              All Tasks
             </button>
           </SheetClose>
 
@@ -74,6 +84,16 @@ export function Sidebar() {
               onClick={() => navigate("/todos/status/summary")}
             >
               Tasks Summary
+            </button>
+          </SheetClose>
+
+          <SheetClose asChild>
+            <button
+              type="button"
+              className="cursor-pointer font-bold text-white p-2 rounded transition-all bg-blue-500 hover:bg-blue-600"
+              onClick={() => navigate("/todos/recent")}
+            >
+              Recent Tasks
             </button>
           </SheetClose>
         </div>

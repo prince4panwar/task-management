@@ -15,6 +15,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { SearchProvider } from "./context/SearchContext";
 import TodoForm from "./components/TodoForm";
 import Layout from "./pages/Layout";
+import RecentTasks from "./pages/RecentTasks";
+import Dashboard from "./pages/Dashboard";
 
 const router = createBrowserRouter([
   { path: "/", Component: Register },
@@ -26,11 +28,13 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
+      { path: "/dashboard", element: <Dashboard /> },
       { path: "/todos", element: <TodoPage /> },
       { path: "/todos/:todoId", element: <TodoDetails /> },
       { path: "/update/username", element: <Profile /> },
       { path: "/todos/status/summary", element: <TodoStatusPieChart /> },
       { path: "/todos/create", element: <TodoForm /> },
+      { path: "/todos/recent", element: <RecentTasks /> },
     ],
   },
   { path: "*", element: <NotFound /> },
