@@ -77,6 +77,8 @@ export const createTaskFormSchema = z.object({
 
   status: z.string(),
 
+  priority: z.string(),
+
   dueDate: z
     .string()
     .nonempty("Due date & time is required")

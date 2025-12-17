@@ -27,6 +27,7 @@ function TodoForm() {
       description: "",
       dueDate: "",
       status: "pending",
+      priority: "medium",
       image: "",
     },
   });
@@ -106,7 +107,11 @@ function TodoForm() {
           />
           <ErrorMessage message={errors.description?.message} />
 
+          <label htmlFor="due-date" className="text-blue-500 font-semibold">
+            due date
+          </label>
           <input
+            id="due-date"
             type="datetime-local"
             className={`border border-blue-600 text-blue-600 focus:outline-none p-2 mb-2 rounded font-bold cursor-pointer ${
               errors.dueDate
@@ -118,13 +123,30 @@ function TodoForm() {
           />
           <ErrorMessage message={errors.dueDate?.message} />
 
+          <label htmlFor="status" className="text-blue-500 font-semibold">
+            status
+          </label>
           <select
+            id="status"
             {...register("status")}
             className="w-full border rounded p-2 mb-2 border-blue-600 font-bold text-blue-600 focus:outline-none focus:ring focus:ring-blue-60 cursor-pointer appearance-none"
           >
             <option value="pending">Pending</option>
             <option value="completed">Completed</option>
             <option value="in-progress">In-Progress</option>
+          </select>
+
+          <label htmlFor="priority" className="text-blue-500 font-semibold">
+            priority
+          </label>
+          <select
+            id="priority"
+            {...register("priority")}
+            className="w-full border rounded p-2 mb-2 border-blue-600 font-bold text-blue-600 focus:outline-none focus:ring focus:ring-blue-60 cursor-pointer appearance-none"
+          >
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
           </select>
 
           <ImageUpload

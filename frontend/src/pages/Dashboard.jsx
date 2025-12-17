@@ -60,14 +60,6 @@ function Dashboard() {
       ${sidebar ? "sm:w-[80%]" : "sm:w-[95%]"}
       ${theme === "light" ? "light" : "dark"}`}
     >
-      {/* <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight text-blue-500">
-          Dashboard
-        </h1>
-        <p className="text-sm opacity-70 mt-1">
-          Track your progress and manage tasks efficiently
-        </p>
-      </div> */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}

@@ -50,6 +50,7 @@ function EditTodoDialog({
       title: todo?.title,
       description: todo?.description,
       status: todo?.status,
+      priority: todo?.priority,
       dueDate: formatLocalDateTime(todo?.dueDate),
       image: "",
     },
@@ -61,6 +62,7 @@ function EditTodoDialog({
         title: todo.title || "",
         description: todo.description || "",
         status: todo.status || "",
+        priority: todo.priority || "",
         dueDate: formatLocalDateTime(todo.dueDate) || "",
         image: "",
       });
@@ -162,6 +164,15 @@ function EditTodoDialog({
             <option value="pending">Pending</option>
             <option value="completed">Completed</option>
             <option value="in-progress">In-Progress</option>
+          </select>
+
+          <select
+            {...register("priority")}
+            className="w-full border rounded p-2 mb-2 border-blue-600 font-bold text-blue-600 focus:outline-none focus:ring focus:ring-blue-60 cursor-pointer appearance-none"
+          >
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
           </select>
 
           <ImageUpload

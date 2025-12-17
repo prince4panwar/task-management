@@ -59,6 +59,9 @@ function TodosList({
           <span className="w-1/4 text-center text-xs sm:text-base line-clamp-3">
             Creation Date
           </span>
+          <span className="w-1/4 text-center text-xs sm:text-base">
+            Priority
+          </span>
           <span className="w-1/4 text-center text-xs sm:text-base hidden sm:block">
             Due Date
           </span>
@@ -126,6 +129,19 @@ function TodosList({
                   hour12: false,
                 })}
               </p>
+
+              <div className="w-1/4 text-center">
+                <Badge
+                  className={`${
+                    (todo.priority === "low" && "bg-green-900") ||
+                    (todo.priority === "medium" && "bg-yellow-500") ||
+                    (todo.priority === "high" && "bg-red-500")
+                  } text-white sm:text-[11px] text-[9px]`}
+                >
+                  {todo.priority?.charAt(0).toUpperCase() +
+                    todo.priority?.slice(1)}
+                </Badge>
+              </div>
 
               <p className="w-1/4 sm:text-base text-[10px] text-center font-semibold hidden sm:block">
                 {new Date(todo.dueDate).toLocaleString("en-GB", {

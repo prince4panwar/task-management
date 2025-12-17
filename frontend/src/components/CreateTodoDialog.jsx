@@ -42,6 +42,7 @@ function CreateTodoDialog({ btnClass, btnName = "Edit Task", todoId }) {
       title: "",
       description: "",
       status: "pending",
+      priority: "medium",
       image: "",
       dueDate: "",
     },
@@ -56,6 +57,7 @@ function CreateTodoDialog({ btnClass, btnName = "Edit Task", todoId }) {
           title: selected.title,
           description: selected.description,
           status: selected.status,
+          priority: selected.priority,
           dueDate: formatLocalDateTime(selected.dueDate),
           image: "",
         });
@@ -127,6 +129,7 @@ function CreateTodoDialog({ btnClass, btnName = "Edit Task", todoId }) {
               title: "",
               description: "",
               status: "pending",
+              priority: "medium",
               image: "",
               dueDate: "",
             })
@@ -192,6 +195,15 @@ function CreateTodoDialog({ btnClass, btnName = "Edit Task", todoId }) {
             <option value="pending">Pending</option>
             <option value="completed">Completed</option>
             <option value="in-progress">In-Progress</option>
+          </select>
+
+          <select
+            {...register("priority")}
+            className="w-full border rounded p-2 mb-2 border-blue-600 font-bold text-blue-600 focus:outline-none focus:ring focus:ring-blue-60 cursor-pointer appearance-none"
+          >
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
           </select>
 
           <ImageUpload
