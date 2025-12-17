@@ -4,7 +4,7 @@ const { imageUpload } = require("../utils/imageUpload.js");
 
 const createTodo = async (req, res) => {
   try {
-    const { title, description, status, dueDate } = req.body;
+    const { title, description, status, priority, dueDate } = req.body;
     let imageUrl = null;
 
     // If user attached an image file, upload to Cloudinary
@@ -16,6 +16,7 @@ const createTodo = async (req, res) => {
       title,
       description,
       status,
+      priority,
       dueDate,
       userId: req.userId,
       image: imageUrl,
@@ -38,16 +39,16 @@ const createTodo = async (req, res) => {
 const getTodos = async (req, res) => {
   try {
     const { userId } = req;
-    const page = parseInt(req.query.page) || 1; // Current page, default to 1
-    const limit = parseInt(req.query.limit) || 10; // Items per page, default to 10
-    const skip = (page - 1) * limit; // Calculate documents to skip
-    const total = await Todo.countDocuments({ userId }); // Count total todos for the user
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    const total = await Todo.countDocuments({ userId });
     const totalPages = Math.ceil(total / limit);
 
     const todo = await Todo.find({ userId })
       .populate({
         path: "userId",
-        select: "name email", // only bring these fields
+        select: "name email",
       })
       .lean()
       .skip(skip)
@@ -116,7 +117,7 @@ const deleteTodo = async (req, res) => {
 const updateTodo = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, status, dueDate } = req.body;
+    const { title, description, status, priority, dueDate } = req.body;
     let imageUrl = null;
     if (req.file) {
       imageUrl = await imageUpload(req.file); // hosted image link
@@ -145,6 +146,7 @@ const updateTodo = async (req, res) => {
             title,
             description,
             status,
+            priority,
             image: imageUrl,
             dueDate,
             notificationSent,
@@ -153,7 +155,7 @@ const updateTodo = async (req, res) => {
         )
       : await Todo.findByIdAndUpdate(
           id,
-          { title, description, status, dueDate, notificationSent },
+          { title, description, status, priority, dueDate, notificationSent },
           { new: true }
         );
 
