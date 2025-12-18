@@ -216,6 +216,47 @@ const getTodoStatusSummary = async (req, res) => {
   }
 };
 
+const getTodoPrioritySummary = async (req, res) => {
+  try {
+    const stats = await Todo.aggregate([
+      { $match: { userId: new mongoose.Types.ObjectId(req.userId) } },
+      {
+        $group: {
+          _id: "$priority",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const formattedStats = {
+      low: 0,
+      medium: 0,
+      high: 0,
+      total: 0,
+    };
+
+    stats.forEach((item) => {
+      if (item._id === "low") formattedStats.low = item.count;
+      if (item._id === "medium") formattedStats.medium = item.count;
+      if (item._id === "high") formattedStats.high = item.count;
+    });
+
+    formattedStats.total =
+      formattedStats.low + formattedStats.medium + formattedStats.high;
+
+    res.status(200).json({
+      success: true,
+      data: formattedStats,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch statistics",
+      error,
+    });
+  }
+};
+
 const getTodosByStatus = async (req, res) => {
   try {
     const { status, search, sort } = req.query;
@@ -278,6 +319,7 @@ module.exports = {
   deleteTodo,
   updateTodo,
   getTodoStatusSummary,
+  getTodoPrioritySummary,
   getTodosByStatus,
   getRecentTodos,
 };
