@@ -71,16 +71,18 @@ function Profile() {
 
   return (
     <div
-      className={`flex flex-col justify-start items-center h-[calc(100vh-70px)] w-full sm:pt-2 mt-0.5 bg-blue-100 ${
-        theme === "light" ? "light" : "dark-bg"
+      className={`flex flex-col justify-start items-center h-[calc(100vh-70px)] w-full sm:pt-2 bg-blue-100 ${
+        theme === "light" ? "bg-white" : "bg-slate-700"
       }
       ${sidebar ? "sm:w-[80%]" : "sm:w-[95%]"}`}
     >
       <motion.div
         initial={{ y: 100 }}
         animate={{ y: 0 }}
-        className={`sm:w-2/4 w-full max-sm:h-full sm:mt-4 p-4 sm:rounded-2xl shadow-[0px_0px_100px_10px_rgba(0,0,0,0.25)] overflow-auto ${
-          theme === "light" ? "light" : "dark"
+        className={`sm:w-2/4 w-full max-sm:h-full sm:mt-4 p-4 sm:rounded-2xl overflow-auto ${
+          theme === "light"
+            ? "light sm:shadow-[0px_0px_100px_10px_rgba(0,0,0,0.25)]"
+            : "dark"
         }`}
       >
         <div className="w-full flex items-center justify-center">

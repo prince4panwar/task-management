@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Calendar, Clock } from "lucide-react";
+import { Calendar, Clock, Flag } from "lucide-react";
 import { useSidebarStore } from "@/store/sidebarStore";
 import { useSearchContext } from "@/context/SearchContext";
 
@@ -13,6 +13,7 @@ function RecentTasks({
   limit,
   collapseHeight = true,
   widthFull = false,
+  showTitle = true,
   className,
 }) {
   const { search } = useSearchContext();
@@ -67,14 +68,16 @@ function RecentTasks({
     <div
       className={`${
         collapseHeight ? "h-[calc(100vh-70px)]" : ""
-      } w-full px-2 py-2 overflow-y-auto overflow-x-hidden custom-scroll
+      } w-full sm:px-2 sm:py-2 overflow-y-auto overflow-x-hidden custom-scroll
       ${!widthFull ? (sidebar ? "sm:w-[80%]" : "sm:w-[95%]") : "w-full"}
-      ${theme === "light" ? "light" : "dark-bg"}
+      ${theme === "light" ? "bg-white" : "bg-slate-800 backdrop-blur"}
       ${className}`}
     >
-      {/* <h1 className="text-center text-4xl text-slate-800 mb-4 font-semibold">
-        Recent Tasks
-      </h1> */}
+      {showTitle && (
+        <h2 className="sm:text-3xl text-2xl text-blue-600 font-bold sm:mb-6 mb-4 text-center">
+          Recent Tasks
+        </h2>
+      )}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {visibleTodos?.map((todo, index) => (
           <motion.div
@@ -95,22 +98,37 @@ function RecentTasks({
               }
             `}
           >
-            {/* Header */}
             <div className="flex items-center justify-between mb-3">
-              <Badge
-                className={`flex items-center gap-1 text-[11px] px-3 py-1 rounded-full
+              <div className="flex items-center gap-2">
+                <Badge
+                  className={`flex items-center gap-1 text-[11px] px-3 py-1 rounded-full
+                    ${
+                      todo.status === "pending"
+                        ? "bg-red-500"
+                        : todo.status === "completed"
+                        ? "bg-green-700"
+                        : "bg-yellow-500"
+                    }
+                  `}
+                >
+                  <span className="w-2 h-2 rounded-full bg-white/90" />
+                  {todo.status.charAt(0).toUpperCase() + todo.status.slice(1)}
+                </Badge>
+                <Badge
+                  className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold
                   ${
-                    todo.status === "pending"
-                      ? "bg-red-500"
-                      : todo.status === "completed"
-                      ? "bg-green-700"
-                      : "bg-yellow-500"
+                    todo.priority === "low"
+                      ? "bg-green-500/15 text-green-600"
+                      : todo.priority === "medium"
+                      ? "bg-yellow-500/20 text-yellow-700"
+                      : "bg-red-500/15 text-red-600"
                   }
-                `}
-              >
-                <span className="w-2 h-2 rounded-full bg-white/90" />
-                {todo.status.charAt(0).toUpperCase() + todo.status.slice(1)}
-              </Badge>
+                  group-hover:shadow-sm transition-all`}
+                >
+                  <Flag className="w-3 h-3" />
+                  {todo.priority}
+                </Badge>
+              </div>
 
               <span className="text-xs text-muted-foreground">
                 #{index + 1}

@@ -5,6 +5,7 @@ import {
   CircleChevronLeft,
   ClipboardPlus,
   Clock3,
+  Flag,
   LayoutDashboard,
   LayoutList,
   User,
@@ -32,7 +33,7 @@ function DesktopSidebar() {
   return (
     <aside
       className={`relative hidden sm:flex flex-col gap-2 align-center
-        lg:p-3 p-1 h-[calc(100vh-70px)] mt-0.5 me-0.5 bg-slate-300
+        lg:p-3 p-1 h-[calc(100vh-70px)] mt-0.5 bg-slate-300
         transition-[width] duration-300 ease-in-out 
         ${theme === "light" ? "light" : "dark"}
         ${sidebar ? "w-[20%]" : "w-[5%]"}
@@ -47,13 +48,6 @@ function DesktopSidebar() {
         `}
         onClick={toggleSidebar}
       />
-
-      {/* {sidebar && (
-        <span className="px-4 sm:text-lg font-semibold text-sm">
-          Welcome {user?.name}
-        </span>
-      )} */}
-
       <Tooltip>
         <TooltipTrigger asChild>
           <button
@@ -106,12 +100,34 @@ function DesktopSidebar() {
             onClick={() => navigate("/todos/status/summary")}
           >
             <ChartNoAxesCombined className="max-lg:w-4 max-sm:h-4 lg:w-5 lg:h-5" />
-            {sidebar && <span>Tasks Summary</span>}
+            {sidebar && <span>Status Summary</span>}
           </button>
         </TooltipTrigger>
         {!sidebar && (
           <TooltipContent side="right" align="center">
-            <p>Tasks summary</p>
+            <p>Status summary</p>
+          </TooltipContent>
+        )}
+      </Tooltip>
+
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            className={`${baseClasses} ${
+              isActive("/todos/priority/summary")
+                ? activeClasses
+                : inactiveClasses
+            }`}
+            onClick={() => navigate("/todos/priority/summary")}
+          >
+            <Flag className="max-lg:w-4 max-sm:h-4 lg:w-5 lg:h-5" />
+            {sidebar && <span>Priority Summary</span>}
+          </button>
+        </TooltipTrigger>
+        {!sidebar && (
+          <TooltipContent side="right" align="center">
+            <p>Priority summary</p>
           </TooltipContent>
         )}
       </Tooltip>

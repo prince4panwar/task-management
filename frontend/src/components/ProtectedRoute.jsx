@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUserStore } from "../store/userStore";
 import { useThemeStore } from "../store/themeStore";
 import { CircleUserRound, Moon, Sun } from "lucide-react";
-import { Sidebar } from "./Sidebar";
+import { MobileSidebar } from "./MobileSidebar";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useSearchContext } from "@/context/SearchContext";
 
@@ -73,13 +73,8 @@ const ProtectedRoute = ({ children }) => {
           >
             Taskify
           </Link>
-          {isMobile && <Sidebar />}
+          {isMobile && <MobileSidebar />}
         </div>
-        {/* <div className="sm:w-2/4 w-4/8 flex justify-center max-md:hidden">
-          <span className="font-bold sm:text-xl text-sm">
-            Welcome {user?.name}
-          </span>
-        </div> */}
         <div className="sm:w-1/3 w-6/8 flex justify-end">
           <input
             type="search"

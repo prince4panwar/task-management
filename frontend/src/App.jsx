@@ -17,6 +17,7 @@ import TodoForm from "./components/TodoForm";
 import Layout from "./pages/Layout";
 import RecentTasks from "./pages/RecentTasks";
 import Dashboard from "./pages/Dashboard";
+import TodoPriorityChart from "./pages/TodoPriorityChart";
 
 const router = createBrowserRouter([
   { path: "/", Component: Register },
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
       { path: "/todos/:todoId", element: <TodoDetails /> },
       { path: "/update/username", element: <Profile /> },
       { path: "/todos/status/summary", element: <TodoStatusPieChart /> },
+      { path: "/todos/priority/summary", element: <TodoPriorityChart /> },
       { path: "/todos/create", element: <TodoForm /> },
       { path: "/todos/recent", element: <RecentTasks /> },
     ],

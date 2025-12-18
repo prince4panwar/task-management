@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useUserStore } from "@/store/userStore";
 import toast from "react-hot-toast";
 
-export function Sidebar() {
+export function MobileSidebar() {
   const user = useUserStore((state) => state.user);
   const deleteUser = useUserStore((state) => state.deleteUser);
   const { theme } = useThemeStore();
@@ -83,7 +83,17 @@ export function Sidebar() {
               className="cursor-pointer font-bold text-white p-2 rounded transition-all bg-blue-500 hover:bg-blue-600"
               onClick={() => navigate("/todos/status/summary")}
             >
-              Tasks Summary
+              Status Summary
+            </button>
+          </SheetClose>
+
+          <SheetClose asChild>
+            <button
+              type="button"
+              className="cursor-pointer font-bold text-white p-2 rounded transition-all bg-blue-500 hover:bg-blue-600"
+              onClick={() => navigate("/todos/priority/summary")}
+            >
+              Priority Summary
             </button>
           </SheetClose>
 

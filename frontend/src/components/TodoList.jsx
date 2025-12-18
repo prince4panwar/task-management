@@ -45,7 +45,7 @@ function TodosList({
     <div
       className={`h-[calc(100vh-110px)] w-full overflow-y-auto overflow-x-hidden mt-0.5 custom-scroll ${
         sidebar ? "sm:w-[80%]" : "sm:w-[95%]"
-      }`}
+      }         ${theme === "light" ? "bg-white" : "bg-slate-700"}`}
     >
       <div className="sm:p-1 sm:pl-2 sm:pt-0">
         <div
@@ -56,14 +56,14 @@ function TodosList({
           </span>
           <span className="w-1/4 text-center text-xs sm:text-base">Title</span>
           <span className="w-1/4 text-center text-xs sm:text-base">Status</span>
-          <span className="w-1/4 text-center text-xs sm:text-base line-clamp-3">
-            Creation Date
+          <span className="w-1/4 text-center text-xs sm:text-base line-clamp-1">
+            Creation
           </span>
           <span className="w-1/4 text-center text-xs sm:text-base">
             Priority
           </span>
           <span className="w-1/4 text-center text-xs sm:text-base hidden sm:block">
-            Due Date
+            Due
           </span>
           <span className="w-1/4 text-center text-xs sm:text-base">
             Actions
@@ -79,7 +79,7 @@ function TodosList({
           </div>
         )}
 
-        <div className="px-1">
+        <div className="px-1 max-sm:py-1">
           {filtered?.map((todo, index) => (
             <motion.div
               key={todo._id}
@@ -87,8 +87,10 @@ function TodosList({
               whileTap={{ scale: 0.9991 }}
               initial={{ opacity: 0, y: -300 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`flex items-center w-full sm:gap-4 p-2 mb-2.5 rounded shadow-[0px_2px_2px_2px_rgba(0,0,0,0.35)] cursor-pointer px-1 ${
-                theme === "light" ? "light" : "dark"
+              className={`flex items-center w-full sm:gap-4 p-2 sm:mb-2.5 mb-1 rounded-2xl cursor-pointer px-1 ${
+                theme === "light"
+                  ? "light shadow-[0px_2px_2px_2px_rgba(0,0,0,0.35)]"
+                  : "dark border border-slate-400 hover:border-blue-600"
               }`}
               onClick={() => navigate(`/todos/${todo._id}`)}
             >
@@ -109,7 +111,7 @@ function TodosList({
 
               <div className="w-1/4 text-center">
                 <Badge
-                  className={`${
+                  className={`sm:px-3 sm:py-1 text-xs ${
                     (todo.status === "pending" && "bg-red-600") ||
                     (todo.status === "completed" && "bg-green-900") ||
                     (todo.status === "in-progress" && "bg-yellow-500")
@@ -124,15 +126,15 @@ function TodosList({
                   day: "2-digit",
                   month: "short",
                   year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
+                  // hour: "2-digit",
+                  // minute: "2-digit",
+                  // hour12: false,
                 })}
               </p>
 
               <div className="w-1/4 text-center">
                 <Badge
-                  className={`${
+                  className={`sm:px-3 sm:py-1 text-xs ${
                     (todo.priority === "low" && "bg-green-900") ||
                     (todo.priority === "medium" && "bg-yellow-500") ||
                     (todo.priority === "high" && "bg-red-500")
@@ -148,9 +150,9 @@ function TodosList({
                   day: "2-digit",
                   month: "short",
                   year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
+                  // hour: "2-digit",
+                  // minute: "2-digit",
+                  // hour12: false,
                 })}
               </p>
 
@@ -160,14 +162,14 @@ function TodosList({
               >
                 <CreateTodoDialog
                   btnName="Edit"
-                  btnClass="sm:text-base text-[10px] sm:px-7.5 px-5 py-1 bg-green-500 hover:bg-green-600 text-white rounded cursor-pointer font-bold"
+                  btnClass="sm:text-base text-[10px] sm:px-7.5 px-5 py-1 bg-green-500 hover:bg-green-600 text-white rounded-lg cursor-pointer font-bold"
                   todoId={todo._id}
                 />
 
                 <DeleteTodoDialog
                   showIcon={false}
                   btnName="Delete"
-                  btnClass="sm:text-base text-[10px] sm:px-5 px-3 py-1 bg-red-500 hover:bg-red-700 text-white rounded cursor-pointer font-bold"
+                  btnClass="sm:text-base text-[10px] sm:px-5 px-3 py-1 bg-red-500 hover:bg-red-700 text-white rounded-lg cursor-pointer font-bold"
                   todoId={todo._id}
                   onDeletion={fetchTodos}
                 />

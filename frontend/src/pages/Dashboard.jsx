@@ -7,13 +7,15 @@ import { useThemeStore } from "@/store/themeStore";
 import RecentTasks from "./RecentTasks";
 import TodoStatusPieChart from "./TodoStatusPieChart";
 import { useUserStore } from "@/store/userStore";
+import { Flag } from "lucide-react";
+import TodoPriorityPieChart from "./TodoPriorityChart";
 
 function Dashboard() {
   const { sidebar } = useSidebarStore();
   const user = useUserStore((state) => state.user);
   const { theme } = useThemeStore();
 
-  const fetchSummary = async () => {
+  const fetchStatusSummary = async () => {
     const res = await axios.get(
       "http://localhost:3000/api/todos/status/summary",
       {
@@ -25,38 +27,76 @@ function Dashboard() {
     return res.data.data;
   };
 
-  const { data } = useQuery({
+  const fetchPrioritySummary = async () => {
+    const res = await axios.get(
+      "http://localhost:3000/api/todos/priority/summary",
+      {
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
+    return res.data.data;
+  };
+
+  const { data: status } = useQuery({
     queryKey: ["task-summary"],
-    queryFn: fetchSummary,
+    queryFn: fetchStatusSummary,
   });
 
-  const stats = [
+  const { data: priority } = useQuery({
+    queryKey: ["priority-summary"],
+    queryFn: fetchPrioritySummary,
+  });
+
+  const statusStats = [
     {
       label: "Total Tasks",
-      value: data?.total || 0,
+      value: status?.total || 0,
       gradient: "from-blue-500 to-blue-700",
     },
     {
       label: "Pending",
-      value: data?.pending || 0,
+      value: status?.pending || 0,
       gradient: "from-red-500 to-red-700",
     },
     {
       label: "Completed",
-      value: data?.completed || 0,
+      value: status?.completed || 0,
       gradient: "from-green-500 to-green-700",
     },
     {
       label: "In Progress",
-      value: data?.inProgress || 0,
+      value: status?.inProgress || 0,
       gradient: "from-yellow-400 to-yellow-600",
+    },
+  ];
+
+  const priorityStats = [
+    {
+      label: "Low Priority",
+      value: priority?.low || 0,
+      color: "text-green-600",
+      bg: "bg-green-500/15",
+    },
+    {
+      label: "Medium Priority",
+      value: priority?.medium || 0,
+      color: "text-yellow-600",
+      bg: "bg-yellow-500/20",
+    },
+    {
+      label: "High Priority",
+      value: priority?.high || 0,
+      color: "text-red-600",
+      bg: "bg-red-500/15",
     },
   ];
 
   return (
     <div
       className={`h-[calc(100vh-70px)] overflow-y-auto custom-scroll
-      px-4 py-4 transition-all mt-0.5
+      sm:px-4 sm:py-4 p-1.5 transition-all mt-0.5 sm:ms-0.5 
       ${sidebar ? "sm:w-[80%]" : "sm:w-[95%]"}
       ${theme === "light" ? "light" : "dark"}`}
     >
@@ -77,9 +117,8 @@ function Dashboard() {
           Track your progress and manage tasks efficiently
         </p>
       </motion.div>
-
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-        {stats.map((stat, index) => (
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+        {statusStats.map((stat, index) => (
           <motion.div
             key={stat.label}
             initial={{ opacity: 0, y: 25 }}
@@ -94,7 +133,35 @@ function Dashboard() {
           </motion.div>
         ))}
       </div>
+      <div className="mb-10">
+        <h2 className="text-xl font-semibold mb-3">Task Priority Overview</h2>
 
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          {priorityStats.map((p, index) => (
+            <motion.div
+              key={p.label}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className={`rounded-2xl p-5 border shadow-sm
+                ${
+                  theme === "light"
+                    ? "bg-white"
+                    : "bg-slate-800 border-slate-700"
+                }`}
+            >
+              <div className="flex items-center justify-between">
+                <div className={`p-2 rounded-full ${p.bg}`}>
+                  <Flag className={`w-5 h-5 ${p.color}`} />
+                </div>
+                <span className="text-3xl font-bold">{p.value}</span>
+              </div>
+
+              <p className="mt-3 text-sm font-medium opacity-80">{p.label}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
       <div className="mb-8">
         <motion.div
           initial={{ opacity: 0 }}
@@ -106,50 +173,77 @@ function Dashboard() {
                 : "bg-slate-800/80 backdrop-blur"
             }`}
         >
-          <div className="flex items-center justify-between mb-3 px-2">
+          <div className="flex items-center justify-between mb-3 sm:px-2">
             <h2 className="text-xl font-semibold">Recent Tasks</h2>
             <p className="text-sm opacity-70">
               Quick access to your latest tasks
             </p>
           </div>
+
           <RecentTasks
             limit={3}
             collapseHeight={false}
             widthFull={true}
+            showTitle={false}
             className="rounded-2xl"
           />
         </motion.div>
       </div>
 
-      <div
-        className={`rounded-2xl p-5 shadow-md border-2
-        ${
-          theme === "light"
-            ? "bg-white/80 backdrop-blur"
-            : "bg-slate-800/80 backdrop-blur"
-        }`}
-      >
-        <div className="mb-4">
-          <h2 className="text-xl font-semibold">Task Summary</h2>
-          <p className="text-sm opacity-70">
-            Visual overview of task status distribution
-          </p>
+      <div className="flex gap-4 max-sm:flex-col">
+        <div
+          className={`rounded-2xl sm:p-5 p-3 shadow-md border-2 sm:w-1/2 w-full
+        ${theme === "light" ? "bg-white/80 backdrop-blur" : "bg-slate-800"}`}
+        >
+          <div className="mb-4">
+            <h2 className="text-xl font-semibold">Task Status Summary</h2>
+            <p className="text-sm opacity-70">
+              Visual overview of task status distribution
+            </p>
+          </div>
+
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.4 }}
+            className="flex items-center justify-center rounded-xl border
+          border-dashed border-slate-300 dark:border-slate-600 p-4"
+          >
+            <TodoStatusPieChart
+              showLegend={false}
+              showButton={false}
+              showLabel={false}
+              collapseHeight={false}
+            />
+          </motion.div>
         </div>
 
-        <motion.div
-          initial={{ scale: 0.95, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.4 }}
-          className="flex items-center justify-center rounded-xl border
-          border-dashed border-slate-300 dark:border-slate-600 p-4"
+        <div
+          className={`rounded-2xl sm:p-5 p-3 shadow-md border-2 sm:w-1/2 w-full
+        ${theme === "light" ? "bg-white/80 backdrop-blur" : "bg-slate-800"}`}
         >
-          <TodoStatusPieChart
-            showLegend={false}
-            showButton={false}
-            showLabel={false}
-            collapseHeight={false}
-          />
-        </motion.div>
+          <div className="mb-4">
+            <h2 className="text-xl font-semibold">Task Priority Summary</h2>
+            <p className="text-sm opacity-70">
+              Visual overview of task priority distribution
+            </p>
+          </div>
+
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.4 }}
+            className="flex items-center justify-center rounded-xl border
+          border-dashed border-slate-300 dark:border-slate-600 p-4"
+          >
+            <TodoPriorityPieChart
+              showLegend={false}
+              showButton={false}
+              showLabel={false}
+              collapseHeight={false}
+            />
+          </motion.div>
+        </div>
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ import { useThemeStore } from "@/store/themeStore";
 
 const COLORS = ["#E7000B", "#F0B100", "#0D542B"]; // pending, inProgress, completed
 
-const TodoStatusPieChart = ({
+const TodoPriorityPieChart = ({
   showLegend = true,
   showButton = true,
   showLabel = true,
@@ -28,10 +28,10 @@ const TodoStatusPieChart = ({
   const { theme } = useThemeStore();
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["status-summary"],
+    queryKey: ["priority-summary"],
     queryFn: async () => {
       const response = await axios.get(
-        "http://localhost:3000/api/todos/status/summary",
+        "http://localhost:3000/api/todos/priority/summary",
         {
           headers: {
             "x-access-token": localStorage.getItem("token"),
@@ -54,10 +54,10 @@ const TodoStatusPieChart = ({
       </p>
     );
 
-  const statusData = [
-    { name: "Pending", value: data?.pending },
-    { name: "In Progress", value: data?.inProgress },
-    { name: "Completed", value: data?.completed },
+  const priorityData = [
+    { name: "Low", value: data?.low },
+    { name: "Medium", value: data?.medium },
+    { name: "High", value: data?.high },
   ];
 
   return (
@@ -73,7 +73,7 @@ const TodoStatusPieChart = ({
         {showLabel && (
           <>
             <h2 className="sm:text-3xl text-2xl text-blue-500 font-bold mb-4 sm:mt-10 mt-2 text-center">
-              Tasks Status Summary
+              Tasks Priority Summary
             </h2>
             <h3 className="sm:text-lg text-sm text-blue-500 font-semibold text-center sm:mt-2 sm:mb-4 mb-2">
               Total Tasks: {data?.total}
@@ -85,7 +85,7 @@ const TodoStatusPieChart = ({
           <PieChart>
             <Pie
               dataKey="value"
-              data={statusData}
+              data={priorityData}
               cx="50%"
               cy="50%"
               innerRadius={100}
@@ -93,7 +93,7 @@ const TodoStatusPieChart = ({
               fill="#8884d8"
               label
             >
-              {statusData.map((entry, index) => (
+              {priorityData.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={COLORS[index % COLORS.length]}
@@ -124,4 +124,4 @@ const TodoStatusPieChart = ({
   );
 };
 
-export default TodoStatusPieChart;
+export default TodoPriorityPieChart;

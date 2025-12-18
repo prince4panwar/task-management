@@ -68,16 +68,18 @@ function TodoForm() {
 
   return (
     <div
-      className={`h-[calc(100vh-70px)] w-full mt-0.5 sm:pt-7 bg-blue-100 ${
-        theme === "light" ? "light" : "dark-bg"
+      className={`h-[calc(100vh-70px)] w-full sm:pt-7 bg-blue-100 overflow-auto custom-scroll ${
+        theme === "light" ? "bg-white" : "bg-slate-700"
       }
       ${sidebar ? "sm:w-[80%]" : "sm:w-[95%]"}`}
     >
       <motion.div
         initial={{ y: 100 }}
         animate={{ y: 0 }}
-        className={`sm:w-2/4 w-full max-sm:h-full px-4 py-4 sm:rounded-2xl m-auto sm:shadow-[0px_0px_50px_10px_rgba(0,0,0,0.35)] overflow-auto ${
-          theme === "light" ? "light" : "dark"
+        className={`sm:w-2/4 w-full max-sm:h-full px-4 py-4 sm:rounded-2xl m-auto overflow-auto ${
+          theme === "light"
+            ? "light sm:shadow-[0px_0px_50px_10px_rgba(0,0,0,0.35)]"
+            : "dark"
         }`}
       >
         <h1 className={`text-3xl font-bold mb-3 text-center text-blue-600`}>
