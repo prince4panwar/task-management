@@ -39,19 +39,19 @@ function TodoDetails() {
     if (!isEdit) refetch();
   }, [isEdit, refetch]);
 
-  if (isLoading)
+  if (isLoading) {
     return (
-      <p className="text-center mt-20 text-2xl font-semibold animate-pulse">
-        Loading task details...
-      </p>
+      <p className="text-center m-auto text-4xl font-semibold">Loading...</p>
     );
+  }
 
-  if (isError)
+  if (isError) {
     return (
-      <p className="text-center mt-20 text-2xl font-semibold text-red-500">
+      <p className="text-center m-auto text-2xl font-semibold text-red-500">
         Error fetching todo
       </p>
     );
+  }
 
   return (
     <div

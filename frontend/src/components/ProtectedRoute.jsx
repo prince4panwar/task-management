@@ -49,7 +49,7 @@ const ProtectedRoute = ({ children }) => {
   // Loading UI
   if (isLoading) {
     return (
-      <div className="bg-blue-400 text-center text-white">Loading Tasks...</div>
+      <p className="text-center m-auto text-4xl font-semibold">Loading...</p>
     );
   }
 

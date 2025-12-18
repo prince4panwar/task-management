@@ -42,17 +42,19 @@ const TodoStatusPieChart = ({
     },
   });
 
-  if (isLoading)
+  if (isLoading) {
     return (
-      <p className="text-center text-blue-500 font-semibold">Loading...</p>
+      <p className="text-center m-auto text-4xl font-semibold">Loading...</p>
     );
+  }
 
-  if (isError)
+  if (isError) {
     return (
-      <p className="text-center text-red-600 font-semibold">
+      <p className="text-center m-auto text-4xl text-red-600 font-semibold">
         Failed to load chart data
       </p>
     );
+  }
 
   const statusData = [
     { name: "Pending", value: data?.pending },

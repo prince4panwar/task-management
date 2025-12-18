@@ -1,23 +1,24 @@
-import "./App.css";
-import React from "react";
-import TodoPage from "./pages/TodoPage";
+import React, { Suspense, lazy } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import Register from "./pages/Register.jsx";
-import Login from "./pages/Login.jsx";
-import Profile from "./pages/Profile.jsx";
 import { Toaster } from "react-hot-toast";
-import TodoDetails from "./pages/TodoDetails";
-import TodoStatusPieChart from "./pages/TodoStatusPieChart";
-import NotFound from "./components/NotFound";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { SearchProvider } from "./context/SearchContext";
-import TodoForm from "./components/TodoForm";
-import Layout from "./pages/Layout";
-import RecentTasks from "./pages/RecentTasks";
-import Dashboard from "./pages/Dashboard";
-import TodoPriorityChart from "./pages/TodoPriorityChart";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import NotFound from "./components/NotFound";
+import Loader from "./components/Loader";
+import "./App.css";
+
+const Register = lazy(() => import("./pages/Register.jsx"));
+const Login = lazy(() => import("./pages/Login.jsx"));
+const Layout = lazy(() => import("./pages/Layout"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const TodoPage = lazy(() => import("./pages/TodoPage"));
+const TodoDetails = lazy(() => import("./pages/TodoDetails"));
+const Profile = lazy(() => import("./pages/Profile.jsx"));
+const TodoStatusPieChart = lazy(() => import("./pages/TodoStatusPieChart"));
+const TodoPriorityChart = lazy(() => import("./pages/TodoPriorityChart"));
+const TodoForm = lazy(() => import("./components/TodoForm"));
+const RecentTasks = lazy(() => import("./pages/RecentTasks"));
 
 const router = createBrowserRouter([
   { path: "/", Component: Register },
@@ -46,7 +47,7 @@ function App() {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        refetchOnWindowFocus: false, // default: true
+        refetchOnWindowFocus: false,
       },
     },
   });
@@ -54,15 +55,11 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <SearchProvider>
-        <RouterProvider router={router} />
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 1500,
-          }}
-        />
+        <Suspense fallback={<Loader />}>
+          <RouterProvider router={router} />
+        </Suspense>
+        <Toaster position="top-right" toastOptions={{ duration: 1500 }} />
       </SearchProvider>
-      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
     </QueryClientProvider>
   );
 }

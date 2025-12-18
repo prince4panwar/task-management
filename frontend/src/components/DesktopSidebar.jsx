@@ -1,5 +1,4 @@
 import { useThemeStore } from "@/store/themeStore";
-import { useUserStore } from "@/store/userStore";
 import {
   ChartNoAxesCombined,
   CircleChevronLeft,
@@ -19,7 +18,6 @@ function DesktopSidebar() {
   const { theme } = useThemeStore();
   const navigate = useNavigate();
   const location = useLocation();
-  const user = useUserStore((state) => state.user);
   const { sidebar, toggleSidebar } = useSidebarStore();
 
   const isActive = (path) => location.pathname === path;
@@ -34,9 +32,9 @@ function DesktopSidebar() {
     <aside
       className={`relative hidden sm:flex flex-col gap-2 align-center
         lg:p-3 p-1 h-[calc(100vh-70px)] mt-0.5 bg-slate-300
-        transition-[width] duration-300 ease-in-out 
+        transition-all duration-1000
         ${theme === "light" ? "light" : "dark"}
-        ${sidebar ? "w-[20%]" : "w-[5%]"}
+        ${sidebar ? "min-w-[20%]" : "min-w-[5%]"}
       `}
     >
       <CircleChevronLeft

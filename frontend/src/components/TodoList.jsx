@@ -28,19 +28,23 @@ function TodosList({
     (t) =>
       t.title.toLowerCase().includes(search.toLowerCase()) ||
       t.description.toLowerCase().includes(search.toLowerCase()) ||
-      t.status.toLowerCase().includes(search.toLowerCase())
+      t.status.toLowerCase().includes(search.toLowerCase()) ||
+      t.priority.toLowerCase().includes(search.toLowerCase())
   );
 
-  if (isLoading)
+  if (isLoading) {
     return (
       <p className="text-center m-auto text-4xl font-semibold">Loading...</p>
     );
-  if (isError)
+  }
+  if (isError) {
     return (
       <p className="text-center m-auto text-4xl font-semibold">
         Error fetching todo
       </p>
     );
+  }
+
   return (
     <div
       className={`h-[calc(100vh-110px)] w-full overflow-y-auto overflow-x-hidden mt-0.5 custom-scroll ${

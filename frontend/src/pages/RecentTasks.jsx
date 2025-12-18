@@ -43,22 +43,21 @@ function RecentTasks({
     (t) =>
       t.title.toLowerCase().includes(search.toLowerCase()) ||
       t.description.toLowerCase().includes(search.toLowerCase()) ||
-      t.status.toLowerCase().includes(search.toLowerCase())
+      t.status.toLowerCase().includes(search.toLowerCase()) ||
+      t.priority.toLowerCase().includes(search.toLowerCase())
   );
 
   const visibleTodos = limit ? filtered?.slice(0, limit) : filtered;
 
   if (isLoading) {
     return (
-      <p className="text-center mt-20 text-2xl font-semibold animate-pulse">
-        Loading recent tasks...
-      </p>
+      <p className="text-center m-auto text-4xl font-semibold">Loading...</p>
     );
   }
 
   if (isError) {
     return (
-      <p className="text-center mt-20 text-2xl font-semibold text-red-500">
+      <p className="text-center m-auto text-2xl font-semibold text-red-500">
         Failed to load recent tasks
       </p>
     );
@@ -135,7 +134,6 @@ function RecentTasks({
               </span>
             </div>
 
-            {/* Title */}
             <h3
               className={`font-semibold text-lg leading-tight mb-1 group-hover:text-blue-600 transition-colors ${
                 theme === "light" ? "text-black" : "text-white"
@@ -146,12 +144,10 @@ function RecentTasks({
                 : todo.title}
             </h3>
 
-            {/* Description */}
             <p className="text-sm text-muted-foreground line-clamp-3 mb-4">
               {todo.description}
             </p>
 
-            {/* Dates */}
             <div className="flex flex-col gap-2 text-xs text-muted-foreground">
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4" />

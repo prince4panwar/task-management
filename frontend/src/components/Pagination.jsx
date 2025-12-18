@@ -66,7 +66,6 @@ function Pagination({ pagination }) {
       ${sidebar ? "sm:w-[80%]" : "sm:w-[95%]"}`}
     >
       <ul className="flex justify-center m-auto items-center h-full gap-1">
-        {/* Previous */}
         <li
           className={`px-3 py-1 rounded ${
             !hasPrevPage
@@ -78,10 +77,8 @@ function Pagination({ pagination }) {
           <ChevronsLeft />
         </li>
 
-        {/* Page numbers */}
         {renderPageNumbers()}
 
-        {/* Next */}
         <li
           className={`px-3 py-1 rounded ${
             !hasNextPage
