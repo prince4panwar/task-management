@@ -6,6 +6,7 @@ import { SearchProvider } from "./context/SearchContext";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import NotFound from "./components/NotFound";
 import Loader from "./components/Loader";
+import RouterError from "./components/RouteError";
 import "./App.css";
 
 const Register = lazy(() => import("./pages/Register.jsx"));
@@ -30,14 +31,42 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      { path: "/dashboard", element: <Dashboard /> },
-      { path: "/todos", element: <TodoPage /> },
-      { path: "/todos/:todoId", element: <TodoDetails /> },
-      { path: "/update/username", element: <Profile /> },
-      { path: "/todos/status/summary", element: <TodoStatusPieChart /> },
-      { path: "/todos/priority/summary", element: <TodoPriorityChart /> },
-      { path: "/todos/create", element: <TodoForm /> },
-      { path: "/todos/recent", element: <RecentTasks /> },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+        errorElement: <RouterError />,
+      },
+      { path: "/todos", element: <TodoPage />, errorElement: <RouterError /> },
+      {
+        path: "/todos/:todoId",
+        element: <TodoDetails />,
+        errorElement: <RouterError />,
+      },
+      {
+        path: "/update/username",
+        element: <Profile />,
+        errorElement: <RouterError />,
+      },
+      {
+        path: "/todos/status/summary",
+        element: <TodoStatusPieChart />,
+        errorElement: <RouterError />,
+      },
+      {
+        path: "/todos/priority/summary",
+        element: <TodoPriorityChart />,
+        errorElement: <RouterError />,
+      },
+      {
+        path: "/todos/create",
+        element: <TodoForm />,
+        errorElement: <RouterError />,
+      },
+      {
+        path: "/todos/recent",
+        element: <RecentTasks />,
+        errorElement: <RouterError />,
+      },
     ],
   },
   { path: "*", element: <NotFound /> },

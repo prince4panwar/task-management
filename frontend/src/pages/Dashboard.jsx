@@ -96,7 +96,7 @@ function Dashboard() {
   return (
     <div
       className={`h-[calc(100vh-70px)] overflow-y-auto custom-scroll
-      sm:px-4 sm:py-4 p-1.5 transition-all mt-0.5 sm:ms-0.5 
+      sm:px-4 sm:py-4 p-1.5 transition-all
       ${sidebar ? "sm:w-[80%]" : "sm:w-[95%]"}
       ${theme === "light" ? "light" : "dark"}`}
     >

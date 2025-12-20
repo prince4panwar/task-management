@@ -47,13 +47,13 @@ function TodosList({
 
   return (
     <div
-      className={`h-[calc(100vh-110px)] w-full overflow-y-auto overflow-x-hidden mt-0.5 custom-scroll ${
+      className={`h-[calc(100vh-110px)] w-full overflow-y-auto overflow-x-hidden custom-scroll ${
         sidebar ? "sm:w-[80%]" : "sm:w-[95%]"
-      }         ${theme === "light" ? "bg-white" : "bg-slate-700"}`}
+      }         ${theme === "light" ? "bg-white mt-0.5" : "bg-slate-700"}`}
     >
       <div className="sm:p-1 sm:pl-2 sm:pt-0">
         <div
-          className={`z-10 sm:h-[55px] text-md font-bold sm:mb-2.5 mb-1 sticky sm:rounded top-0 sm:p-4 px-1 py-3 flex sm:gap-4 justify-around bg-blue-500 text-white max-sm:shadow-[0px_2px_2px_4px_rgba(0,0,0,0.35)]`}
+          className={`sm:h-[55px] text-md font-bold sm:mb-2.5 mb-1 sticky sm:rounded top-0 sm:p-4 px-1 py-3 flex sm:gap-4 justify-around bg-blue-500 text-white max-sm:shadow-[0px_2px_2px_4px_rgba(0,0,0,0.35)]`}
         >
           <span className="w-1/20 text-center text-xs sm:text-base hidden sm:block">
             S.No.

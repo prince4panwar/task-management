@@ -63,7 +63,7 @@ const ProtectedRoute = ({ children }) => {
     <div className="h-screen overflow-hidden">
       <div
         className={`h-[70px] text-3xl font-bold sticky top-0 sm:px-8 p-2 gap-0.5 flex items-center bg-blue-500 text-white w-full ${
-          theme === "light" ? "light" : "dark"
+          theme === "light" ? "light" : "dark shadow-2xl"
         }`}
       >
         <div className="sm:w-1/3 w-2/8 flex justify-start">

@@ -68,7 +68,7 @@ function TodoForm() {
 
   return (
     <div
-      className={`h-[calc(100vh-70px)] w-full sm:pt-7 bg-blue-100 overflow-auto custom-scroll ${
+      className={`h-[calc(100vh-70px)] w-full sm:py-7 bg-blue-100 overflow-auto custom-scroll ${
         theme === "light" ? "bg-white" : "bg-slate-700"
       }
       ${sidebar ? "sm:w-[80%]" : "sm:w-[95%]"}`}
@@ -77,9 +77,7 @@ function TodoForm() {
         initial={{ y: 100 }}
         animate={{ y: 0 }}
         className={`sm:w-2/4 w-full max-sm:h-full px-4 py-4 sm:rounded-2xl m-auto overflow-auto ${
-          theme === "light"
-            ? "light sm:shadow-[0px_0px_50px_10px_rgba(0,0,0,0.35)]"
-            : "dark"
+          theme === "light" ? "light sm:shadow-2xl" : "dark"
         }`}
       >
         <h1 className={`text-3xl font-bold mb-3 text-center text-blue-600`}>

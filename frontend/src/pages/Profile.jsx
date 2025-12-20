@@ -80,9 +80,7 @@ function Profile() {
         initial={{ y: 100 }}
         animate={{ y: 0 }}
         className={`sm:w-2/4 w-full max-sm:h-full sm:mt-4 p-4 sm:rounded-2xl overflow-auto ${
-          theme === "light"
-            ? "light sm:shadow-[0px_0px_100px_10px_rgba(0,0,0,0.25)]"
-            : "dark"
+          theme === "light" ? "light sm:shadow-2xl" : "dark"
         }`}
       >
         <div className="w-full flex items-center justify-center">

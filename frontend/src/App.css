@@ -1,5 +1,5 @@
-.custom-scroll::-webkit-scrollbar {
-  width: 8px;
+/* .custom-scroll::-webkit-scrollbar {
+  width: 5px;
   border-radius: 20px;
 }
 
@@ -10,9 +10,8 @@
 
 .custom-scroll::-webkit-scrollbar-track {
   background: #d1d7df;
-  /* border-bottom-right-radius: 20px;
-  border-top-right-radius: 20px; */
-}
+  border-radius: 20px; 
+} */
 
 .light {
  transition: background 0.4s;

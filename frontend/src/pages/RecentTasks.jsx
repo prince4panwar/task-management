@@ -69,7 +69,7 @@ function RecentTasks({
         collapseHeight ? "h-[calc(100vh-70px)]" : ""
       } w-full sm:px-2 sm:py-2 overflow-y-auto overflow-x-hidden custom-scroll
       ${!widthFull ? (sidebar ? "sm:w-[80%]" : "sm:w-[95%]") : "w-full"}
-      ${theme === "light" ? "bg-white" : "bg-slate-800 backdrop-blur"}
+      ${theme === "light" ? "bg-white" : "bg-slate-800"}
       ${className}`}
     >
       {showTitle && (
