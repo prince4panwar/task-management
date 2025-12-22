@@ -48,12 +48,12 @@ function TodosList({
   return (
     <div
       className={`h-[calc(100vh-110px)] w-full overflow-y-auto overflow-x-hidden custom-scroll ${
-        sidebar ? "sm:w-[80%]" : "sm:w-[95%]"
+        sidebar ? "md:w-[80%]" : "md:w-[95%]"
       }         ${theme === "light" ? "bg-white mt-0.5" : "bg-slate-700"}`}
     >
-      <div className="sm:p-1 sm:pl-2 sm:pt-0">
+      <div className="sm:p-1 sm:pt-0">
         <div
-          className={`sm:h-[55px] text-md font-bold sm:mb-2.5 mb-1 sticky sm:rounded top-0 sm:p-4 px-1 py-3 flex sm:gap-4 justify-around bg-blue-500 text-white max-sm:shadow-[0px_2px_2px_4px_rgba(0,0,0,0.35)]`}
+          className={`sm:h-[55px] z-10 text-md font-bold sm:mb-2.5 mb-1 sticky sm:rounded-b-lg top-0 sm:p-4 px-1 py-3 flex sm:gap-4 justify-around bg-blue-500 text-white max-sm:shadow-[0px_2px_2px_4px_rgba(0,0,0,0.35)]`}
         >
           <span className="w-1/20 text-center text-xs sm:text-base hidden sm:block">
             S.No.
@@ -87,8 +87,8 @@ function TodosList({
           {filtered?.map((todo, index) => (
             <motion.div
               key={todo._id}
-              whileHover={{ scale: 1.009 }}
-              whileTap={{ scale: 0.9991 }}
+              whileHover={{ scale: 1.0049 }}
+              whileTap={{ scale: 0.9999 }}
               initial={{ opacity: 0, y: -300 }}
               animate={{ opacity: 1, y: 0 }}
               className={`flex items-center w-full sm:gap-4 p-2 sm:mb-2.5 mb-1 rounded-2xl cursor-pointer px-1 ${

@@ -98,15 +98,15 @@ const ProtectedRoute = ({ children }) => {
           </Avatar>
 
           <button
-            className={`group cursor-pointer hover:underline transition-all p-1 rounded-full ${
+            className={`group cursor-pointer hover:underline transition-all p-1 rounded-full overflow-hidden ${
               theme === "dark" ? "hover:bg-yellow-400" : "hover:bg-slate-600"
             }`}
             onClick={toggleTheme}
           >
             {theme === "light" ? (
-              <Moon className="transition-all duration-300 group-hover:-translate-y-1 max-sm:w-5 max-sm:h-5" />
+              <Moon className="transition-all duration-300 group-hover:-translate-y-2 max-sm:w-5 max-sm:h-5" />
             ) : (
-              <Sun className="transition-all duration-300 group-hover:-translate-y-1 max-sm:w-5 max-sm:h-5" />
+              <Sun className="transition-all duration-300 group-hover:-translate-y-2 max-sm:w-5 max-sm:h-5" />
             )}
           </button>
 

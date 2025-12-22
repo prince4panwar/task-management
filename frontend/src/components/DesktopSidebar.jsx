@@ -42,9 +42,9 @@ function DesktopSidebar() {
     <aside
       className={`
         relative hidden sm:flex flex-col gap-1
-        lg:p-3 p-2 h-[calc(100vh-70px)]
+        lg:py-3 p-2 h-[calc(100vh-70px)]
         transition-all duration-700
-        backdrop-blur-xl z-1
+        backdrop-blur-xl z-20
         ${
           theme === "light"
             ? "dark-bg border-r border-slate-200 shadow-md"
@@ -55,7 +55,7 @@ function DesktopSidebar() {
     >
       <CircleChevronLeft
         className={`z-20
-          absolute top-5 -right-3
+          absolute top-4.5 -right-3 border-2 border-white
           rounded-full cursor-pointer
           transition-transform duration-500
           ${sidebar ? "rotate-0" : "rotate-180"}
@@ -79,7 +79,7 @@ function DesktopSidebar() {
                 ${isActive(path) ? activeClasses : inactiveClasses}
               `}
             >
-              <Icon className={`lg:w-5 lg:h-5 w-4 h-4 ${iconClasses}`} />
+              <Icon className={`lg:w-5.5 lg:h-5.5 w-4 h-4 ${iconClasses}`} />
               {sidebar && <span className="truncate">{label}</span>}
             </button>
           </TooltipTrigger>
