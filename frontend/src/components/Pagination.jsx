@@ -22,9 +22,13 @@ function Pagination({ pagination }) {
   const { sidebar } = useSidebarStore();
 
   const handlePageClick = (page) => {
-    if (page !== currentPage) {
-      setSearchParams({ page });
-    }
+    if (page === currentPage) return;
+
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      params.set("page", page);
+      return params;
+    });
   };
 
   const renderPageNumbers = () => {

@@ -8,18 +8,24 @@ import { useSearchParams } from "react-router-dom";
 function TodoPage() {
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
+  const status = searchParams.get("status");
+  const priority = searchParams.get("priority");
 
   const addAllTodo = useAllTodoStore((state) => state.addAllTodo);
 
   const fetchTodos = async () => {
-    const response = await axios.get(
-      `http://localhost:3000/api/todos?page=${page}&limit=7`,
-      {
-        headers: {
-          "x-access-token": localStorage.getItem("token"),
-        },
-      }
-    );
+    const response = await axios.get("http://localhost:3000/api/todos", {
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+      params: {
+        page,
+        limit: 7,
+        ...(status && { status }),
+        ...(priority && { priority }),
+      },
+    });
+
     return response.data;
   };
 

@@ -39,13 +39,21 @@ const createTodo = async (req, res) => {
 const getTodos = async (req, res) => {
   try {
     const { userId } = req;
+    const { status, priority } = req.query;
+    const filter = { userId };
+    if (status) {
+      filter.status = status;
+    }
+    if (priority) {
+      filter.priority = priority;
+    }
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
-    const total = await Todo.countDocuments({ userId });
+    const total = await Todo.countDocuments(filter);
     const totalPages = Math.ceil(total / limit);
 
-    const todo = await Todo.find({ userId })
+    const todo = await Todo.find(filter)
       .populate({
         path: "userId",
         select: "name email",

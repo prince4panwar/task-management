@@ -9,11 +9,13 @@ import TodoStatusPieChart from "./TodoStatusPieChart";
 import { useUserStore } from "@/store/userStore";
 import { Flag } from "lucide-react";
 import TodoPriorityPieChart from "./TodoPriorityChart";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const { sidebar } = useSidebarStore();
   const user = useUserStore((state) => state.user);
   const { theme } = useThemeStore();
+  const navigate = useNavigate();
 
   const fetchStatusSummary = async () => {
     const res = await axios.get(
@@ -54,21 +56,25 @@ function Dashboard() {
       label: "Total Tasks",
       value: status?.total || 0,
       gradient: "from-blue-500 to-blue-700",
+      link: "/todos",
     },
     {
       label: "Pending",
       value: status?.pending || 0,
       gradient: "from-red-500 to-red-700",
+      link: "/todos?status=pending",
     },
     {
       label: "Completed",
       value: status?.completed || 0,
       gradient: "from-green-500 to-green-700",
+      link: "/todos?status=completed",
     },
     {
       label: "In Progress",
       value: status?.inProgress || 0,
       gradient: "from-yellow-400 to-yellow-600",
+      link: "/todos?status=in-progress",
     },
   ];
 
@@ -78,18 +84,21 @@ function Dashboard() {
       value: priority?.low || 0,
       color: "text-green-600",
       bg: "bg-green-500/15",
+      link: "/todos?priority=low",
     },
     {
       label: "Medium Priority",
       value: priority?.medium || 0,
       color: "text-yellow-600",
       bg: "bg-yellow-500/20",
+      link: "/todos?priority=medium",
     },
     {
       label: "High Priority",
       value: priority?.high || 0,
       color: "text-red-600",
       bg: "bg-red-500/15",
+      link: "/todos?priority=high",
     },
   ];
 
@@ -124,9 +133,10 @@ function Dashboard() {
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.12 }}
-            whileHover={{ y: -4, scale: 1.02 }}
-            className={`rounded-2xl p-5 text-white shadow-lg
+            whileHover={{ y: -4, scale: 1.01 }}
+            className={`rounded-2xl p-5 text-white shadow-lg cursor-pointer
               bg-linear-to-br ${stat.gradient}`}
+            onClick={() => navigate(stat.link)}
           >
             <p className="text-sm font-medium opacity-90">{stat.label}</p>
             <p className="text-4xl font-bold mt-2">{stat.value}</p>
@@ -137,27 +147,31 @@ function Dashboard() {
         <h2 className="text-xl font-semibold mb-3">Task Priority Overview</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          {priorityStats.map((p, index) => (
+          {priorityStats.map((priority, index) => (
             <motion.div
-              key={p.label}
+              key={priority.label}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.2 }}
-              className={`rounded-2xl p-5 border shadow-sm
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ y: -4, scale: 1.01 }}
+              className={`rounded-2xl p-5 border-2 cursor-pointer hover:shadow-xl
                 ${
                   theme === "light"
-                    ? "bg-white"
+                    ? "bg-white border-slate-200"
                     : "bg-slate-800 border-slate-700"
                 }`}
+              onClick={() => navigate(priority.link)}
             >
               <div className="flex items-center justify-between">
-                <div className={`p-2 rounded-full ${p.bg}`}>
-                  <Flag className={`w-5 h-5 ${p.color}`} />
+                <div className={`p-2 rounded-full ${priority.bg}`}>
+                  <Flag className={`w-5 h-5 ${priority.color}`} />
                 </div>
-                <span className="text-3xl font-bold">{p.value}</span>
+                <span className="text-3xl font-bold">{priority.value}</span>
               </div>
 
-              <p className="mt-3 text-sm font-medium opacity-80">{p.label}</p>
+              <p className="mt-3 text-sm font-medium opacity-80">
+                {priority.label}
+              </p>
             </motion.div>
           ))}
         </div>
