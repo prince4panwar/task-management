@@ -265,6 +265,52 @@ const getTodoPrioritySummary = async (req, res) => {
   }
 };
 
+const getTodoStatusPrioritySummary = async (req, res) => {
+  try {
+    const stats = await Todo.aggregate([
+      {
+        $match: {
+          userId: new mongoose.Types.ObjectId(req.userId),
+        },
+      },
+      {
+        $group: {
+          _id: {
+            priority: "$priority",
+            status: "$status",
+          },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const response = {
+      low: { pending: 0, inProgress: 0, completed: 0 },
+      medium: { pending: 0, inProgress: 0, completed: 0 },
+      high: { pending: 0, inProgress: 0, completed: 0 },
+    };
+
+    stats.forEach((item) => {
+      const { priority, status } = item._id;
+
+      if (status === "pending") response[priority].pending = item.count;
+      if (status === "in-progress") response[priority].inProgress = item.count;
+      if (status === "completed") response[priority].completed = item.count;
+    });
+
+    res.status(200).json({
+      success: true,
+      data: response,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch status-priority summary",
+      error,
+    });
+  }
+};
+
 const getTodosByStatus = async (req, res) => {
   try {
     const { status, search, sort } = req.query;
@@ -328,6 +374,7 @@ module.exports = {
   updateTodo,
   getTodoStatusSummary,
   getTodoPrioritySummary,
+  getTodoStatusPrioritySummary,
   getTodosByStatus,
   getRecentTodos,
 };

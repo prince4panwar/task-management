@@ -11,6 +11,7 @@ const {
   getTodosByStatus,
   getRecentTodos,
   getTodoPrioritySummary,
+  getTodoStatusPrioritySummary,
 } = require("../controller/todoController.js");
 const {
   isAuthenticatedUser,
@@ -29,6 +30,11 @@ router.get(
   getTodoPrioritySummary
 );
 router.get("/filter/todos", isAuthenticatedUser, getTodosByStatus);
+router.get(
+  "/todos/summary/status-priority",
+  isAuthenticatedUser,
+  getTodoStatusPrioritySummary
+);
 router.get("/recent/todos", isAuthenticatedUser, getRecentTodos);
 router.patch(
   "/todos/:id",
