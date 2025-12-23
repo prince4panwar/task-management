@@ -14,6 +14,7 @@ import { motion } from "motion/react";
 import { useQuery } from "@tanstack/react-query";
 import { useSidebarStore } from "@/store/sidebarStore";
 import { useThemeStore } from "@/store/themeStore";
+import ErrorState from "@/components/ErrorState";
 
 const COLORS = ["#f87171", "#facc15", "#4ade80"]; // pending, inProgress, completed
 
@@ -49,11 +50,7 @@ const TodoStatusPieChart = ({
   }
 
   if (isError) {
-    return (
-      <p className="text-center m-auto text-4xl text-red-600 font-semibold">
-        Failed to load chart data
-      </p>
-    );
+    return <ErrorState title="Failed to load chart data" />;
   }
 
   const statusData = [

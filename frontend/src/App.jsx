@@ -6,9 +6,9 @@ import { SearchProvider } from "./context/SearchContext";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import NotFound from "./components/NotFound";
 import Loader from "./components/Loader";
-import RouterError from "./components/RouteError";
 import "./App.css";
 import TodoStatusPriorityChart from "./pages/TodoStatusPriorityChart";
+import ErrorState from "./components/ErrorState";
 
 const Register = lazy(() => import("./pages/Register.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
@@ -35,33 +35,33 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <Dashboard />,
-        errorElement: <RouterError />,
+        errorElement: <ErrorState />,
       },
-      { path: "/todos", element: <TodoPage />, errorElement: <RouterError /> },
+      { path: "/todos", element: <TodoPage />, errorElement: <ErrorState /> },
       {
         path: "/todos/:todoId",
         element: <TodoDetails />,
-        errorElement: <RouterError />,
+        errorElement: <ErrorState />,
       },
       {
         path: "/update/username",
         element: <Profile />,
-        errorElement: <RouterError />,
+        errorElement: <ErrorState />,
       },
       {
         path: "/todos/analytics",
         element: <TodoStatusPriorityChart />,
-        errorElement: <RouterError />,
+        errorElement: <ErrorState />,
       },
       {
         path: "/todos/create",
         element: <TodoForm />,
-        errorElement: <RouterError />,
+        errorElement: <ErrorState />,
       },
       {
         path: "/todos/recent",
         element: <RecentTasks />,
-        errorElement: <RouterError />,
+        errorElement: <ErrorState />,
       },
     ],
   },
@@ -83,7 +83,7 @@ function App() {
         <Suspense fallback={<Loader />}>
           <RouterProvider router={router} />
         </Suspense>
-        <Toaster position="top-right" toastOptions={{ duration: 1500 }} />
+        <Toaster position="top-right" toastOptions={{ duration: 2000 }} />
       </SearchProvider>
     </QueryClientProvider>
   );

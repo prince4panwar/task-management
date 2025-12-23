@@ -91,7 +91,7 @@ function Profile() {
                 alt="Profile Pic"
                 height={50}
                 width={200}
-                className="rounded-full mb-4 cursor-pointer"
+                className="rounded-full mb-4 cursor-pointe"
               />
             </Link>
           ) : (

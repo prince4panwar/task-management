@@ -10,6 +10,7 @@ import { useUserStore } from "@/store/userStore";
 import { Flag } from "lucide-react";
 import TodoPriorityPieChart from "./TodoPriorityChart";
 import { useNavigate } from "react-router-dom";
+import ExportExcelButton from "@/components/ExportExcelButton";
 
 function Dashboard() {
   const { sidebar } = useSidebarStore();
@@ -125,6 +126,9 @@ function Dashboard() {
         <p className="text-sm opacity-70 mt-1">
           Track your progress and manage tasks efficiently
         </p>
+        <div className="w-full flex sm:justify-end mt-2">
+          <ExportExcelButton />
+        </div>
       </motion.div>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
         {statusStats.map((stat, index) => (

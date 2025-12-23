@@ -5,9 +5,11 @@ import { motion } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Calendar, Clock, Flag } from "lucide-react";
+import { AlertTriangle, Calendar, Clock, Flag } from "lucide-react";
 import { useSidebarStore } from "@/store/sidebarStore";
 import { useSearchContext } from "@/context/SearchContext";
+import RecentTasksSkeleton from "@/components/skeletons/RecentTasksSkeleton";
+import ErrorState from "@/components/ErrorState";
 
 function RecentTasks({
   limit,
@@ -50,17 +52,11 @@ function RecentTasks({
   const visibleTodos = limit ? filtered?.slice(0, limit) : filtered;
 
   if (isLoading) {
-    return (
-      <p className="text-center m-auto text-4xl font-semibold">Loading...</p>
-    );
+    return <RecentTasksSkeleton />;
   }
 
   if (isError) {
-    return (
-      <p className="text-center m-auto text-2xl font-semibold text-red-500">
-        Failed to load recent tasks
-      </p>
-    );
+    return <ErrorState title="Failed to load recent tasks" />;
   }
 
   return (
@@ -76,6 +72,14 @@ function RecentTasks({
         <h2 className="sm:text-3xl text-2xl text-blue-600 font-bold sm:mb-6 mb-4 text-center">
           Recent Tasks
         </h2>
+      )}
+      {visibleTodos?.length === 0 && (
+        <div className="text-blue-500 text-center w-full flex justify-center flex-col items-center text-3xl font-bold">
+          <AlertTriangle className="text-blue-500" size={200} />
+          <p className={` ${theme === "light" ? "light" : ""}`}>
+            No Recent Tasks Found
+          </p>
+        </div>
       )}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 max-sm:pt-1">
         {visibleTodos?.map((todo, index) => (

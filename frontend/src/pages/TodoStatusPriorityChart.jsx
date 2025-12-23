@@ -6,6 +6,9 @@ import { useSidebarStore } from "@/store/sidebarStore";
 import TodoPriorityPieChart from "./TodoPriorityChart";
 import TodoStatusPieChart from "./TodoStatusChart";
 import ChartCard from "@/components/ChartCard";
+import { Skeleton } from "@/components/ui/skeleton";
+import RecentTasksSkeleton from "@/components/skeletons/RecentTasksSkeleton";
+import ErrorState from "@/components/ErrorState";
 
 const fetchTodoSummary = async () => {
   const res = await axios.get(
@@ -29,17 +32,11 @@ function TodoStatusPriorityChart() {
   });
 
   if (isLoading) {
-    return (
-      <p className="text-center m-auto text-4xl font-semibold">Loading...</p>
-    );
+    return <RecentTasksSkeleton />;
   }
 
   if (isError) {
-    return (
-      <p className="text-center m-auto text-4xl text-red-600 font-semibold">
-        Failed to load chart data
-      </p>
-    );
+    return <ErrorState title="Failed to load chart data" />;
   }
 
   // Priority wise

@@ -10,6 +10,8 @@ import { AlertTriangle } from "lucide-react";
 import { useSearchContext } from "@/context/SearchContext";
 import Pagination from "./Pagination";
 import { useSidebarStore } from "@/store/sidebarStore";
+import TasksSkeleton from "./skeletons/TasksSkeleton";
+import ErrorState from "./ErrorState";
 
 function TodosList({
   todos,
@@ -33,16 +35,10 @@ function TodosList({
   );
 
   if (isLoading) {
-    return (
-      <p className="text-center m-auto text-4xl font-semibold">Loading...</p>
-    );
+    return <TasksSkeleton />;
   }
   if (isError) {
-    return (
-      <p className="text-center m-auto text-4xl font-semibold">
-        Error fetching todo
-      </p>
-    );
+    return <ErrorState title="Error To Fetch Tasks" />;
   }
 
   return (

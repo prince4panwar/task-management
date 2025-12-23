@@ -77,16 +77,6 @@ export function MobileSidebar() {
             </button>
           </SheetClose>
 
-          {/* <SheetClose asChild>
-            <button
-              type="button"
-              className="cursor-pointer font-bold text-white p-2 rounded transition-all bg-blue-500 hover:bg-blue-600"
-              onClick={() => navigate("/todos/status/summary")}
-            >
-              Status Summary
-            </button>
-          </SheetClose> */}
-
           <SheetClose asChild>
             <button
               type="button"

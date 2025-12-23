@@ -10,6 +10,7 @@ import { CircleUserRound, Moon, Sun } from "lucide-react";
 import { MobileSidebar } from "./MobileSidebar";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useSearchContext } from "@/context/SearchContext";
+import TasksSkeleton from "./skeletons/TasksSkeleton";
 
 const ProtectedRoute = ({ children }) => {
   const { search, setSearch } = useSearchContext();
@@ -46,11 +47,8 @@ const ProtectedRoute = ({ children }) => {
     }, 1);
   }
 
-  // Loading UI
   if (isLoading) {
-    return (
-      <p className="text-center m-auto text-4xl font-semibold">Loading...</p>
-    );
+    return <TasksSkeleton classnames="h-screen" />;
   }
 
   // Not authenticated
