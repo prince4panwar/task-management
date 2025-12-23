@@ -16,6 +16,7 @@ const {
 const {
   isAuthenticatedUser,
 } = require("../middlewares/authRequestValidator.js");
+const { exportTodosToExcel } = require("../controller/todoExportController.js");
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -42,5 +43,7 @@ router.patch(
   isAuthenticatedUser,
   updateTodo
 );
+
+router.get("/todos/export/excel", isAuthenticatedUser, exportTodosToExcel);
 
 module.exports = router;
