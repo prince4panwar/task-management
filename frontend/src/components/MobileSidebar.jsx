@@ -77,7 +77,7 @@ export function MobileSidebar() {
             </button>
           </SheetClose>
 
-          <SheetClose asChild>
+          {/* <SheetClose asChild>
             <button
               type="button"
               className="cursor-pointer font-bold text-white p-2 rounded transition-all bg-blue-500 hover:bg-blue-600"
@@ -85,15 +85,15 @@ export function MobileSidebar() {
             >
               Status Summary
             </button>
-          </SheetClose>
+          </SheetClose> */}
 
           <SheetClose asChild>
             <button
               type="button"
               className="cursor-pointer font-bold text-white p-2 rounded transition-all bg-blue-500 hover:bg-blue-600"
-              onClick={() => navigate("/todos/priority/summary")}
+              onClick={() => navigate("/todos/analytics")}
             >
-              Priority Summary
+              Tasks Analytics
             </button>
           </SheetClose>
 

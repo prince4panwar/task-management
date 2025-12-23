@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { useSidebarStore } from "@/store/sidebarStore";
 import { useThemeStore } from "@/store/themeStore";
 import RecentTasks from "./RecentTasks";
-import TodoStatusPieChart from "./TodoStatusPieChart";
+import TodoStatusPieChart from "./TodoStatusChart";
 import { useUserStore } from "@/store/userStore";
 import { Flag } from "lucide-react";
 import TodoPriorityPieChart from "./TodoPriorityChart";
@@ -133,7 +133,7 @@ function Dashboard() {
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.12 }}
-            whileHover={{ y: -4, scale: 1.01 }}
+            whileHover={{ y: -4 }}
             className={`rounded-2xl p-5 text-white shadow-lg cursor-pointer
               bg-linear-to-br ${stat.gradient}`}
             onClick={() => navigate(stat.link)}
@@ -153,8 +153,8 @@ function Dashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -4, scale: 1.01 }}
-              className={`rounded-2xl p-5 border-2 cursor-pointer hover:shadow-xl
+              whileHover={{ y: -4 }}
+              className={`rounded-2xl p-5 border-2 cursor-pointer hover:shadow-lg
                 ${
                   theme === "light"
                     ? "bg-white border-slate-200"

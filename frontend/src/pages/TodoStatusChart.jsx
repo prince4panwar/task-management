@@ -15,7 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSidebarStore } from "@/store/sidebarStore";
 import { useThemeStore } from "@/store/themeStore";
 
-const COLORS = ["#E7000B", "#F0B100", "#0D542B"]; // pending, inProgress, completed
+const COLORS = ["#f87171", "#facc15", "#4ade80"]; // pending, inProgress, completed
 
 const TodoStatusPieChart = ({
   showLegend = true,
@@ -90,8 +90,8 @@ const TodoStatusPieChart = ({
               data={statusData}
               cx="50%"
               cy="50%"
-              innerRadius={100}
-              outerRadius={140}
+              innerRadius={80}
+              outerRadius={120}
               fill="#8884d8"
               label
             >

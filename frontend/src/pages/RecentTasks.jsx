@@ -67,7 +67,7 @@ function RecentTasks({
     <div
       className={`${
         collapseHeight ? "h-[calc(100vh-70px)]" : ""
-      } w-full sm:px-2 sm:py-2 overflow-y-auto overflow-x-hidden custom-scroll
+      } w-full sm:px-2 sm:py-2 max-sm:pb-4 max-sm:p-1 overflow-y-auto overflow-x-hidden custom-scroll
       ${!widthFull ? (sidebar ? "sm:w-[80%]" : "sm:w-[95%]") : "w-full"}
       ${theme === "light" ? "bg-white" : "bg-slate-800"}
       ${className}`}
@@ -77,7 +77,7 @@ function RecentTasks({
           Recent Tasks
         </h2>
       )}
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 max-sm:p-2">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 max-sm:pt-1">
         {visibleTodos?.map((todo, index) => (
           <motion.div
             key={todo._id}

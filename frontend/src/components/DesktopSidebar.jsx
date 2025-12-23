@@ -36,7 +36,7 @@ function DesktopSidebar() {
     hover:text-blue-600 dark:hover:text-white
   `;
 
-  const iconClasses = "transition-transform duration-300 group-hover:scale-110";
+  const iconClasses = "transition-transform duration-300 group-hover:scale-105";
 
   return (
     <aside

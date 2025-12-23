@@ -8,6 +8,7 @@ import NotFound from "./components/NotFound";
 import Loader from "./components/Loader";
 import RouterError from "./components/RouteError";
 import "./App.css";
+import TodoStatusPriorityChart from "./pages/TodoStatusPriorityChart";
 
 const Register = lazy(() => import("./pages/Register.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
@@ -16,7 +17,7 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const TodoPage = lazy(() => import("./pages/TodoPage"));
 const TodoDetails = lazy(() => import("./pages/TodoDetails"));
 const Profile = lazy(() => import("./pages/Profile.jsx"));
-const TodoStatusPieChart = lazy(() => import("./pages/TodoStatusPieChart"));
+const TodoStatusPieChart = lazy(() => import("./pages/TodoStatusChart"));
 const TodoPriorityChart = lazy(() => import("./pages/TodoPriorityChart"));
 const TodoForm = lazy(() => import("./components/TodoForm"));
 const RecentTasks = lazy(() => import("./pages/RecentTasks"));
@@ -48,13 +49,8 @@ const router = createBrowserRouter([
         errorElement: <RouterError />,
       },
       {
-        path: "/todos/status/summary",
-        element: <TodoStatusPieChart />,
-        errorElement: <RouterError />,
-      },
-      {
-        path: "/todos/priority/summary",
-        element: <TodoPriorityChart />,
+        path: "/todos/analytics",
+        element: <TodoStatusPriorityChart />,
         errorElement: <RouterError />,
       },
       {
