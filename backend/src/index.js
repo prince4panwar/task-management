@@ -16,9 +16,19 @@ app.use(cors());
 app.use("/api", todoRoutes);
 app.use("/api", userRoutes);
 
-app.listen(PORT, async () => {
-  console.log(`Server started at ${PORT}...`);
-  await connect();
-  console.log("Mongo db connected...");
-  // setupJobs();
-});
+const startServer = async () => {
+  try {
+    await connect();
+    console.log("MongoDB connected");
+
+    app.listen(PORT, () => {
+      console.log(`Server started on port ${PORT}`);
+      // setupJobs();
+    });
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
+};
+
+startServer();
