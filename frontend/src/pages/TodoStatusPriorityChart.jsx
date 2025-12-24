@@ -6,7 +6,6 @@ import { useSidebarStore } from "@/store/sidebarStore";
 import TodoPriorityPieChart from "./TodoPriorityChart";
 import TodoStatusPieChart from "./TodoStatusChart";
 import ChartCard from "@/components/ChartCard";
-import { Skeleton } from "@/components/ui/skeleton";
 import RecentTasksSkeleton from "@/components/skeletons/RecentTasksSkeleton";
 import ErrorState from "@/components/ErrorState";
 

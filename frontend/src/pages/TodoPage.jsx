@@ -20,7 +20,7 @@ function TodoPage() {
       },
       params: {
         page,
-        limit: 7,
+        limit: 10,
         ...(status && { status }),
         ...(priority && { priority }),
       },

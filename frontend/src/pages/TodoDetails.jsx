@@ -9,6 +9,8 @@ import DeleteTodoDialog from "@/components/DeleteTodoDialog";
 import { useQuery } from "@tanstack/react-query";
 import { useSidebarStore } from "@/store/sidebarStore";
 import { Badge } from "@/components/ui/badge";
+import RecentTasksSkeleton from "@/components/skeletons/RecentTasksSkeleton";
+import ErrorState from "@/components/ErrorState";
 
 function TodoDetails() {
   const { todoId } = useParams();
@@ -40,17 +42,11 @@ function TodoDetails() {
   }, [isEdit, refetch]);
 
   if (isLoading) {
-    return (
-      <p className="text-center m-auto text-4xl font-semibold">Loading...</p>
-    );
+    return <RecentTasksSkeleton />;
   }
 
   if (isError) {
-    return (
-      <p className="text-center m-auto text-2xl font-semibold text-red-500">
-        Error fetching todo
-      </p>
-    );
+    return <ErrorState title="Failed to fetch task details" />;
   }
 
   return (
