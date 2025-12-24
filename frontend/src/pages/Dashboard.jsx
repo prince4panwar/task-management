@@ -11,6 +11,7 @@ import { Flag } from "lucide-react";
 import TodoPriorityPieChart from "./TodoPriorityChart";
 import { useNavigate } from "react-router-dom";
 import ExportExcelButton from "@/components/ExportExcelButton";
+import { BASE_URL } from "@/config/api";
 
 function Dashboard() {
   const { sidebar } = useSidebarStore();
@@ -19,26 +20,20 @@ function Dashboard() {
   const navigate = useNavigate();
 
   const fetchStatusSummary = async () => {
-    const res = await axios.get(
-      "http://localhost:3000/api/todos/status/summary",
-      {
-        headers: {
-          "x-access-token": localStorage.getItem("token"),
-        },
-      }
-    );
+    const res = await axios.get(`${BASE_URL}/api/todos/status/summary`, {
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    });
     return res.data.data;
   };
 
   const fetchPrioritySummary = async () => {
-    const res = await axios.get(
-      "http://localhost:3000/api/todos/priority/summary",
-      {
-        headers: {
-          "x-access-token": localStorage.getItem("token"),
-        },
-      }
-    );
+    const res = await axios.get(`${BASE_URL}/api/todos/priority/summary`, {
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    });
     return res.data.data;
   };
 

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { useAllTodoStore } from "@/store/allTodoStore";
 import { useSearchParams } from "react-router-dom";
+import { BASE_URL } from "@/config/api";
 
 function TodoPage() {
   const [searchParams] = useSearchParams();
@@ -14,7 +15,7 @@ function TodoPage() {
   const addAllTodo = useAllTodoStore((state) => state.addAllTodo);
 
   const fetchTodos = async () => {
-    const response = await axios.get("http://localhost:3000/api/todos", {
+    const response = await axios.get(`${BASE_URL}/api/todos`, {
       headers: {
         "x-access-token": localStorage.getItem("token"),
       },

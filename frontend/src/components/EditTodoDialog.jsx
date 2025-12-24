@@ -23,6 +23,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "./ui/spinner";
 import { useThemeStore } from "@/store/themeStore";
 import { formatLocalDateTime } from "@/lib/helper";
+import { BASE_URL } from "@/config/api";
 
 function EditTodoDialog({
   setIsEdit,
@@ -71,7 +72,7 @@ function EditTodoDialog({
 
   const editTodoMutation = useMutation({
     mutationFn: async (data) => {
-      return axios.patch(`http://localhost:3000/api/todos/${todoId}`, data, {
+      return axios.patch(`${BASE_URL}/api/todos/${todoId}`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
           "x-access-token": localStorage.getItem("token"),

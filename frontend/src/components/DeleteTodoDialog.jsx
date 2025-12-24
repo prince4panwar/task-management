@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useThemeStore } from "@/store/themeStore";
+import { BASE_URL } from "@/config/api";
 
 function DeleteTodoDialog({
   showIcon = false,
@@ -29,7 +30,7 @@ function DeleteTodoDialog({
 
   const deleteTodoMutation = useMutation({
     mutationFn: async () => {
-      return axios.delete(`http://localhost:3000/api/todos/${todoId}`, {
+      return axios.delete(`${BASE_URL}/api/todos/${todoId}`, {
         headers: {
           "x-access-token": localStorage.getItem("token"),
         },

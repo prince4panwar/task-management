@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSidebarStore } from "@/store/sidebarStore";
 import { useThemeStore } from "@/store/themeStore";
 import ErrorState from "@/components/ErrorState";
+import { BASE_URL } from "@/config/api";
 
 const COLORS = ["#f87171", "#facc15", "#4ade80"]; // pending, inProgress, completed
 
@@ -32,7 +33,7 @@ const TodoPriorityPieChart = ({
     queryKey: ["priority-summary"],
     queryFn: async () => {
       const response = await axios.get(
-        "http://localhost:3000/api/todos/priority/summary",
+        `${BASE_URL}/api/todos/priority/summary`,
         {
           headers: {
             "x-access-token": localStorage.getItem("token"),

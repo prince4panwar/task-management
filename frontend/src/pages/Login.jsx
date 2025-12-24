@@ -12,6 +12,7 @@ import { loginFormSchema } from "@/lib/schema";
 import { Eye, EyeOff } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { Spinner } from "@/components/ui/spinner";
+import { BASE_URL } from "@/config/api";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,7 +31,7 @@ function Login() {
 
   const loginMutation = useMutation({
     mutationFn: async (data) => {
-      return await axios.post("http://localhost:3000/api/users/signin", data);
+      return await axios.post(`${BASE_URL}/api/users/signin`, data);
     },
     onSuccess: (response) => {
       if (response.data.success) {

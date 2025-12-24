@@ -21,6 +21,7 @@ import { Spinner } from "./ui/spinner";
 import { useThemeStore } from "@/store/themeStore";
 import { useAllTodoStore } from "@/store/allTodoStore";
 import { formatLocalDateTime } from "@/lib/helper";
+import { BASE_URL } from "@/config/api";
 
 function CreateTodoDialog({ btnClass, btnName = "Edit Task", todoId }) {
   const [open, setOpen] = useState(false);
@@ -67,7 +68,7 @@ function CreateTodoDialog({ btnClass, btnName = "Edit Task", todoId }) {
 
   const createTodoMutation = useMutation({
     mutationFn: async (data) => {
-      return axios.post("http://localhost:3000/api/todos", data, {
+      return axios.post(`${BASE_URL}/api/todos`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
           "x-access-token": localStorage.getItem("token"),
@@ -82,7 +83,7 @@ function CreateTodoDialog({ btnClass, btnName = "Edit Task", todoId }) {
 
   const updateTodoMutation = useMutation({
     mutationFn: async (data) => {
-      return axios.patch(`http://localhost:3000/api/todos/${todoId}`, data, {
+      return axios.patch(`${BASE_URL}/api/todos/${todoId}`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
           "x-access-token": localStorage.getItem("token"),

@@ -12,6 +12,7 @@ import { Spinner } from "./ui/spinner";
 import { createTaskFormSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSidebarStore } from "@/store/sidebarStore";
+import { BASE_URL } from "@/config/api";
 
 function TodoForm() {
   const {
@@ -41,7 +42,7 @@ function TodoForm() {
 
   const createTodoMutation = useMutation({
     mutationFn: async (data) => {
-      return axios.post("http://localhost:3000/api/todos", data, {
+      return axios.post(`${BASE_URL}/api/todos`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
           "x-access-token": localStorage.getItem("token"),

@@ -13,6 +13,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Spinner } from "@/components/ui/spinner";
+import { BASE_URL } from "@/config/api";
 
 function Register() {
   const [fileName, setFileName] = useState("");
@@ -32,7 +33,7 @@ function Register() {
 
   const createUserMutation = useMutation({
     mutationFn: async (data) => {
-      return await axios.post("http://localhost:3000/api/users/signup", data, {
+      return await axios.post(`${BASE_URL}/api/users/signup`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

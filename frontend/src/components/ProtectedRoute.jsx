@@ -11,6 +11,7 @@ import { MobileSidebar } from "./MobileSidebar";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useSearchContext } from "@/context/SearchContext";
 import TasksSkeleton from "./skeletons/TasksSkeleton";
+import { BASE_URL } from "@/config/api";
 
 const ProtectedRoute = ({ children }) => {
   const { search, setSearch } = useSearchContext();
@@ -25,12 +26,9 @@ const ProtectedRoute = ({ children }) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["authUser"],
     queryFn: async () => {
-      const response = await axios.get(
-        "http://localhost:3000/api/users/authenticate",
-        {
-          headers: { "x-access-token": token },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/api/users/authenticate`, {
+        headers: { "x-access-token": token },
+      });
       addUser(response.data.data);
       return response.data;
     },

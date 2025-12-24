@@ -14,6 +14,7 @@ import axios from "axios";
 import { Spinner } from "@/components/ui/spinner";
 import { useSidebarStore } from "@/store/sidebarStore";
 import { CircleUserRound } from "lucide-react";
+import { BASE_URL } from "@/config/api";
 
 function Profile() {
   const user = useUserStore((state) => state.user);
@@ -37,16 +38,12 @@ function Profile() {
 
   const updateProfileMutation = useMutation({
     mutationFn: async (payload) => {
-      return axios.patch(
-        `http://localhost:3000/api/users/${user.id}`,
-        payload,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            "x-access-token": localStorage.getItem("token"),
-          },
-        }
-      );
+      return axios.patch(`${BASE_URL}/api/users/${user.id}`, payload, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      });
     },
     onSuccess: () => {
       toast.success("Profile updated successfully");

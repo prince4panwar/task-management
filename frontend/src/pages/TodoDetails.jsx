@@ -11,6 +11,7 @@ import { useSidebarStore } from "@/store/sidebarStore";
 import { Badge } from "@/components/ui/badge";
 import RecentTasksSkeleton from "@/components/skeletons/RecentTasksSkeleton";
 import ErrorState from "@/components/ErrorState";
+import { BASE_URL } from "@/config/api";
 
 function TodoDetails() {
   const { todoId } = useParams();
@@ -24,14 +25,11 @@ function TodoDetails() {
   const { isLoading, isError, refetch } = useQuery({
     queryKey: ["todoDetails", todoId],
     queryFn: async () => {
-      const response = await axios.get(
-        `http://localhost:3000/api/todos/${todoId}`,
-        {
-          headers: {
-            "x-access-token": localStorage.getItem("token"),
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/api/todos/${todoId}`, {
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      });
       addTodo(response.data.data);
       return response.data.data;
     },

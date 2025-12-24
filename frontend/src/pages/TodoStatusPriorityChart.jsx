@@ -8,16 +8,14 @@ import TodoStatusPieChart from "./TodoStatusChart";
 import ChartCard from "@/components/ChartCard";
 import RecentTasksSkeleton from "@/components/skeletons/RecentTasksSkeleton";
 import ErrorState from "@/components/ErrorState";
+import { BASE_URL } from "@/config/api";
 
 const fetchTodoSummary = async () => {
-  const res = await axios.get(
-    "http://localhost:3000/api/todos/summary/status-priority",
-    {
-      headers: {
-        "x-access-token": localStorage.getItem("token"),
-      },
-    }
-  );
+  const res = await axios.get(`${BASE_URL}/api/todos/summary/status-priority`, {
+    headers: {
+      "x-access-token": localStorage.getItem("token"),
+    },
+  });
   return res.data.data;
 };
 

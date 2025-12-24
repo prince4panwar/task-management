@@ -3,17 +3,15 @@ import { useMutation } from "@tanstack/react-query";
 import { Download } from "lucide-react";
 import { Spinner } from "./ui/spinner";
 import toast from "react-hot-toast";
+import { BASE_URL } from "@/config/api";
 
 const exportExcel = async () => {
-  const response = await axios.get(
-    "http://localhost:3000/api/todos/export/excel",
-    {
-      responseType: "blob",
-      headers: {
-        "x-access-token": localStorage.getItem("token"),
-      },
-    }
-  );
+  const response = await axios.get(`${BASE_URL}/api/todos/export/excel`, {
+    responseType: "blob",
+    headers: {
+      "x-access-token": localStorage.getItem("token"),
+    },
+  });
 
   return response.data;
 };

@@ -10,6 +10,7 @@ import { useSidebarStore } from "@/store/sidebarStore";
 import { useSearchContext } from "@/context/SearchContext";
 import RecentTasksSkeleton from "@/components/skeletons/RecentTasksSkeleton";
 import ErrorState from "@/components/ErrorState";
+import { BASE_URL } from "@/config/api";
 
 function RecentTasks({
   limit,
@@ -24,7 +25,7 @@ function RecentTasks({
   const navigate = useNavigate();
 
   const fetchRecentTodos = async () => {
-    const response = await axios.get(`http://localhost:3000/api/recent/todos`, {
+    const response = await axios.get(`${BASE_URL}/api/recent/todos`, {
       headers: {
         "x-access-token": localStorage.getItem("token"),
       },

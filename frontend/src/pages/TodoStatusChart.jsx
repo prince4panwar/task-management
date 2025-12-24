@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSidebarStore } from "@/store/sidebarStore";
 import { useThemeStore } from "@/store/themeStore";
 import ErrorState from "@/components/ErrorState";
+import { BASE_URL } from "@/config/api";
 
 const COLORS = ["#f87171", "#facc15", "#4ade80"]; // pending, inProgress, completed
 
@@ -31,14 +32,11 @@ const TodoStatusPieChart = ({
   const { data, isLoading, isError } = useQuery({
     queryKey: ["status-summary"],
     queryFn: async () => {
-      const response = await axios.get(
-        "http://localhost:3000/api/todos/status/summary",
-        {
-          headers: {
-            "x-access-token": localStorage.getItem("token"),
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/api/todos/status/summary`, {
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      });
       return response.data.data;
     },
   });
