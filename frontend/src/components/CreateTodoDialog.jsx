@@ -99,6 +99,9 @@ function CreateTodoDialog({ btnClass, btnName = "Edit Task", todoId }) {
   const onSubmit = async (data) => {
     if (data.image && data.image[0]) data.image = data.image[0];
 
+    if (data.dueDate) {
+      data.dueDate = new Date(data.dueDate).toISOString();
+    }
     if (btnName === "Edit") {
       updateTodoMutation.mutate(data, {
         onSuccess: () => {

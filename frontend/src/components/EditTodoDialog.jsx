@@ -94,6 +94,11 @@ function EditTodoDialog({
     if (data.image && data.image[0]) {
       data.image = data.image[0];
     }
+
+    if (data.dueDate) {
+      data.dueDate = new Date(data.dueDate).toISOString();
+    }
+
     setFileName("");
     editTodoMutation.mutate(data);
   }
