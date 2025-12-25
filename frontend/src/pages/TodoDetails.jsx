@@ -55,14 +55,14 @@ function TodoDetails() {
       `}
     >
       <div
-        className={`sm:w-2/3 max-sm:min-h-2/3 sm:rounded-2xl rounded-lg shadow-2xl overflow-x-hidden overflow-y-auto custom-scroll
-          ${theme === "light" ? "light" : "dark"}
+        className={`sm:w-2/3 max-sm:min-h-2/3 sm:rounded-2xl rounded-lg shadow-lg overflow-x-hidden overflow-y-auto custom-scroll
+          ${theme === "light" ? "light border-2 border-slate-300" : "dark"}
         `}
       >
         <div
-          className={`flex items-center gap-2 justify-between px-4 py-2 sticky top-0 ${
+          className={`flex items-center gap-2 justify-between px-4 py-2 sticky top-0 shadow-lg ${
             theme === "light"
-              ? "light border-2 border-b-slate-300  bg-white"
+              ? "light border-b-2 border-slate-300  bg-white"
               : "dark border border-b-white"
           }`}
         >
@@ -96,13 +96,13 @@ function TodoDetails() {
           </div>
 
           <Badge
-            className={`px-3 py-1 text-xs rounded-full font-semibold
+            className={`px-3 py-1 text-xs rounded-full font-semibold text-white
             ${
               todo?.status === "pending"
                 ? "bg-red-500"
                 : todo?.status === "completed"
                 ? "bg-green-600"
-                : "bg-yellow-400 text-black"
+                : "bg-yellow-400"
             }`}
           >
             {todo?.status?.toUpperCase()}
@@ -116,7 +116,7 @@ function TodoDetails() {
 
       <div
         className={`sm:w-1/3 rounded-2xl p-4 shadow-xl flex flex-col gap-6 custom-scroll sm:overflow-y-auto
-          ${theme === "light" ? "light border-2" : "dark"}
+          ${theme === "light" ? "light border-2 border-slate-300" : "dark"}
         `}
       >
         {todo?.image ? (

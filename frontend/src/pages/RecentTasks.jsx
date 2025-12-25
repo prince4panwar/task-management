@@ -157,11 +157,14 @@ function RecentTasks({
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4" />
                 <span>
-                  Created{" "}
+                  Created{" : "}
                   {new Date(todo.createdAt).toLocaleString("en-GB", {
                     day: "2-digit",
                     month: "short",
                     year: "numeric",
+                    // hour: "2-digit",
+                    // minute: "2-digit",
+                    // hour12: true,
                   })}
                 </span>
               </div>
@@ -169,11 +172,14 @@ function RecentTasks({
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
                 <span>
-                  Due{" "}
+                  Due{" : "}
                   {new Date(todo.dueDate).toLocaleString("en-GB", {
                     day: "2-digit",
                     month: "short",
                     year: "numeric",
+                    // hour: "2-digit",
+                    // minute: "2-digit",
+                    // hour12: true,
                   })}
                 </span>
               </div>

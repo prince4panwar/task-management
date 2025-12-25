@@ -49,7 +49,7 @@ function TodosList({
     >
       <div className="sm:p-1 sm:pt-0">
         <div
-          className={`sm:h-[55px] z-10 text-md font-bold sm:mb-2.5 mb-1 sticky sm:rounded-b-lg top-0 sm:p-4 px-1 py-3 flex sm:gap-4 justify-around bg-blue-500 text-white max-sm:shadow-[0px_2px_2px_4px_rgba(0,0,0,0.35)]`}
+          className={`sm:h-[55px] z-10 text-md font-bold sm:mb-2.5 mb-1 sticky sm:rounded-b-lg top-0 sm:p-4 px-1 py-3 flex sm:gap-4 justify-around bg-blue-500 text-white shadow-lg`}
         >
           <span className="w-1/20 text-center text-xs sm:text-base hidden sm:block">
             S.No.
@@ -57,14 +57,12 @@ function TodosList({
           <span className="w-1/4 text-center text-xs sm:text-base">Title</span>
           <span className="w-1/4 text-center text-xs sm:text-base">Status</span>
           <span className="w-1/4 text-center text-xs sm:text-base line-clamp-1">
-            Creation
+            Created
           </span>
           <span className="w-1/4 text-center text-xs sm:text-base">
             Priority
           </span>
-          <span className="w-1/4 text-center text-xs sm:text-base hidden sm:block">
-            Due
-          </span>
+          <span className="w-1/4 text-center text-xs sm:text-base">Due</span>
           <span className="w-1/4 text-center text-xs sm:text-base">
             Actions
           </span>
@@ -83,13 +81,13 @@ function TodosList({
           {filtered?.map((todo, index) => (
             <motion.div
               key={todo._id}
-              whileHover={{ scale: 1.0049 }}
-              whileTap={{ scale: 0.9999 }}
+              whileHover={{ scale: 1.0019 }}
+              whileTap={{ scale: 0.999 }}
               initial={{ opacity: 0, y: -300 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`flex items-center w-full sm:gap-4 p-2 sm:mb-2.5 mb-1 rounded-2xl cursor-pointer px-1 ${
+              className={`flex items-center w-full sm:gap-4 p-2 sm:mb-2.5 mb-1 rounded-2xl cursor-pointer px-1 border-2 ${
                 theme === "light"
-                  ? "light shadow-[0px_2px_2px_2px_rgba(0,0,0,0.35)]"
+                  ? "light shadow hover:shadow-lg border-slate-300"
                   : "dark border border-slate-400 hover:border-blue-600"
               }`}
               onClick={() => navigate(`/todos/${todo._id}`)}
@@ -113,7 +111,7 @@ function TodosList({
                 <Badge
                   className={`sm:px-3 sm:py-1 text-xs ${
                     (todo.status === "pending" && "bg-red-600") ||
-                    (todo.status === "completed" && "bg-green-900") ||
+                    (todo.status === "completed" && "bg-green-700") ||
                     (todo.status === "in-progress" && "bg-yellow-500")
                   } text-white sm:text-[11px] text-[9px]`}
                 >
@@ -126,33 +124,36 @@ function TodosList({
                   day: "2-digit",
                   month: "short",
                   year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: true,
+                  // hour: "2-digit",
+                  // minute: "2-digit",
+                  // hour12: true,
                 })}
               </p>
 
               <div className="w-1/4 text-center">
                 <Badge
                   className={`sm:px-3 sm:py-1 text-xs ${
-                    (todo.priority === "low" && "bg-green-900") ||
-                    (todo.priority === "medium" && "bg-yellow-500") ||
-                    (todo.priority === "high" && "bg-red-500")
-                  } text-white sm:text-[11px] text-[9px]`}
+                    todo.priority === "low"
+                      ? "bg-green-500/25 text-green-700"
+                      : todo.priority === "medium"
+                      ? "bg-yellow-500/20 text-yellow-700"
+                      : "bg-red-500/20 text-red-600"
+                  }  sm:text-[11px] text-[9px]`}
                 >
-                  {todo.priority?.charAt(0).toUpperCase() +
-                    todo.priority?.slice(1)}
+                  {/* {todo.priority?.charAt(0).toUpperCase() +
+                    todo.priority?.slice(1)} */}
+                  {todo?.priority}
                 </Badge>
               </div>
 
-              <p className="w-1/4 sm:text-base text-[10px] text-center font-semibold hidden sm:block">
+              <p className="w-1/4 sm:text-base text-[10px] text-center font-semibold">
                 {new Date(todo.dueDate).toLocaleString("en-GB", {
                   day: "2-digit",
                   month: "short",
                   year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: true,
+                  // hour: "2-digit",
+                  // minute: "2-digit",
+                  // hour12: true,
                 })}
               </p>
 
