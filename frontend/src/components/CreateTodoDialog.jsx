@@ -59,7 +59,7 @@ function CreateTodoDialog({ btnClass, btnName = "Edit Task", todoId }) {
           description: selected.description,
           status: selected.status,
           priority: selected.priority,
-          dueDate: selected.dueDate,
+          dueDate: formatLocalDateTime(selected.dueDate),
           image: "",
         });
       }
