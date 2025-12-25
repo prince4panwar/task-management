@@ -52,7 +52,7 @@ function EditTodoDialog({
       description: todo?.description,
       status: todo?.status,
       priority: todo?.priority,
-      dueDate: formatLocalDateTime(todo?.dueDate),
+      dueDate: todo?.dueDate,
       image: "",
     },
   });
@@ -64,7 +64,7 @@ function EditTodoDialog({
         description: todo.description || "",
         status: todo.status || "",
         priority: todo.priority || "",
-        dueDate: formatLocalDateTime(todo.dueDate) || "",
+        dueDate: todo.dueDate || "",
         image: "",
       });
     }
