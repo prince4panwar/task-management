@@ -59,6 +59,10 @@ function TodoForm() {
   const onSubmit = async (data) => {
     if (data.image && data.image[0]) data.image = data.image[0];
 
+    if (data.dueDate) {
+      data.dueDate = new Date(data.dueDate).toISOString();
+    }
+
     createTodoMutation.mutate(data, {
       onSuccess: () => {
         setFileName("");
