@@ -82,7 +82,9 @@ function TodoForm() {
         initial={{ y: 100 }}
         animate={{ y: 0 }}
         className={`sm:w-2/4 w-full max-sm:h-full px-4 py-4 sm:rounded-2xl m-auto overflow-auto ${
-          theme === "light" ? "light sm:shadow-2xl" : "dark"
+          theme === "light"
+            ? "light sm:shadow-xl border-2 border-slate-200"
+            : "dark"
         }`}
       >
         <h1 className={`text-3xl font-bold mb-3 text-center text-blue-600`}>

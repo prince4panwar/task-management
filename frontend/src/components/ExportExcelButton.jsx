@@ -53,7 +53,7 @@ function ExportExcelButton() {
       ) : (
         <>
           <Download size={18} />
-          Export to Excel
+          Export
         </>
       )}
     </button>

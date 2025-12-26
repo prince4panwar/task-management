@@ -59,7 +59,7 @@ function DesktopSidebar() {
           rounded-full cursor-pointer
           transition-transform duration-500
           ${sidebar ? "rotate-0" : "rotate-180"}
-          md:w-7 md:h-7 w-6 h-6
+          md:w-6 md:h-6 w-6 h-6
           ${
             theme === "light"
               ? "bg-blue-600 text-white shadow-lg"

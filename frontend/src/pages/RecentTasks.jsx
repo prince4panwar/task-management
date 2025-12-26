@@ -89,12 +89,12 @@ function RecentTasks({
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             // transition={{ delay: index * 0.05 }}
-            whileHover={{ y: -4 }}
+            whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => navigate(`/todos/${todo._id}`)}
             className={`group cursor-pointer rounded-2xl border-2
               p-5 shadow-md transition-all duration-50
-              hover:shadow-xl hover:border-blue-500/50
+              hover:shadow-lg hover:border-blue-500/50
               ${
                 theme === "light"
                   ? "bg-white border-slate-200"
