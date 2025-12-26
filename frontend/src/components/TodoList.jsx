@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "motion/react";
 import "../App.css";
 import { Badge } from "@/components/ui/badge";
@@ -12,6 +12,7 @@ import Pagination from "./Pagination";
 import { useSidebarStore } from "@/store/sidebarStore";
 import TasksSkeleton from "./skeletons/TasksSkeleton";
 import ErrorState from "./ErrorState";
+import TodoFilters from "./TodoFilters";
 
 function TodosList({
   todos,
@@ -47,16 +48,17 @@ function TodosList({
         sidebar ? "md:w-[80%]" : "md:w-[95%]"
       }         ${theme === "light" ? "bg-white mt-0.5" : "bg-slate-700"}`}
     >
+      <TodoFilters />
       <div className="sm:p-1 sm:pt-0">
         <div
-          className={`sm:h-[55px] z-10 text-md font-bold sm:mb-2.5 mb-1 sticky sm:rounded-b-lg top-0 sm:p-4 px-1 py-3 flex sm:gap-4 justify-around bg-blue-500 text-white shadow-lg`}
+          className={`sm:h-[55px] z-10 text-md font-bold sm:mb-1.5 mb-1 sticky sm:rounded-b-lg top-0 sm:p-4 px-1 py-3 flex sm:gap-4 justify-around bg-blue-500 text-white shadow-lg`}
         >
           <span className="w-1/20 text-center text-xs sm:text-base hidden sm:block">
             S.No.
           </span>
           <span className="w-1/4 text-center text-xs sm:text-base">Title</span>
           <span className="w-1/4 text-center text-xs sm:text-base">Status</span>
-          <span className="w-1/4 text-center text-xs sm:text-base line-clamp-1">
+          <span className="w-1/4 text-center text-xs sm:text-base sm:block hidden">
             Created
           </span>
           <span className="w-1/4 text-center text-xs sm:text-base">
@@ -77,7 +79,7 @@ function TodosList({
           </div>
         )}
 
-        <div className="px-1 max-sm:py-1">
+        <div className="px-0.5 max-sm:py-0.5">
           {filtered?.map((todo, index) => (
             <motion.div
               key={todo._id}
@@ -85,9 +87,9 @@ function TodosList({
               whileTap={{ scale: 0.999 }}
               initial={{ opacity: 0, y: -300 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`flex items-center w-full sm:gap-4 p-2 sm:mb-2.5 mb-1 rounded-2xl cursor-pointer px-1 border-2 ${
+              className={`flex items-center w-full sm:gap-4 p-1 sm:mb-1.5 mb-1 rounded-2xl cursor-pointer px-1 border-2 ${
                 theme === "light"
-                  ? "light shadow hover:shadow-lg border-slate-300"
+                  ? "light shadow hover:shadow-md border-slate-200"
                   : "dark border border-slate-400 hover:border-blue-600"
               }`}
               onClick={() => navigate(`/todos/${todo._id}`)}
@@ -119,7 +121,7 @@ function TodosList({
                 </Badge>
               </div>
 
-              <p className="w-1/4 sm:text-base text-[10px] text-center font-semibold">
+              <p className="w-1/4 sm:text-base text-[10px] text-center font-semibold sm:block hidden">
                 {new Date(todo.createdAt).toLocaleString("en-GB", {
                   day: "2-digit",
                   month: "short",
@@ -159,7 +161,7 @@ function TodosList({
 
               <div
                 onClick={(e) => e.stopPropagation()}
-                className="w-1/4 flex flex-col gap-2 justify-center items-center"
+                className="w-1/4 flex flex-col gap-1 justify-center items-center"
               >
                 <CreateTodoDialog
                   btnName="Edit"

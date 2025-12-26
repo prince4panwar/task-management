@@ -9,6 +9,7 @@ import { BASE_URL } from "@/config/api";
 function TodoPage() {
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
+  const search = searchParams.get("search");
   const status = searchParams.get("status");
   const priority = searchParams.get("priority");
 
@@ -22,6 +23,7 @@ function TodoPage() {
       params: {
         page,
         limit: 10,
+        ...(search && { search }),
         ...(status && { status }),
         ...(priority && { priority }),
       },
@@ -36,7 +38,7 @@ function TodoPage() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["todos", page],
+    queryKey: ["todos", page, search, status, priority],
     queryFn: fetchTodos,
   });
 

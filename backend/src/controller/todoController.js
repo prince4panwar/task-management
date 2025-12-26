@@ -39,8 +39,11 @@ const createTodo = async (req, res) => {
 const getTodos = async (req, res) => {
   try {
     const { userId } = req;
-    const { status, priority } = req.query;
+    const { search, status, priority } = req.query;
     const filter = { userId };
+    if (search) {
+      filter.title = { $regex: search, $options: "i" };
+    }
     if (status) {
       filter.status = status;
     }

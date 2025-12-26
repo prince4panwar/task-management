@@ -1,16 +1,10 @@
 const ExcelJS = require("exceljs");
 const Todo = require("../models/Todo");
 
-/**
- * @desc    Export todos to Excel
- * @route   GET /api/todos/export/excel
- * @access  Private
- */
 const exportTodosToExcel = async (req, res) => {
   try {
     const userId = req.userId;
 
-    // 1️⃣ Fetch todos
     const todos = await Todo.find({ userId }).lean();
 
     if (!todos.length) {
@@ -20,11 +14,9 @@ const exportTodosToExcel = async (req, res) => {
       });
     }
 
-    // 2️⃣ Create workbook & worksheet
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet("Tasks");
 
-    // 3️⃣ Define columns
     worksheet.columns = [
       { header: "S.No", key: "serial", width: 8 },
       { header: "Title", key: "title", width: 30 },
@@ -35,14 +27,12 @@ const exportTodosToExcel = async (req, res) => {
       { header: "Created At", key: "createdAt", width: 20 },
     ];
 
-    // 4️⃣ Style header row
     worksheet.getRow(1).font = { bold: true };
     worksheet.getRow(1).alignment = {
       vertical: "middle",
       horizontal: "center",
     };
 
-    // 5️⃣ Add data rows
     todos.forEach((todo, index) => {
       worksheet.addRow({
         serial: index + 1,
@@ -57,7 +47,6 @@ const exportTodosToExcel = async (req, res) => {
       });
     });
 
-    // 6️⃣ Set response headers
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -68,7 +57,6 @@ const exportTodosToExcel = async (req, res) => {
       `attachment; filename=tasks_${Date.now()}.xlsx`
     );
 
-    // 7️⃣ Write file to response
     await workbook.xlsx.write(res);
     res.end();
   } catch (error) {
