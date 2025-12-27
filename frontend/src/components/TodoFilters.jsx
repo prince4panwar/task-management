@@ -41,7 +41,7 @@ function TodoFilters() {
     >
       <input
         type="text"
-        placeholder="Search..."
+        placeholder="Search Title..."
         className="sm:w-1/3 w-2/4 border rounded sm:p-2 p-1 border-blue-600 font-bold focus:outline-none focus:ring cursor-pointer sm:text-sm text-xs"
         value={localSearch}
         onChange={(e) => setLocalSearch(e.target.value)}

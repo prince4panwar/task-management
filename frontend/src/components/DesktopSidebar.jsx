@@ -53,21 +53,19 @@ function DesktopSidebar() {
         ${sidebar ? "min-w-[20%]" : "min-w-[5%]"}
       `}
     >
-      <CircleChevronLeft
-        className={`z-20
-          absolute top-4.5 -right-3 border-2 border-white
-          rounded-full cursor-pointer
-          transition-transform duration-500
+      <button
+        className={`z-20 p-1
+          absolute top-10 -right-4
+          rounded-full cursor-pointer hover:scale-105
+          transition-transform duration-500 text-slate-600!
+          hover:text-blue-500
           ${sidebar ? "rotate-0" : "rotate-180"}
-          md:w-6 md:h-6 w-6 h-6
-          ${
-            theme === "light"
-              ? "bg-blue-600 text-white shadow-lg"
-              : "bg-slate-700 text-white"
-          }
+          ${theme === "light" ? "dark-bg " : "bg-slate-950"}
         `}
-        onClick={toggleSidebar}
-      />
+      >
+        <CircleChevronLeft className="m-auto" onClick={toggleSidebar} />
+      </button>
+
       {navItems.map(({ path, label, Icon }) => (
         <Tooltip key={path}>
           <TooltipTrigger asChild>
