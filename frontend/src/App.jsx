@@ -9,6 +9,7 @@ import Loader from "./components/Loader";
 import "./App.css";
 import TodoStatusPriorityChart from "./pages/TodoStatusPriorityChart";
 import ErrorState from "./components/ErrorState";
+import OverdueTasks from "./pages/OverdueTasks";
 
 const Register = lazy(() => import("./pages/Register.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
@@ -66,6 +67,11 @@ const router = createBrowserRouter([
         path: "/todos/recent",
         element: <RecentTasks />,
         errorElement: <ErrorState title="Failed to load recent tasks" />,
+      },
+      {
+        path: "/todos/overdue",
+        element: <OverdueTasks />,
+        errorElement: <ErrorState title="Failed to load overdue tasks" />,
       },
     ],
   },

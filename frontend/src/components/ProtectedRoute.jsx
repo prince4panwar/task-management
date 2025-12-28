@@ -12,6 +12,7 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { useSearchContext } from "@/context/SearchContext";
 import TasksSkeleton from "./skeletons/TasksSkeleton";
 import { BASE_URL } from "@/config/api";
+import NotificationBell from "./NotificationBell";
 
 const ProtectedRoute = ({ children }) => {
   const { search, setSearch } = useSearchContext();
@@ -92,6 +93,8 @@ const ProtectedRoute = ({ children }) => {
               <CircleUserRound className="bg-slate-500 cursor-pointer text-white rounded-full w-20 h-20" />
             </AvatarFallback>
           </Avatar>
+
+          <NotificationBell />
 
           <button
             className={`group cursor-pointer hover:underline transition-all p-1 rounded-full overflow-hidden ${

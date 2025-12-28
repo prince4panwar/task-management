@@ -1,4 +1,5 @@
 import {
+  CalendarClock,
   ChartNoAxesCombined,
   ClipboardPlus,
   Clock3,
@@ -18,5 +19,6 @@ export const navItems = [
     Icon: ChartNoAxesCombined,
   },
   { path: "/todos/recent", label: "Recent Tasks", Icon: Clock3 },
+  { path: "/todos/overdue", label: "Overdue Tasks", Icon: CalendarClock },
   { path: "/update/username", label: "Profile", Icon: User },
 ];

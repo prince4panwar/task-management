@@ -17,7 +17,7 @@ function DesktopSidebar() {
   const baseClasses = `
     relative group flex items-center gap-3
     cursor-pointer font-medium
-    lg:p-2.5 p-2 rounded-sm
+    lg:p-3.5 p-2 rounded-sm
     transition-all duration-300
     ${sidebar ? "justify-start" : "justify-center"}
   `;
@@ -41,7 +41,7 @@ function DesktopSidebar() {
   return (
     <aside
       className={`
-        relative hidden sm:flex flex-col gap-1
+        relative hidden sm:flex flex-col
         lg:py-3 p-2 h-[calc(100vh-70px)]
         transition-all duration-700
         backdrop-blur-xl z-20
@@ -55,7 +55,7 @@ function DesktopSidebar() {
     >
       <button
         className={`z-20 p-1
-          absolute top-10 -right-4
+          absolute top-11 lg:-right-3 -right-2.5
           rounded-full cursor-pointer hover:scale-105
           transition-transform duration-500 text-slate-600!
           hover:text-blue-500
@@ -63,7 +63,10 @@ function DesktopSidebar() {
           ${theme === "light" ? "dark-bg " : "bg-slate-950"}
         `}
       >
-        <CircleChevronLeft className="m-auto" onClick={toggleSidebar} />
+        <CircleChevronLeft
+          className="m-auto lg:w-5.5 lg:h-5.5 w-4 h-4"
+          onClick={toggleSidebar}
+        />
       </button>
 
       {navItems.map(({ path, label, Icon }) => (
