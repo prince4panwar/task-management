@@ -1,13 +1,14 @@
 const cron = require("node-cron");
 const Todo = require("../models/Todo.js");
 const sender = require("../config/notification.js");
+const { getIO } = require("./socket.js");
 
 const FRONTEND_URL =
   process.env.FRONTEND_URL ||
   "https://task-management-frontend-seven-jet.vercel.app";
 
 const setupJobs = () => {
-  cron.schedule("* * * * *", async () => {
+  cron.schedule("*/10 * * * * * ", async () => {
     try {
       const now = new Date();
       now.setSeconds(0, 0); // ignore seconds & ms for consistency
@@ -16,7 +17,7 @@ const setupJobs = () => {
       const unCompletedTasks = await Todo.find({
         dueDate: { $lte: now }, // all past & current due dates
         status: { $in: ["pending", "in-progress"] },
-        notificationSent: false,
+        isEmailNotificationSent: false,
       }).populate("userId");
 
       console.log("Uncompleted tasks found:", unCompletedTasks.length);
@@ -25,6 +26,18 @@ const setupJobs = () => {
         if (!task.dueDate) continue;
 
         const taskLink = `${FRONTEND_URL}/todos/${task._id}`;
+
+        // SEND OVERDUE NOTIFICATION TO FRONTEND (SOCKET)
+        if (!task.isOverdueNotified) {
+          getIO().to(task.userId._id.toString()).emit("overdue-task", {
+            taskId: task._id,
+            title: task.title,
+            dueDate: task.dueDate,
+            created: task.createdAt,
+          });
+
+          task.isOverdueNotified = true;
+        }
 
         try {
           await sender.sendMail({
@@ -78,7 +91,7 @@ const setupJobs = () => {
 
           console.log(`Notification sent for task: ${task.title}`);
 
-          task.notificationSent = true;
+          task.isEmailNotificationSent = true;
           await task.save();
         } catch (emailError) {
           console.log("Error sending email:", emailError.message);

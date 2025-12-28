@@ -12,6 +12,7 @@ const {
   getRecentTodos,
   getTodoPrioritySummary,
   getTodoStatusPrioritySummary,
+  getOverDueTodos,
 } = require("../controller/todoController.js");
 const {
   isAuthenticatedUser,
@@ -43,7 +44,7 @@ router.patch(
   isAuthenticatedUser,
   updateTodo
 );
-
+router.get("/overdue", isAuthenticatedUser, getOverDueTodos);
 router.get("/todos/export/excel", isAuthenticatedUser, exportTodosToExcel);
 
 module.exports = router;

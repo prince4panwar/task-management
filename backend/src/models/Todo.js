@@ -27,7 +27,11 @@ const todoSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    notificationSent: {
+    isOverdueNotified: {
+      type: Boolean,
+      default: false,
+    },
+    isEmailNotificationSent: {
       type: Boolean,
       default: false,
     },

@@ -143,11 +143,13 @@ const updateTodo = async (req, res) => {
     }
 
     // Check if dueDate changed
-    let notificationSent = existingTodo.notificationSent;
+    let isEmailNotificationSent = existingTodo.isEmailNotificationSent;
+    let isOverdueNotified = existingTodo.isOverdueNotified;
     if (
       new Date(existingTodo.dueDate).getTime() !== new Date(dueDate).getTime()
     ) {
-      notificationSent = false;
+      isEmailNotificationSent = false;
+      isOverdueNotified = false;
     }
 
     const todo = imageUrl
@@ -160,13 +162,22 @@ const updateTodo = async (req, res) => {
             priority,
             image: imageUrl,
             dueDate,
-            notificationSent,
+            isEmailNotificationSent,
+            isOverdueNotified,
           },
           { new: true }
         )
       : await Todo.findByIdAndUpdate(
           id,
-          { title, description, status, priority, dueDate, notificationSent },
+          {
+            title,
+            description,
+            status,
+            priority,
+            dueDate,
+            isEmailNotificationSent,
+            isOverdueNotified,
+          },
           { new: true }
         );
 
@@ -369,6 +380,25 @@ const getRecentTodos = async (req, res) => {
   }
 };
 
+const getOverDueTodos = async (req, res) => {
+  const { userId } = req;
+  try {
+    const overdueTasks = await Todo.find({
+      userId,
+      isOverdueNotified: true,
+      status: { $in: ["pending", "in-progress"] },
+    }).sort({ dueDate: -1 });
+
+    return res.status(200).json({
+      success: true,
+      count: overdueTasks?.length,
+      data: overdueTasks,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch overdue tasks" });
+  }
+};
+
 module.exports = {
   createTodo,
   getTodos,
@@ -380,4 +410,5 @@ module.exports = {
   getTodoStatusPrioritySummary,
   getTodosByStatus,
   getRecentTodos,
+  getOverDueTodos,
 };
