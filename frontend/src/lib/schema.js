@@ -79,19 +79,17 @@ export const createTaskFormSchema = z.object({
 
   priority: z.string(),
 
-  dueDate: z
-    .string()
-    .nonempty("Due date & time is required")
-    .refine(
-      (value) => {
-        const due = new Date(value);
-        const now = new Date();
-        return due > now;
-      },
-      {
-        message: "Due date & time must be greater than the current date & time",
-      }
-    ),
+  dueDate: z.string().nonempty("Due date & time is required"),
+  // .refine(
+  //   (value) => {
+  //     const due = new Date(value);
+  //     const now = new Date();
+  //     return due > now;
+  //   },
+  //   {
+  //     message: "Due date & time must be greater than the current date & time",
+  //   }
+  // ),
 
   image: z
     .any()

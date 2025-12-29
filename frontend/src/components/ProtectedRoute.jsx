@@ -13,6 +13,7 @@ import { useSearchContext } from "@/context/SearchContext";
 import TasksSkeleton from "./skeletons/TasksSkeleton";
 import { BASE_URL } from "@/config/api";
 import NotificationBell from "./NotificationBell";
+import Notifications from "./Notifications";
 
 const ProtectedRoute = ({ children }) => {
   const { search, setSearch } = useSearchContext();
