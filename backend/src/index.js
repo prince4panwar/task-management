@@ -3,12 +3,11 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const http = require("http");
 const { Server } = require("socket.io");
-
 const connect = require("./config/database.js");
 const todoRoutes = require("./routes/todoRoutes.js");
 const userRoutes = require("./routes/userRoutes.js");
+const notificationRoutes = require("./routes/notificationRoutes.js");
 const setupJobs = require("./utils/cronJob.js");
-const { setIO } = require("./utils/socket.js");
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -28,6 +27,7 @@ app.use(
 // Routes
 app.use("/api", todoRoutes);
 app.use("/api", userRoutes);
+app.use("/api", notificationRoutes);
 
 // Create HTTP server (REQUIRED for Socket.IO)
 const server = http.createServer(app);
@@ -39,9 +39,6 @@ const io = new Server(server, {
     credentials: true,
   },
 });
-
-// Store io safely (NO EXPORT)
-setIO(io);
 
 // Socket connection
 io.on("connection", (socket) => {
@@ -67,7 +64,7 @@ const startServer = async () => {
       console.log(`Server started on port ${PORT}`);
 
       // Start cron job ONCE
-      setupJobs();
+      setupJobs(io);
     });
   } catch (error) {
     console.error("Failed to start server:", error);

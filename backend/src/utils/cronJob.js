@@ -1,23 +1,24 @@
 const cron = require("node-cron");
 const Todo = require("../models/Todo.js");
+const Notification = require("../models/Notification.js");
 const sender = require("../config/notification.js");
-const { getIO } = require("./socket.js");
 
 const FRONTEND_URL =
   process.env.FRONTEND_URL ||
   "https://task-management-frontend-seven-jet.vercel.app";
 
-const setupJobs = () => {
-  cron.schedule("*/10 * * * * * ", async () => {
+const setupJobs = (io) => {
+  cron.schedule("*/10 * * * * *", async () => {
     try {
       const now = new Date();
-      now.setSeconds(0, 0); // ignore seconds & ms for consistency
+      now.setSeconds(0, 0);
+
       console.log("Checking for due tasks...");
 
       const unCompletedTasks = await Todo.find({
-        dueDate: { $lte: now }, // all past & current due dates
+        dueDate: { $lte: now },
         status: { $in: ["pending", "in-progress"] },
-        isEmailNotificationSent: false,
+        isOverdueNotified: false,
       }).populate("userId");
 
       console.log("Uncompleted tasks found:", unCompletedTasks.length);
@@ -27,9 +28,20 @@ const setupJobs = () => {
 
         const taskLink = `${FRONTEND_URL}/todos/${task._id}`;
 
-        // SEND OVERDUE NOTIFICATION TO FRONTEND (SOCKET)
         if (!task.isOverdueNotified) {
-          getIO().to(task.userId._id.toString()).emit("overdue-task", {
+          await Notification.create({
+            type: "OVERDUE_TASK",
+            userId: task.userId._id,
+            todoId: task._id,
+            title: task.title,
+            status: task.status,
+            dueDate: task.dueDate,
+            priority: task.priority,
+            created: task.createdAt,
+            description: task.description,
+          });
+
+          io.to(task.userId._id.toString()).emit("overdue-task", {
             taskId: task._id,
             title: task.title,
             dueDate: task.dueDate,
@@ -37,14 +49,16 @@ const setupJobs = () => {
           });
 
           task.isOverdueNotified = true;
+          await task.save();
         }
 
-        try {
-          await sender.sendMail({
-            to: task.userId.email,
-            subject: `⏰ Task Due: ${task.title}`,
-            text: `Your task "${task.title}" is due now. View task: ${taskLink}`,
-            html: `
+        if (!task.isEmailNotificationSent) {
+          try {
+            await sender.sendMail({
+              to: task.userId.email,
+              subject: `⏰ Task Due: ${task.title}`,
+              text: `Your task "${task.title}" is due now. View task: ${taskLink}`,
+              html: `
               <!DOCTYPE html>
               <html>
                 <body style="font-family: Arial, sans-serif; background:#f4f4f4; padding:20px;">
@@ -87,14 +101,15 @@ const setupJobs = () => {
                 </body>
               </html>
             `,
-          });
+            });
 
-          console.log(`Notification sent for task: ${task.title}`);
+            task.isEmailNotificationSent = true;
+            await task.save();
 
-          task.isEmailNotificationSent = true;
-          await task.save();
-        } catch (emailError) {
-          console.log("Error sending email:", emailError.message);
+            console.log(`Email sent for task: ${task.title}`);
+          } catch (emailError) {
+            console.log("Email error:", emailError.message);
+          }
         }
       }
     } catch (error) {
