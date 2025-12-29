@@ -64,7 +64,7 @@ const ProtectedRoute = ({ children }) => {
           theme === "light" ? "light" : "dark shadow-2xl"
         }`}
       >
-        <div className="sm:w-1/3 w-2/8 flex justify-start">
+        <div className="sm:w-1/3 w-1/8 flex justify-start">
           <Link
             className="sm:text-lg sm:block hidden text-sm hover:underline"
             onClick={() => navigate("/todos")}
@@ -73,7 +73,7 @@ const ProtectedRoute = ({ children }) => {
           </Link>
           {isMobile && <MobileSidebar />}
         </div>
-        <div className="sm:w-1/3 w-6/8 flex justify-end">
+        <div className="sm:w-1/3 w-7/8 flex justify-end">
           <input
             type="search"
             placeholder="Search tasks..."
@@ -84,7 +84,7 @@ const ProtectedRoute = ({ children }) => {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <div className="sm:w-1/3 w-2/8 flex justify-end items-center sm:gap-3 gap-1  max-sm:flex-row-reverse max-sm:justify-start">
+        <div className="sm:w-1/3 w-3/8 flex justify-end items-center sm:gap-3 gap-1  max-sm:flex-row-reverse max-sm:justify-start">
           <Avatar
             onClick={() => navigate("/update/username")}
             className="sm:w-10 sm:h-10 w-9 h-9"
