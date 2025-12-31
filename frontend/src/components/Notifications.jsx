@@ -89,7 +89,7 @@ const Notifications = () => {
       }`}
     >
       <div
-        className={`flex justify-between items-center mx-auto mb-6 py-3 px-12 sticky top-0 transition ${
+        className={`flex justify-between items-center mx-auto mb-6 py-3 sm:px-12 px-2 sticky top-0 transition ${
           theme === "dark" ? "dark" : "bg-white"
         }`}
       >
@@ -112,7 +112,7 @@ const Notifications = () => {
           )}
         </div>
       </div>
-      <div className="px-8">
+      <div className="sm:px-8 px-1">
         <div className="mx-auto rounded-2xl shadow-md border border-slate-400 dark:bg-gray-800 overflow-hidden">
           {isLoading ? (
             <p className="text-center py-14 text-sm text-gray-400">
