@@ -84,12 +84,12 @@ const Notifications = () => {
 
   return (
     <div
-      className={`w-full h-[calc(100vh-70px)] overflow-auto px-4 pb-6 transition-colors ${
+      className={`w-full h-[calc(100vh-70px)] overflow-auto pb-6 transition-colors ${
         theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
       }`}
     >
       <div
-        className={`flex justify-between items-center mx-auto mb-6 py-3 px-4 sticky top-0 transition ${
+        className={`flex justify-between items-center mx-auto mb-6 py-3 px-12 sticky top-0 transition ${
           theme === "dark" ? "dark" : "bg-white"
         }`}
       >
@@ -112,53 +112,56 @@ const Notifications = () => {
           )}
         </div>
       </div>
-      <div className="mx-auto rounded-2xl shadow-md border border-slate-400 dark:bg-gray-800 overflow-hidden">
-        {isLoading ? (
-          <p className="text-center py-14 text-sm text-gray-400">
-            Loading notifications...
-          </p>
-        ) : notifications.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-gray-400">
-            <BellOff className="w-10 h-10 mb-3" />
-            <p className="text-sm">No notifications yet</p>
-          </div>
-        ) : (
-          notifications.map((n) => (
-            <div
-              key={n._id}
-              className={`flex justify-between items-center gap-4 px-6 py-4 border-b border-slate-400 last:border-b-0
+      <div className="px-8">
+        <div className="mx-auto rounded-2xl shadow-md border border-slate-400 dark:bg-gray-800 overflow-hidden">
+          {isLoading ? (
+            <p className="text-center py-14 text-sm text-gray-400">
+              Loading notifications...
+            </p>
+          ) : notifications.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 text-gray-400">
+              <BellOff className="w-10 h-10 mb-3" />
+              <p className="text-sm">No notifications yet</p>
+            </div>
+          ) : (
+            notifications.map((n) => (
+              <div
+                key={n._id}
+                className={`flex justify-between items-center gap-4 px-6 py-4 border-b border-slate-400 last:border-b-0
                           dark:hover:bg-gray-700 transition ${
                             theme === "light"
                               ? "hover:bg-gray-200"
                               : "hover:bg-slate-950"
                           }`}
-            >
-              <div className="flex gap-4 group">
-                <div className="mt-1 text-blue-500">
-                  <AlarmClock />
-                </div>
-                <div className="flex-1">
-                  <p
-                    className="text-sm font-medium cursor-pointer hover:underline"
-                    onClick={() => navigate(`/todos/${n.todoId}`)}
-                  >
-                    <span className="font-semibold">{n.title}</span> is overdue
-                  </p>
-                  <div className="flex items-center gap-1 text-xs text-gray-400 mt-1">
-                    <Clock className="w-3 h-3" />
-                    {dayjs(n.createdAt).fromNow()}
+              >
+                <div className="flex gap-4 group">
+                  <div className="mt-1 text-blue-500">
+                    <AlarmClock />
+                  </div>
+                  <div className="flex-1">
+                    <p
+                      className="text-sm font-medium cursor-pointer hover:underline"
+                      onClick={() => navigate(`/todos/${n.todoId}`)}
+                    >
+                      <span className="font-semibold">{n.title}</span> is
+                      overdue
+                    </p>
+                    <div className="flex items-center gap-1 text-xs text-gray-400 mt-1">
+                      <Clock className="w-3 h-3" />
+                      {dayjs(n.createdAt).fromNow()}
+                    </div>
                   </div>
                 </div>
+                <button
+                  onClick={() => deleteNotification(n._id)}
+                  className="text-sm font-medium text-blue-600 hover:underline cursor-pointer"
+                >
+                  Delete
+                </button>
               </div>
-              <button
-                onClick={() => deleteNotification(n._id)}
-                className="text-sm font-medium text-blue-600 hover:underline cursor-pointer"
-              >
-                Delete
-              </button>
-            </div>
-          ))
-        )}
+            ))
+          )}
+        </div>
       </div>
     </div>
   );

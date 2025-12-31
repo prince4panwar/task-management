@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "motion/react";
 import "../App.css";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +13,13 @@ import { useSidebarStore } from "@/store/sidebarStore";
 import TasksSkeleton from "./skeletons/TasksSkeleton";
 import ErrorState from "./ErrorState";
 import TodoFilters from "./TodoFilters";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 function TodosList({
   todos,
@@ -87,7 +94,7 @@ function TodosList({
               whileTap={{ scale: 0.999 }}
               initial={{ opacity: 0, y: -300 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`flex items-center w-full sm:gap-4 p-1 sm:mb-1.5 mb-1 rounded-2xl cursor-pointer px-1 border-2 ${
+              className={`flex items-center w-full sm:gap-4 py-4 sm:mb-1.5 mb-1 sm:rounded-xl rounded-sm cursor-pointer px-1 border-2 ${
                 theme === "light"
                   ? "light shadow hover:shadow-md border-slate-200"
                   : "dark border border-slate-400 hover:border-blue-600"
@@ -163,19 +170,45 @@ function TodosList({
                 onClick={(e) => e.stopPropagation()}
                 className="w-1/4 flex flex-col gap-1 justify-center items-center"
               >
-                <CreateTodoDialog
-                  btnName="Edit"
-                  btnClass="sm:text-base text-[10px] sm:px-7.5 px-5 py-1 bg-green-500 hover:bg-green-600 text-white rounded-lg cursor-pointer font-bold"
-                  todoId={todo._id}
-                />
-
-                <DeleteTodoDialog
-                  showIcon={false}
-                  btnName="Delete"
-                  btnClass="sm:text-base text-[10px] sm:px-5 px-3 py-1 bg-red-500 hover:bg-red-700 text-white rounded-lg cursor-pointer font-bold"
-                  todoId={todo._id}
-                  onDeletion={fetchTodos}
-                />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      className="bg-white/10 hover:bg-black/5 transition border sm:py-1.5 sm:px-4 px-1.5 py-1 rounded-sm text-xs sm:text-base flex"
+                      variant="outline"
+                    >
+                      <span>Options</span>
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    className={`${theme === "light" ? "light" : "dark"}`}
+                    align="bottom"
+                  >
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem
+                        className="p-1"
+                        onSelect={(e) => e.preventDefault()}
+                      >
+                        <CreateTodoDialog
+                          btnName="Edit"
+                          btnClass="sm:text-base w-full text-[10px] sm:px-7.5 px-5 py-1 bg-green-500 hover:bg-green-600 text-white rounded cursor-pointer font-bold"
+                          todoId={todo._id}
+                        />
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="p-1"
+                        onSelect={(e) => e.preventDefault()}
+                      >
+                        <DeleteTodoDialog
+                          showIcon={false}
+                          btnName="Delete"
+                          btnClass="sm:text-base w-full text-[10px] sm:px-5 px-3 py-1 bg-red-500 hover:bg-red-700 text-white rounded cursor-pointer font-bold"
+                          todoId={todo._id}
+                          onDeletion={fetchTodos}
+                        />
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </motion.div>
           ))}
